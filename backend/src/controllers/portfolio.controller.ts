@@ -109,3 +109,83 @@ export const getPublicPortfolio = async (
     });
   }
 };
+// POST /api/v1/portfolio/me/skills
+export const addSkill = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const { name, level, category } = req.body;
+
+    if (!name) {
+      res.status(400).json({
+        success: false,
+        error: { code: "VALIDATION_ERROR", message: "Skill name is required" },
+      });
+      return;
+    }
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    const skill = await prisma.skill.create({
+      data: {
+        name,
+        level: level || null,
+        category: category || null,
+        portfolioId: portfolio.id,
+      },
+    });
+
+    res.status(201).json({ success: true, data: skill });
+  } catch (error) {
+    console.error("Add skill error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// DELETE /api/v1/portfolio/me/skills/:id
+export const deleteSkill = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    await prisma.skill.deleteMany({
+      where: { id, portfolioId: portfolio.id },
+    });
+
+    res.json({ success: true, data: { message: "Skill deleted" } });
+  } catch (error) {
+    console.error("Delete skill error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};

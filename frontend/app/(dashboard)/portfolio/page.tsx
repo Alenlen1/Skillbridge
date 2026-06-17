@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAuthStore } from "@/lib/auth";
 import api from "@/lib/api";
+import SkillsSection from "@/components/portfolio/SkillsSection";
 
 const schema = z.object({
   about: z.string().max(500, "Max 500 characters").optional(),
@@ -128,6 +129,7 @@ export default function PortfolioPage() {
           )}
         </div>
       </form>
+      <SkillsSection />
     </div>
   );
 }
