@@ -4,6 +4,7 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
+import portfolioRoutes from "./routes/portfolio.routes";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/portfolio", portfolioRoutes);
 
 // Health check
 app.get("/health", (req, res) => {
