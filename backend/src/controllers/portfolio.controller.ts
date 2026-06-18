@@ -189,3 +189,173 @@ export const deleteSkill = async (
     });
   }
 };
+// POST /api/v1/portfolio/me/projects
+export const addProject = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const { title, description, techStack, liveUrl, githubUrl, featured } = req.body;
+
+    if (!title) {
+      res.status(400).json({
+        success: false,
+        error: { code: "VALIDATION_ERROR", message: "Project title is required" },
+      });
+      return;
+    }
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    const project = await prisma.project.create({
+      data: {
+        title,
+        description: description || null,
+        techStack: techStack || [],
+        liveUrl: liveUrl || null,
+        githubUrl: githubUrl || null,
+        featured: featured || false,
+        portfolioId: portfolio.id,
+      },
+    });
+
+    res.status(201).json({ success: true, data: project });
+  } catch (error) {
+    console.error("Add project error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// DELETE /api/v1/portfolio/me/projects/:id
+export const deleteProject = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    await prisma.project.deleteMany({
+      where: {
+        AND: [{ id }, { portfolioId: portfolio.id }],
+      },
+    });
+
+    res.json({ success: true, data: { message: "Project deleted" } });
+  } catch (error) {
+    console.error("Delete project error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+// POST /api/v1/portfolio/me/education
+export const addEducation = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const { school, degree, field, startYear, endYear, current } = req.body;
+
+    if (!school) {
+      res.status(400).json({
+        success: false,
+        error: { code: "VALIDATION_ERROR", message: "School name is required" },
+      });
+      return;
+    }
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    const education = await prisma.education.create({
+      data: {
+        school,
+        degree: degree || null,
+        field: field || null,
+        startYear: startYear ? parseInt(startYear) : null,
+        endYear: endYear ? parseInt(endYear) : null,
+        current: current || false,
+        portfolioId: portfolio.id,
+      },
+    });
+
+    res.status(201).json({ success: true, data: education });
+  } catch (error) {
+    console.error("Add education error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// DELETE /api/v1/portfolio/me/education/:id
+export const deleteEducation = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    await prisma.education.deleteMany({
+      where: {
+        AND: [{ id }, { portfolioId: portfolio.id }],
+      },
+    });
+
+    res.json({ success: true, data: { message: "Education deleted" } });
+  } catch (error) {
+    console.error("Delete education error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
