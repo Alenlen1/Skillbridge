@@ -36,14 +36,15 @@ model RefreshToken {
 }
 
 model Portfolio {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  theme       String   @default("default")
-  accentColor String   @default("#6366f1")
-  isPublic    Boolean  @default(true)
-  views       Int      @default(0)
+  id          String       @id @default(cuid())
+  userId      String       @unique
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme       String       @default("default")
+  accentColor String       @default("#6366f1")
+  isPublic    Boolean      @default(true)
+  views       Int          @default(0)
   about       String?
+  headline    String?
   location    String?
   website     String?
   skills      Skill[]
@@ -51,7 +52,7 @@ model Portfolio {
   experience  Experience[]
   projects    Project[]
   socialLinks SocialLink[]
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime     @updatedAt
 }
 
 model Skill {

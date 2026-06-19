@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import portfolioRoutes from "./routes/portfolio.routes";
+import trackerRoutes from "./routes/tracker.routes";
+import analyticsRoutes from "./routes/analytics.routes";
 
 dotenv.config();
 
@@ -26,6 +28,8 @@ app.use(cookieParser());
 // Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/portfolio", portfolioRoutes);
+app.use("/api/v1/applications", trackerRoutes);
+app.use("/api/v1/analytics", analyticsRoutes);
 
 // Health check
 app.get("/health", (req, res) => {

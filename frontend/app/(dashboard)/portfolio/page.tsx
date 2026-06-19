@@ -13,6 +13,7 @@ import EducationSection from "@/components/portfolio/EducationSection";
 const schema = z.object({
   about: z.string().max(500, "Max 500 characters").optional(),
   location: z.string().max(100).optional(),
+  headline: z.string().max(100).optional(),
   website: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
@@ -77,7 +78,17 @@ export default function PortfolioPage() {
             <p className="mt-1 text-xs text-red-400">{errors.about.message}</p>
           )}
         </div>
-
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-slate-300">
+            Headline
+          </label>
+          <input
+            {...register("headline")}
+            type="text"
+            placeholder="e.g. Sophomore IT Student : Full-Stack Developer"
+            className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          />
+        </div>
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-300">
             Location

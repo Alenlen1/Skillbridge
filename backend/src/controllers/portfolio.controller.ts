@@ -43,12 +43,13 @@ export const updateMyPortfolio = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { about, location, website, theme, accentColor, isPublic } = req.body;
+    const { about, headline, location, website, theme, accentColor, isPublic } = req.body;
 
     const portfolio = await prisma.portfolio.update({
       where: { userId: req.user!.id },
       data: {
         ...(about !== undefined && { about }),
+        ...(headline !== undefined && { headline }),
         ...(location !== undefined && { location }),
         ...(website !== undefined && { website }),
         ...(theme !== undefined && { theme }),

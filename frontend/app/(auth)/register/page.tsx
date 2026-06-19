@@ -21,6 +21,9 @@ const schema = z.object({
       "Username can only contain letters, numbers, and underscores",
     ),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  agreed: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the terms and privacy policy",
+  }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -161,9 +164,40 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-slate-600">
-          By signing up, you agree to our Terms of Service and Privacy Policy.
-        </p>
+        <div>
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="agreed"
+              {...register("agreed")}
+              className="mt-0.5 rounded border-white/10 bg-white/[0.05]"
+            />
+            <label
+              htmlFor="agreed"
+              className="text-xs text-slate-500 leading-relaxed"
+            >
+              I agree to the{" "}
+              <a
+                href="/terms"
+                target="_blank"
+                className="text-slate-300 underline hover:text-white transition"
+              >
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a
+                href="/privacy"
+                target="_blank"
+                className="text-slate-300 underline hover:text-white transition"
+              >
+                Privacy Policy
+              </a>
+            </label>
+          </div>
+          {errors.agreed && (
+            <p className="mt-1 text-xs text-red-400">{errors.agreed.message}</p>
+          )}
+        </div>
       </div>
     </div>
   );
