@@ -205,7 +205,6 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Verify token exists in DB
     const stored = await prisma.refreshToken.findUnique({ where: { token } });
 
     if (!stored || stored.expiresAt < new Date()) {
@@ -225,21 +224,29 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
       username: string;
     };
 
-    // Rotate token
     await prisma.refreshToken.delete({ where: { token } });
 
-    const payload = {
-      id: decoded.id,
-      email: decoded.email,
-      username: decoded.username,
-    };
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: { id: true, email: true, username: true, name: true },
+    });
+
+    if (!user) {
+      res.status(401).json({
+        success: false,
+        error: { code: "UNAUTHORIZED", message: "User not found" },
+      });
+      return;
+    }
+
+    const payload = { id: user.id, email: user.email, username: user.username };
     const newAccessToken = generateAccessToken(payload);
     const newRefreshToken = generateRefreshToken(payload);
 
     await prisma.refreshToken.create({
       data: {
         token: newRefreshToken,
-        userId: decoded.id,
+        userId: user.id,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       },
     });
@@ -251,7 +258,7 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ success: true, data: { accessToken: newAccessToken } });
+    res.json({ success: true, data: { accessToken: newAccessToken, user } });
   } catch (error) {
     console.error("Refresh error:", error);
     res.status(401).json({
