@@ -81,6 +81,10 @@ export const getPublicPortfolio = async (
         username: true,
         avatar: true,
         bio: true,
+        certificates: {
+          where: { isPublic: true },
+          orderBy: { createdAt: "desc" },
+        },
         portfolio: {
           include: {
             skills: true,

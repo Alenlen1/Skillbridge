@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes";
 import portfolioRoutes from "./routes/portfolio.routes";
 import trackerRoutes from "./routes/tracker.routes";
 import analyticsRoutes from "./routes/analytics.routes";
+import certificateRoutes from "./routes/certificates.routes";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/portfolio", portfolioRoutes);
 app.use("/api/v1/applications", trackerRoutes);
 app.use("/api/v1/analytics", analyticsRoutes);
+app.use("/api/v1/certificates", certificateRoutes);
 
 // Health check
 app.get("/health", (req, res) => {

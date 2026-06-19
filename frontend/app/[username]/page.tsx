@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-
 interface Portfolio {
   about: string | null;
   headline: string | null;
@@ -42,11 +41,21 @@ interface Portfolio {
   }[];
 }
 
+interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  category: string;
+  fileUrl: string;
+  issuedAt: string | null;
+}
+
 interface User {
   name: string | null;
   username: string;
   avatar: string | null;
   bio: string | null;
+  certificates: Certificate[];
   portfolio: Portfolio | null;
 }
 
@@ -75,6 +84,7 @@ export default async function PublicPortfolioPage({
   if (!user || !user.portfolio) notFound();
 
   const { portfolio } = user;
+  const certificates = user.certificates || [];
 
   const skillsByCategory = portfolio.skills.reduce<
     Record<string, typeof portfolio.skills>
@@ -322,6 +332,34 @@ export default async function PublicPortfolioPage({
                       )}
                     </div>
                   </div>
+                ))}
+              </div>
+            </section>
+          )}
+          {/* Certificates */}
+          {certificates.length > 0 && (
+            <section>
+              <div className="mb-8 flex items-center gap-4">
+                <h2 className="text-lg font-semibold text-white">
+                  Certificates
+                </h2>
+                <div className="h-px flex-1 bg-white/[0.06]" />
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {certificates.map((cert) => (
+                  <a
+                    key={cert.id}
+                    href={cert.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 transition hover:border-white/[0.1] hover:bg-white/[0.04]"
+                  >
+                    <span className="mb-2 inline-block rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-xs text-indigo-400">
+                      {cert.category}
+                    </span>
+                    <h3 className="font-medium text-white">{cert.title}</h3>
+                    <p className="mt-1 text-sm text-slate-400">{cert.issuer}</p>
+                  </a>
                 ))}
               </div>
             </section>
