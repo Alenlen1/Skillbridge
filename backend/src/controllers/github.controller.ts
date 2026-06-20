@@ -182,6 +182,22 @@ export const importRepo = async (
       return;
     }
 
+    // Prevent importing the same repo twice
+    const existing = await prisma.project.findFirst({
+      where: { portfolioId: portfolio.id, githubUrl: url },
+    });
+
+    if (existing) {
+      res.status(409).json({
+        success: false,
+        error: {
+          code: "ALREADY_IMPORTED",
+          message: "This repo has already been imported",
+        },
+      });
+      return;
+    }
+
     const project = await prisma.project.create({
       data: {
         title: name,

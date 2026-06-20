@@ -63,7 +63,7 @@ async function getUser(username: string): Promise<User | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1"}/portfolio/${username}`,
-      { next: { revalidate: 60 } },
+      { next: { revalidate: 10 } },
     );
     if (!res.ok) return null;
     const data = await res.json();
