@@ -15,16 +15,25 @@ export const authenticate = (
   next: NextFunction,
 ): void => {
   const authHeader = req.headers.authorization;
+  const queryToken = req.query["token"] as string | undefined;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  let token: string | undefined;
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    token = authHeader.split(" ")[1];
+  } else if (queryToken) {
+    // Fallback for browser redirects (e.g. GitHub OAuth connect) that
+    // can't set custom headers.
+    token = queryToken;
+  }
+
+  if (!token) {
     res.status(401).json({
       success: false,
       error: { code: "UNAUTHORIZED", message: "No token provided" },
     });
     return;
   }
-
-  const token = authHeader.split(" ")[1];
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!) as {

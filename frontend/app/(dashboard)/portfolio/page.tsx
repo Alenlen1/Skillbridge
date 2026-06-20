@@ -9,6 +9,7 @@ import api from "@/lib/api";
 import SkillsSection from "@/components/portfolio/SkillsSection";
 import ProjectsSection from "@/components/portfolio/ProjectsSection";
 import EducationSection from "@/components/portfolio/EducationSection";
+import GithubSection from "@/components/portfolio/GithubSection";
 
 const schema = z.object({
   about: z.string().max(500, "Max 500 characters").optional(),
@@ -145,6 +146,7 @@ export default function PortfolioPage() {
       <SkillsSection />
       <ProjectsSection />
       <EducationSection />
+      <GithubSection />
     </div>
   );
 }
