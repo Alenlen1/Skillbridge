@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import axios from "axios";
 import { prisma } from "../lib/prisma";
 import { AuthRequest } from "../middleware/auth.middleware";
+import { encrypt, decrypt } from "../lib/crypto.service";
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID as string;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET as string;
@@ -85,7 +86,7 @@ export const githubCallback = async (
       where: { id: userId },
       data: {
         githubId,
-        githubToken: accessToken,
+        githubToken: encrypt(accessToken),
       },
     });
 
@@ -122,7 +123,7 @@ export const getRepos = async (
     const reposRes = await axios.get<GithubRepo[]>(
       "https://api.github.com/user/repos",
       {
-        headers: { Authorization: `Bearer ${user.githubToken}` },
+        headers: { Authorization: `Bearer ${decrypt(user.githubToken)}` },
         params: { sort: "updated", per_page: 30 },
       },
     );
