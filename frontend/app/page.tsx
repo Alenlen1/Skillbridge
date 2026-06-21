@@ -261,10 +261,26 @@ export default function LandingPage() {
                 Turn your skills into opportunities{" "}
               </h2>
             </div>
+            {/* Connector row, desktop only */}
+            <div aria-hidden className="mb-4 hidden items-center md:flex">
+              {steps.map((step, i) => (
+                <div key={step.number} className="flex flex-1 items-center">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-indigo-500/30 bg-indigo-500/10">
+                    <span className="text-xs font-semibold text-indigo-400">
+                      {step.number}
+                    </span>
+                  </div>
+                  {i < steps.length - 1 && (
+                    <div className="mx-3 h-px flex-1 bg-gradient-to-r from-indigo-500/40 to-indigo-500/10" />
+                  )}
+                </div>
+              ))}
+            </div>
+
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
               {steps.map((step) => (
                 <div key={step.number}>
-                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-500/20 bg-indigo-500/10">
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-500/20 bg-indigo-500/10 md:hidden">
                     <span className="text-xs font-semibold text-indigo-400">
                       {step.number}
                     </span>
@@ -332,6 +348,40 @@ export default function LandingPage() {
                   Create your free account
                   <IconArrowRight size={15} stroke={2} />
                 </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Founder note */}
+        <section className="scroll-mt-20 border-t border-white/[0.04] px-6 py-32">
+          <div className="mx-auto max-w-2xl">
+            <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 sm:p-10">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-indigo-500/[0.08] blur-[80px]"
+              />
+              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-indigo-400">
+                Why I built this
+              </p>
+              <p className="mb-6 text-lg leading-relaxed text-slate-300">
+                As a student, I wanted a better way to showcase my projects,
+                skills, certificates, and achievements in one place. SkillBridge
+                was created to help students present their work professionally
+                and turn their skills into opportunities.
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-xs font-semibold text-white">
+                  AA
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white">
+                    Alen Amarante
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    Creator of SkillBridge · IT Student
+                  </p>
+                </div>
               </div>
             </div>
           </div>
