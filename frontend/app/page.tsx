@@ -12,49 +12,50 @@ import {
   IconCheck,
   IconSparkles,
 } from "@tabler/icons-react";
+import ProductPreview from "./ProductPreview";
 
 const features = [
   {
     icon: <IconFolder size={20} stroke={1.5} />,
     title: "Portfolio builder",
     description:
-      "Build a stunning portfolio with sections for projects, skills, education, and experience. Make it yours with themes and accent colors.",
-    phase: "Phase 1",
+      "Showcase your best work and create a portfolio that helps employers understand who you are beyond your resume.",
+    phase: "Showcase",
   },
   {
     icon: <IconBrandGithub size={20} stroke={1.5} />,
     title: "GitHub integration",
     description:
-      "Connect your GitHub and auto-import repositories. Pin your best projects so employers see your real work, not just a resume.",
-    phase: "Phase 2",
+      "Turn your GitHub activity into a professional portfolio and let recruiters see your real development experience.",
+    phase: "Developer",
   },
   {
     icon: <IconFileText size={20} stroke={1.5} />,
     title: "Resume builder",
     description:
-      "Generate a polished PDF resume directly from your portfolio data. Multiple templates, always up to date, one click away.",
-    phase: "Phase 3",
+      "Create professional resumes in seconds and keep them updated automatically as your portfolio grows.",
+    phase: "Career",
   },
   {
     icon: <IconCertificate size={20} stroke={1.5} />,
     title: "Certificate vault",
     description:
-      "Upload, categorize, and showcase your certificates and credentials alongside your projects. Everything in one place.",
-    phase: "Phase 3",
+      "Keep all your achievements in one place and prove your skills with certificates that employers can verify.",
+    phase: "Credentials",
   },
   {
     icon: <IconBriefcase size={20} stroke={1.5} />,
-    title: "Internship tracker",
+    title: "Career tracker",
     description:
-      "Track every application on a Kanban board. Applied → Screening → Interview → Offer. Never lose track of where you stand.",
-    phase: "Phase 4",
+      "Stay organized throughout your internship journey and never lose track of applications, interviews, or offers.",
+    phase: "Tracking",
   },
   {
     icon: <IconChartBar size={20} stroke={1.5} />,
     title: "Analytics dashboard",
     description:
-      "See who is visiting your portfolio, downloading your resume, and clicking your projects so you know what is working.",
-    phase: "Phase 4",
+      "Understand what attracts recruiters and discover which projects and skills get the most attention.",
+    phase: "Insights",
   },
 ];
 
@@ -67,15 +68,15 @@ const steps = [
   },
   {
     number: "02",
-    title: "Share your profile",
+    title: "Showcase your work",
     description:
-      "Get a public URL at skillbridge.app/yourname. Share it with recruiters, on LinkedIn, or in applications.",
+      "Get a public URL at skillbridge.app/yourname. Share a professional profile that highlights your skills and achievements.",
   },
   {
     number: "03",
-    title: "Land the internship",
+    title: "Launch your career",
     description:
-      "Track applications, generate resumes, and use AI feedback to keep improving until you get the offer.",
+      "Apply with confidence, track opportunities,and grow your professional presence.",
   },
 ];
 
@@ -85,7 +86,7 @@ const pricingFeatures = [
   "GitHub integration",
   "Resume PDF generation",
   "Certificate vault",
-  "Internship tracker",
+  "Career tracker",
   "Analytics dashboard",
   "AI resume reviewer (coming soon)",
 ];
@@ -159,14 +160,14 @@ export default function LandingPage() {
           <div className="mb-8 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
             <IconStar size={13} stroke={1.5} className="text-indigo-400" />
             <span className="text-xs font-medium text-slate-300">
-              Built for students and fresh graduates
+              Built for students, graduates, and aspiring developers
             </span>
           </div>
 
           <h1 className="mb-6 max-w-3xl text-5xl font-semibold leading-[1.1] tracking-tight text-white md:text-6xl">
             Build your skills.
             <br />
-            <span className="text-indigo-400">Showcase your work.</span>
+            <span className="text-indigo-400">Showcase your value.</span>
             <br />
             Launch your career.
           </h1>
@@ -201,81 +202,8 @@ export default function LandingPage() {
             Free to use · No credit card required
           </p>
 
-          {/* Mock browser */}
-          <div className="relative mt-20 w-full max-w-4xl">
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0f0f1a] p-1 shadow-2xl shadow-black/40">
-              <div className="mb-3 flex items-center gap-2 px-3 pt-2">
-                <div className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
-                <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/60" />
-                <div className="h-2.5 w-2.5 rounded-full bg-green-500/60" />
-                <div className="ml-3 flex-1 rounded-md bg-white/[0.05] py-1 px-3">
-                  <span className="text-xs text-slate-600">
-                    skillbridge.app/alen
-                  </span>
-                </div>
-              </div>
-              <div className="rounded-xl bg-[#0d0d18] p-6">
-                <div className="mb-6 flex items-start gap-4">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-sm font-semibold text-white">
-                    AA
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">Alen Amarante</h3>
-                    <p className="text-sm text-slate-400">
-                      Sophomore IT Student · Full-Stack Developer
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {["React", "TypeScript", "Next.js", "PostgreSQL"].map(
-                        (tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-md border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-xs text-indigo-400"
-                          >
-                            {tag}
-                          </span>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {[
-                    {
-                      name: "SkillBridge",
-                      desc: "Career platform for students",
-                      stars: 42,
-                    },
-                    {
-                      name: "FlaskAPI Boilerplate",
-                      desc: "REST API starter with auth",
-                      stars: 18,
-                    },
-                  ].map((project) => (
-                    <div
-                      key={project.name}
-                      className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4"
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <p className="text-sm font-medium text-white">
-                            {project.name}
-                          </p>
-                          <p className="mt-0.5 text-xs text-slate-500">
-                            {project.desc}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-1 text-slate-600">
-                          <IconStar size={12} stroke={1.5} />
-                          <span className="text-xs">{project.stars}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f]" />
-          </div>
+          {/* Interactive product preview */}
+          <ProductPreview />
         </section>
 
         {/* Features */}
@@ -330,7 +258,7 @@ export default function LandingPage() {
                 How it works
               </p>
               <h2 className="text-4xl font-semibold tracking-tight text-white">
-                From zero to hired in three steps
+                Turn your skills into opportunities{" "}
               </h2>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -364,10 +292,11 @@ export default function LandingPage() {
                 Pricing
               </p>
               <h2 className="mb-4 text-4xl font-semibold tracking-tight text-white">
-                Free while you are a student
+                Start building your career for free.
               </h2>
               <p className="text-slate-400">
-                SkillBridge is completely free during early access. No catch.
+                Build your portfolio, showcase your achievements, and launch
+                your career at no cost.
               </p>
             </div>
             <div className="mx-auto max-w-sm">
@@ -412,11 +341,11 @@ export default function LandingPage() {
         <section className="scroll-mt-20 border-t border-white/[0.04] px-6 py-32 text-center">
           <div className="mx-auto max-w-2xl">
             <h2 className="mb-4 text-4xl font-semibold tracking-tight text-white">
-              Your career starts here
+              Ready to turn your skills into opportunities?
             </h2>
             <p className="mb-10 text-lg text-slate-400">
-              Join students who are building real portfolios and landing their
-              first internships with SkillBridge.
+              Join students and aspiring developers who are building their
+              professional presence with SkillBridge.
             </p>
             <Link
               href="/register"
