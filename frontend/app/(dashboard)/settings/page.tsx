@@ -1,0 +1,278 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { IconCheck } from "@tabler/icons-react";
+import api from "@/lib/api";
+import { useAuthStore } from "@/lib/auth";
+
+export default function SettingsPage() {
+  const router = useRouter();
+  const { user, setAuth, logout } = useAuthStore();
+
+  // Profile (name) state
+  const [name, setName] = useState(user?.name || "");
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [profileError, setProfileError] = useState("");
+
+  // Password state
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordSaving, setPasswordSaving] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
+  // Visibility state
+  const [isPublic, setIsPublic] = useState(true);
+  const [visibilityLoading, setVisibilityLoading] = useState(true);
+  const [visibilitySaving, setVisibilitySaving] = useState(false);
+
+  useEffect(() => {
+    fetchVisibility();
+  }, []);
+
+  const fetchVisibility = async () => {
+    try {
+      const { data } = await api.get("/portfolio/me");
+      setIsPublic(data.data.isPublic);
+    } catch {
+      // Silently fail — default to true, the toggle will just correct
+      // itself once the user interacts with it
+    } finally {
+      setVisibilityLoading(false);
+    }
+  };
+
+  const handleProfileSave = async () => {
+    if (name.trim().length < 2) {
+      setProfileError("Name must be at least 2 characters");
+      return;
+    }
+    try {
+      setProfileError("");
+      setProfileSaving(true);
+      const { data } = await api.patch("/settings/profile", {
+        name: name.trim(),
+      });
+      if (user) {
+        setAuth(data.data, localStorage.getItem("accessToken") || "");
+      }
+      setProfileSaved(true);
+      setTimeout(() => setProfileSaved(false), 3000);
+    } catch {
+      setProfileError("Failed to update name");
+    } finally {
+      setProfileSaving(false);
+    }
+  };
+
+  const handlePasswordSave = async () => {
+    setPasswordError("");
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setPasswordError("All fields are required");
+      return;
+    }
+    if (newPassword.length < 8) {
+      setPasswordError("New password must be at least 8 characters");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordError("New passwords do not match");
+      return;
+    }
+
+    try {
+      setPasswordSaving(true);
+      await api.patch("/settings/password", { currentPassword, newPassword });
+      // Backend invalidates all sessions on password change, so we log
+      // the user out here too and send them to log in again with the
+      // new password.
+      await logout();
+    } catch (err: unknown) {
+      const e = err as {
+        response?: { data?: { error?: { message?: string } } };
+      };
+      setPasswordError(
+        e.response?.data?.error?.message || "Failed to update password",
+      );
+    } finally {
+      setPasswordSaving(false);
+    }
+  };
+
+ const handleVisibilityToggle = async () => {
+   const newValue = !isPublic;
+   try {
+     setVisibilitySaving(true);
+     await api.patch("/settings/visibility", { isPublic: newValue });
+     setIsPublic(newValue);
+
+     if (user?.username) {
+       fetch("/api/revalidate-portfolio", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ username: user.username }),
+       }).catch(() => {});
+     }
+   } catch {
+     // Revert on failure
+   } finally {
+     setVisibilitySaving(false);
+   }
+ };
+
+  return (
+    <div className="max-w-2xl space-y-10">
+      <div>
+        <h1 className="text-2xl font-semibold text-white">Settings</h1>
+        <p className="mt-1 text-sm text-slate-400">
+          Manage your account and portfolio preferences
+        </p>
+      </div>
+
+      {/* Profile section */}
+      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-white">Profile</h2>
+        <p className="mb-5 text-sm text-slate-500">Update your display name</p>
+
+        <div className="space-y-4">
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              Full name
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            />
+          </div>
+
+          {profileError && (
+            <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              {profileError}
+            </div>
+          )}
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleProfileSave}
+              disabled={profileSaving}
+              className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {profileSaving ? "Saving..." : "Save name"}
+            </button>
+            {profileSaved && (
+              <p className="flex items-center gap-1 text-sm text-green-400">
+                <IconCheck size={14} stroke={2} />
+                Saved
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Visibility section */}
+      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-white">
+          Portfolio visibility
+        </h2>
+        <p className="mb-5 text-sm text-slate-500">
+          Control whether your portfolio can be viewed publicly
+        </p>
+
+        {visibilityLoading ? (
+          <div className="h-9 w-32 animate-pulse rounded-lg bg-white/[0.05]" />
+        ) : (
+          <div className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3">
+            <div>
+              <p className="text-sm font-medium text-white">
+                {isPublic ? "Public" : "Private"}
+              </p>
+              <p className="text-xs text-slate-500">
+                {isPublic
+                  ? "Anyone with your link can view your portfolio"
+                  : "Your portfolio is hidden from public view"}
+              </p>
+            </div>
+            <button
+              onClick={handleVisibilityToggle}
+              disabled={visibilitySaving}
+              className={`relative h-6 w-11 flex-shrink-0 rounded-full transition-colors disabled:opacity-50 ${
+                isPublic ? "bg-indigo-500" : "bg-white/15"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${
+                  isPublic ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* Password section */}
+      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-white">Password</h2>
+        <p className="mb-5 text-sm text-slate-500">
+          Change your account password. You&apos;ll need to log in again
+          afterward.
+        </p>
+
+        <div className="space-y-4">
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              Current password
+            </label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              New password
+            </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Min. 8 characters"
+              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              Confirm new password
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            />
+          </div>
+
+          {passwordError && (
+            <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              {passwordError}
+            </div>
+          )}
+
+          <button
+            onClick={handlePasswordSave}
+            disabled={passwordSaving}
+            className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {passwordSaving ? "Updating..." : "Update password"}
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}

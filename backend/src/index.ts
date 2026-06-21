@@ -9,6 +9,7 @@ import trackerRoutes from "./routes/tracker.routes";
 import analyticsRoutes from "./routes/analytics.routes";
 import certificateRoutes from "./routes/certificates.routes";
 import githubRoutes from "./routes/github.routes";
+import settingsRoutes from "./routes/settings.routes";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use("/api/v1/applications", trackerRoutes);
 app.use("/api/v1/analytics", analyticsRoutes);
 app.use("/api/v1/certificates", certificateRoutes);
 app.use("/api/v1/github", githubRoutes);
+app.use("/api/v1/settings", settingsRoutes);
 // Health check
 app.get("/health", (req, res) => {
   res.json({ success: true, message: "SkillBridge API is running" });

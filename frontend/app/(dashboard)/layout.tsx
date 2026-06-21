@@ -15,6 +15,7 @@ import {
   IconLogout,
   IconMenu2,
   IconX,
+  IconSettings,
 } from "@tabler/icons-react";
 import EmailVerificationBanner from "@/components/EmailVerificationBanner";
 
@@ -43,6 +44,11 @@ const navItems = [
     href: "/analytics",
     icon: <IconChartBar size={18} stroke={1.5} />,
     label: "Analytics",
+  },
+  {
+    href: "/settings",
+    icon: <IconSettings size={18} stroke={1.5} />,
+    label: "Settings",
   },
 ];
 
