@@ -50,3 +50,30 @@ export const authenticate = (
     });
   }
 };
+// Optional authentication — attaches req.user if a valid token is present,
+// but never blocks the request if there isn't one. Used for public routes
+// that want to know who's viewing without requiring login (e.g. portfolio
+// view counts that should skip the owner's own visits).
+export const optionalAuthenticate = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): void => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!) as {
+        id: string;
+        email: string;
+        username: string;
+      };
+      req.user = decoded;
+    } catch {
+      // Invalid or expired token — just continue without req.user
+    }
+  }
+
+  next();
+};

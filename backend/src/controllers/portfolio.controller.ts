@@ -98,11 +98,28 @@ export const getPublicPortfolio = async (
       },
     });
 
-if (!user || !user.portfolio || !user.portfolio.isPublic || !user.emailVerified) {      res.status(404).json({
+    if (
+      !user ||
+      !user.portfolio ||
+      !user.portfolio.isPublic ||
+      !user.emailVerified
+    ) {
+      res.status(404).json({
         success: false,
         error: { code: "NOT_FOUND", message: "Portfolio not found" },
       });
       return;
+    }
+    // Increment view count, but skip it if the viewer is the portfolio owner
+    const isOwnerViewing = req.user?.username === username;
+
+    if (!isOwnerViewing) {
+      prisma.portfolio
+        .update({
+          where: { id: user.portfolio.id },
+          data: { views: { increment: 1 } },
+        })
+        .catch((err) => console.error("Failed to increment views:", err));
     }
 
     res.json({ success: true, data: user });
