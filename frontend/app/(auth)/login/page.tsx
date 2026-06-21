@@ -78,9 +78,9 @@ export default function LoginPage() {
             <Image
               src="/logo.png"
               alt="SkillBridge"
-              width={80}
-              height={49}
-              className="h-12 w-auto"
+              width={36}
+              height={22}
+              className="h-9 w-auto"
               priority
             />
           </Link>

@@ -43,9 +43,9 @@ export default function ForgotPasswordPage() {
           <Image
             src="/logo.png"
             alt="SkillBridge"
-            width={80}
-            height={49}
-            className="mb-3 inline-block h-12 w-auto"
+            width={36}
+            height={22}
+            className="mb-3 inline-block h-9 w-auto"
             priority
           />
           <h1 className="text-xl font-semibold text-white">

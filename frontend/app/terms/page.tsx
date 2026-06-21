@@ -133,9 +133,9 @@ export default function TermsPage() {
             <Image
               src="/logo.png"
               alt="SkillBridge"
-              width={52}
-              height={32}
-              className="h-8 w-auto opacity-70"
+              width={36}
+              height={22}
+              className="h-9 w-auto opacity-70"
             />
             <span className="font-medium text-white">SkillBridge</span>
             <span>·</span>
