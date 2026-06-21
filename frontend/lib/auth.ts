@@ -6,6 +6,7 @@ interface User {
   email: string;
   username: string;
   name: string | null;
+  emailVerified: boolean;
 }
 
 interface AuthState {

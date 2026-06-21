@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 interface Portfolio {
   about: string | null;
   headline: string | null;
@@ -108,9 +109,14 @@ export default async function PublicPortfolioPage({
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500">
-              <span className="text-sm font-bold text-white">S</span>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="SkillBridge"
+              width={80}
+              height={49}
+              className="h-12 w-auto"
+              priority
+            />
             <span className="text-sm font-semibold text-white">
               SkillBridge
             </span>

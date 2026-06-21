@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -72,9 +73,16 @@ export default function LoginPage() {
         <div className="mb-8 text-center">
           <Link
             href="/"
-            className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500 transition hover:bg-indigo-400"
+            className="mb-3 inline-flex h-16 items-center justify-center transition hover:opacity-80"
           >
-            <span className="text-lg font-bold text-white">S</span>
+            <Image
+              src="/logo.png"
+              alt="SkillBridge"
+              width={80}
+              height={49}
+              className="h-12 w-auto"
+              priority
+            />
           </Link>
           <h1 className="text-xl font-semibold text-white">Welcome back</h1>
           <p className="mt-1 text-sm text-slate-400">

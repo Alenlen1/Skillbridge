@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuthStore } from "@/lib/auth";
 import {
   IconFolder,
@@ -15,6 +16,7 @@ import {
   IconMenu2,
   IconX,
 } from "@tabler/icons-react";
+import EmailVerificationBanner from "@/components/EmailVerificationBanner";
 
 const navItems = [
   {
@@ -82,9 +84,14 @@ export default function DashboardLayout({
       {/* Logo */}
       <div className="flex h-14 items-center justify-between border-b border-white/[0.06] px-5">
         <Link href="/portfolio" className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500">
-            <IconSparkles size={14} stroke={2} className="text-white" />
-          </div>
+          <Image
+            src="/logo.png"
+            alt="SkillBridge"
+            width={80}
+            height={49}
+            className="h-12 w-auto"
+            priority
+          />
           <span className="text-sm font-semibold text-white">SkillBridge</span>
         </Link>
         {/* Close button, mobile only */}
@@ -189,6 +196,7 @@ export default function DashboardLayout({
       {/* Main content */}
       <main className="flex-1 md:ml-60">
         <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 md:px-8 md:py-10">
+          <EmailVerificationBanner />
           {children}
         </div>
       </main>

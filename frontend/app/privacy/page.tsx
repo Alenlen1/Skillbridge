@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IconSparkles } from "@tabler/icons-react";
+import Image from "next/image";
 
 export default function PrivacyPage() {
   return (
@@ -8,9 +8,14 @@ export default function PrivacyPage() {
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500">
-              <IconSparkles size={14} stroke={2} className="text-white" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="SkillBridge"
+              width={80}
+              height={49}
+              className="h-12 w-auto"
+              priority
+            />
             <span className="text-sm font-semibold text-white">
               SkillBridge
             </span>
@@ -114,9 +119,13 @@ export default function PrivacyPage() {
       <footer className="border-t border-white/[0.04] px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm sm:flex-row">
           <div className="flex items-center gap-2 text-slate-500">
-            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-indigo-500/20">
-              <IconSparkles size={10} stroke={2} className="text-indigo-400" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="SkillBridge"
+              width={52}
+              height={32}
+              className="h-8 w-auto opacity-70"
+            />
             <span className="font-medium text-white">SkillBridge</span>
             <span>·</span>
             <span>Built by</span>

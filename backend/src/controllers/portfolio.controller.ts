@@ -81,6 +81,7 @@ export const getPublicPortfolio = async (
         username: true,
         avatar: true,
         bio: true,
+        emailVerified: true,
         certificates: {
           where: { isPublic: true },
           orderBy: { createdAt: "desc" },
@@ -97,8 +98,7 @@ export const getPublicPortfolio = async (
       },
     });
 
-    if (!user || !user.portfolio || !user.portfolio.isPublic) {
-      res.status(404).json({
+if (!user || !user.portfolio || !user.portfolio.isPublic || !user.emailVerified) {      res.status(404).json({
         success: false,
         error: { code: "NOT_FOUND", message: "Portfolio not found" },
       });

@@ -14,6 +14,7 @@ model User {
   name          String?
   avatar        String?
   bio           String?
+  emailVerified Boolean   @default(false)
   githubId      String?   @unique
   githubToken   String?
   createdAt     DateTime  @default(now())
@@ -24,6 +25,20 @@ model User {
   applications  Application[]
   events        AnalyticsEvent[]
   refreshTokens RefreshToken[]
+  verificationTokens VerificationToken[]
+}
+model VerificationToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // "EMAIL_VERIFY", "PASSWORD_RESET", or "PENDING_REGISTRATION"
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  pendingEmail        String?
+  pendingUsername     String?
+  pendingPasswordHash String?
+  pendingName         String?
 }
 
 model RefreshToken {
