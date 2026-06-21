@@ -102,10 +102,10 @@ function PortfolioPreview() {
             Sophomore IT Student · Full-Stack Developer
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-            <span>@jordanreyes</span>
+            <span>@jordanreyesdemo</span>
             <span className="flex items-center gap-1 text-indigo-400">
               <IconBrandGithub size={12} stroke={1.75} />
-              github.com/jordanreyes
+              github.com/jordanreyesdemo
             </span>
           </div>
           <p className="mt-3 max-w-lg text-xs leading-relaxed text-slate-500">
@@ -192,7 +192,7 @@ function ResumePreview() {
           Sophomore IT Student · Full-Stack Developer
         </p>
         <p className="mt-1 text-[11px] text-slate-500">
-          jordan.reyes@email.com · Manila, Philippines · skillbridge.app/jordan
+          jordan.reyesdemo@email.com · Manila, Philippines · skillbridge.app/jordandemo
         </p>
 
         <div className="my-3 h-px bg-slate-200" />
@@ -505,7 +505,7 @@ const previewMap: Record<TabId, React.ComponentType> = {
 };
 
 const urlMap: Record<TabId, string> = {
-  portfolio: "skillbridge.app/jordan",
+  portfolio: "skillbridge.app/jordanreyesdemo",
   resume: "skillbridge.app/jordan/resume",
   certificates: "skillbridge.app/jordan/certificates",
   tracker: "skillbridge.app/jordan/tracker",
