@@ -20,42 +20,36 @@ const features = [
     title: "Portfolio builder",
     description:
       "Showcase your best work and create a portfolio that helps employers understand who you are beyond your resume.",
-    phase: "Showcase",
   },
   {
     icon: <IconBrandGithub size={20} stroke={1.5} />,
     title: "GitHub integration",
     description:
       "Turn your GitHub activity into a professional portfolio and let recruiters see your real development experience.",
-    phase: "Developer",
   },
   {
     icon: <IconFileText size={20} stroke={1.5} />,
     title: "Resume builder",
     description:
       "Create professional resumes in seconds and keep them updated automatically as your portfolio grows.",
-    phase: "Career",
   },
   {
     icon: <IconCertificate size={20} stroke={1.5} />,
     title: "Certificate vault",
     description:
       "Keep all your achievements in one place and prove your skills with certificates that employers can verify.",
-    phase: "Credentials",
   },
   {
     icon: <IconBriefcase size={20} stroke={1.5} />,
     title: "Career tracker",
     description:
       "Stay organized throughout your internship journey and never lose track of applications, interviews, or offers.",
-    phase: "Tracking",
   },
   {
     icon: <IconChartBar size={20} stroke={1.5} />,
     title: "Analytics dashboard",
     description:
       "Understand what attracts recruiters and discover which projects and skills get the most attention.",
-    phase: "Insights",
   },
 ];
 
@@ -141,7 +135,7 @@ export default function LandingPage() {
               href="/register"
               className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
             >
-              Get started free
+              Create portfolio
             </Link>
           </div>
         </div>
@@ -173,9 +167,9 @@ export default function LandingPage() {
           </h1>
 
           <p className="mb-10 max-w-xl text-lg leading-relaxed text-slate-400">
-            SkillBridge is the all-in-one career platform that helps you build a
-            professional portfolio, generate resumes, and track internship
-            applications before your first job.
+            Turn your skills, projects, and achievements into opportunities with
+            a professional portfolio built for students and future
+            professionals.
           </p>
 
           <div className="flex flex-col items-center gap-3 sm:flex-row">
@@ -217,8 +211,8 @@ export default function LandingPage() {
                 Everything you need to stand out
               </h2>
               <p className="mx-auto max-w-lg text-slate-400">
-                From portfolio to job offer, SkillBridge covers every step of
-                the early career journey.
+                Turn your skills, projects, and achievements into
+                opportunities—all in one place.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.04] bg-white/[0.04] sm:grid-cols-2 lg:grid-cols-3">
@@ -231,9 +225,6 @@ export default function LandingPage() {
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/10 text-indigo-400">
                       {feature.icon}
                     </div>
-                    <span className="rounded-full border border-white/[0.06] bg-white/[0.04] px-2 py-0.5 text-xs text-slate-600">
-                      {feature.phase}
-                    </span>
                   </div>
                   <h3 className="mb-2 text-sm font-semibold text-white">
                     {feature.title}
@@ -318,14 +309,15 @@ export default function LandingPage() {
             <div className="mx-auto max-w-sm">
               <div className="rounded-2xl border border-indigo-500/30 bg-gradient-to-b from-indigo-500/10 to-transparent p-8">
                 <div className="mb-2 text-sm font-medium text-indigo-400">
-                  Early access
+                  Everything Included
                 </div>
                 <div className="mb-1 flex items-baseline gap-1">
                   <span className="text-5xl font-semibold text-white">$0</span>
                   <span className="text-slate-500">/ month</span>
                 </div>
                 <p className="mb-8 text-sm text-slate-500">
-                  All features included, forever free for students.
+                  Build your portfolio, showcase your achievements, and track
+                  your career journey all in one place.
                 </p>
                 <ul className="mb-8 space-y-3">
                   {pricingFeatures.map((feat) => (
@@ -345,7 +337,7 @@ export default function LandingPage() {
                   href="/register"
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-500 py-3 text-sm font-medium text-white transition hover:bg-indigo-400"
                 >
-                  Create your free account
+                  Create my portfolio
                   <IconArrowRight size={15} stroke={2} />
                 </Link>
               </div>
