@@ -19,44 +19,32 @@ const features = [
     icon: <IconFolder size={20} stroke={1.5} />,
     title: "Portfolio builder",
     description:
-      "Showcase your best work and create a portfolio that helps employers understand who you are beyond your resume.",
-    phase: "Showcase",
-  },
+      "Showcase your best work and create a portfolio that helps employers understand who you are beyond your resume.",},
   {
     icon: <IconBrandGithub size={20} stroke={1.5} />,
     title: "GitHub integration",
     description:
-      "Turn your GitHub activity into a professional portfolio and let recruiters see your real development experience.",
-    phase: "Developer",
-  },
+      "Turn your GitHub activity into a professional portfolio and let recruiters see your real development experience.",},
   {
     icon: <IconFileText size={20} stroke={1.5} />,
     title: "Resume builder",
     description:
-      "Create professional resumes in seconds and keep them updated automatically as your portfolio grows.",
-    phase: "Career",
-  },
+      "Create professional resumes in seconds and keep them updated automatically as your portfolio grows.",},
   {
     icon: <IconCertificate size={20} stroke={1.5} />,
     title: "Certificate vault",
     description:
-      "Keep all your achievements in one place and prove your skills with certificates that employers can verify.",
-    phase: "Credentials",
-  },
+      "Keep all your achievements in one place and prove your skills with certificates that employers can verify.",},
   {
     icon: <IconBriefcase size={20} stroke={1.5} />,
     title: "Career tracker",
     description:
-      "Stay organized throughout your internship journey and never lose track of applications, interviews, or offers.",
-    phase: "Tracking",
-  },
+      "Stay organized throughout your internship journey and never lose track of applications, interviews, or offers.",},
   {
     icon: <IconChartBar size={20} stroke={1.5} />,
     title: "Analytics dashboard",
     description:
-      "Understand what attracts recruiters and discover which projects and skills get the most attention.",
-    phase: "Insights",
-  },
+      "Understand what attracts recruiters and discover which projects and skills get the most attention.",},
 ];
 
 const steps = [
@@ -135,13 +123,13 @@ export default function LandingPage() {
               href="/login"
               className="text-sm text-slate-400 transition hover:text-white"
             >
-              Log in
+              Sign in
             </Link>
             <Link
               href="/register"
               className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
             >
-              Get started free
+              Create portfolio
             </Link>
           </div>
         </div>
@@ -160,7 +148,7 @@ export default function LandingPage() {
           <div className="mb-8 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
             <IconStar size={13} stroke={1.5} className="text-indigo-400" />
             <span className="text-xs font-medium text-slate-300">
-              Built for students, graduates, and aspiring developers
+              Built for students, graduates, and career starters
             </span>
           </div>
 
@@ -173,9 +161,9 @@ export default function LandingPage() {
           </h1>
 
           <p className="mb-10 max-w-xl text-lg leading-relaxed text-slate-400">
-            SkillBridge is the all-in-one career platform that helps you build a
-            professional portfolio, generate resumes, and track internship
-            applications before your first job.
+            Turn your skills, projects, and achievements into opportunities with
+            a professional portfolio built for students and future
+            professionals.
           </p>
 
           <div className="flex flex-col items-center gap-3 sm:flex-row">
@@ -194,7 +182,7 @@ export default function LandingPage() {
               href="/login"
               className="rounded-lg border border-white/10 px-6 py-3 text-sm font-medium text-slate-300 transition hover:border-white/20 hover:text-white"
             >
-              Log in →
+              Sign in →
             </Link>
           </div>
 
@@ -217,8 +205,8 @@ export default function LandingPage() {
                 Everything you need to stand out
               </h2>
               <p className="mx-auto max-w-lg text-slate-400">
-                From portfolio to job offer, SkillBridge covers every step of
-                the early career journey.
+                Build your portfolio, showcase your achievements, and track your
+                journey from student to professional—all in one place.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.04] bg-white/[0.04] sm:grid-cols-2 lg:grid-cols-3">
@@ -231,9 +219,6 @@ export default function LandingPage() {
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/10 text-indigo-400">
                       {feature.icon}
                     </div>
-                    <span className="rounded-full border border-white/[0.06] bg-white/[0.04] px-2 py-0.5 text-xs text-slate-600">
-                      {feature.phase}
-                    </span>
                   </div>
                   <h3 className="mb-2 text-sm font-semibold text-white">
                     {feature.title}
@@ -318,14 +303,15 @@ export default function LandingPage() {
             <div className="mx-auto max-w-sm">
               <div className="rounded-2xl border border-indigo-500/30 bg-gradient-to-b from-indigo-500/10 to-transparent p-8">
                 <div className="mb-2 text-sm font-medium text-indigo-400">
-                  Early access
+                  EVERYTHING INCLUDED
                 </div>
                 <div className="mb-1 flex items-baseline gap-1">
                   <span className="text-5xl font-semibold text-white">$0</span>
                   <span className="text-slate-500">/ month</span>
                 </div>
                 <p className="mb-8 text-sm text-slate-500">
-                  All features included, forever free for students.
+                  Build your portfolio, showcase your achievements, and track
+                  your career journey—all in one place.
                 </p>
                 <ul className="mb-8 space-y-3">
                   {pricingFeatures.map((feat) => (
@@ -345,7 +331,7 @@ export default function LandingPage() {
                   href="/register"
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-500 py-3 text-sm font-medium text-white transition hover:bg-indigo-400"
                 >
-                  Create your free account
+                  Create my portfolio
                   <IconArrowRight size={15} stroke={2} />
                 </Link>
               </div>
@@ -391,17 +377,17 @@ export default function LandingPage() {
         <section className="scroll-mt-20 border-t border-white/[0.04] px-6 py-32 text-center">
           <div className="mx-auto max-w-2xl">
             <h2 className="mb-4 text-4xl font-semibold tracking-tight text-white">
-              Ready to turn your skills into opportunities?
+              Ready to launch your career?
             </h2>
             <p className="mb-10 text-lg text-slate-400">
-              Join students and aspiring developers who are building their
-              professional presence with SkillBridge.
+              Build your portfolio, showcase your achievements, and take the
+              next step toward your future.
             </p>
             <Link
               href="/register"
               className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-8 py-3.5 text-sm font-medium text-white transition hover:bg-indigo-400"
             >
-              Get started for free
+              Create my portfolio
               <IconArrowRight size={15} stroke={2} />
             </Link>
           </div>
