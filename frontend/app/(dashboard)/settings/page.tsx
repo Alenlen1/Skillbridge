@@ -23,7 +23,6 @@ export default function SettingsPage() {
   const [usernameSaving, setUsernameSaving] = useState(false);
   const [usernameSaved, setUsernameSaved] = useState(false);
   const [usernameError, setUsernameError] = useState("");
-  const [copied, setCopied] = useState(false);
 
   // Password state
   const [currentPassword, setCurrentPassword] = useState("");
@@ -292,12 +291,19 @@ export default function SettingsPage() {
             )}
           </div>
           <div className="mt-4">
-            <p className="mb-2 text-xs text-slate-500">Your portfolio:</p>
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+              Public Portfolio URL
+            </p>
 
             <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
-              <p className="truncate text-sm text-slate-300">
+              <a
+                href={`${window.location.origin}/${savedUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="truncate text-sm text-indigo-400 hover:text-indigo-300"
+              >
                 {window.location.origin}/{savedUsername}
-              </p>
+              </a>
             </div>
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -308,39 +314,7 @@ export default function SettingsPage() {
               >
                 {usernameSaving ? "Saving..." : "Save Username"}
               </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  window.open(
-                    `${window.location.origin}/${savedUsername}`,
-                    "_blank",
-                  )
-                }
-                className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.05] hover:text-white"
-              >
-                View Portfolio ↗
-              </button>
-
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `${window.location.origin}/${username}`,
-                  );
-
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 2000);
-                }}
-                className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.05] hover:text-white"
-              >
-                Copy Link
-              </button>
             </div>
-            {copied && (
-              <p className="mt-2 text-xs text-green-400">
-                ✓ Portfolio link copied
-              </p>
-            )}
           </div>
 
           {usernameError && (
