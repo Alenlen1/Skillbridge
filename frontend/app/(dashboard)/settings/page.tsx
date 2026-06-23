@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { IconCheck, IconAlertTriangle } from "@tabler/icons-react";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -18,9 +19,11 @@ export default function SettingsPage() {
 
   // Username state
   const [username, setUsername] = useState(user?.username || "");
+  const [savedUsername, setSavedUsername] = useState(user?.username || "");
   const [usernameSaving, setUsernameSaving] = useState(false);
   const [usernameSaved, setUsernameSaved] = useState(false);
   const [usernameError, setUsernameError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   // Password state
   const [currentPassword, setCurrentPassword] = useState("");
@@ -28,6 +31,10 @@ export default function SettingsPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordSaving, setPasswordSaving] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showDeletePassword, setShowDeletePassword] = useState(false);
 
   // Visibility state
   const [isPublic, setIsPublic] = useState(true);
@@ -109,6 +116,7 @@ export default function SettingsPage() {
       }).catch(() => {});
 
       setUsernameSaved(true);
+      setSavedUsername(trimmed);
       setTimeout(() => setUsernameSaved(false), 3000);
     } catch (err: unknown) {
       const e = err as {
@@ -279,6 +287,60 @@ export default function SettingsPage() {
                 className="flex-1 bg-transparent text-sm text-white outline-none"
               />
             </div>
+            {username !== savedUsername && (
+              <p className="mt-2 text-xs text-amber-400">Unsaved changes</p>
+            )}
+          </div>
+          <div className="mt-4">
+            <p className="mb-2 text-xs text-slate-500">Your portfolio:</p>
+
+            <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
+              <p className="truncate text-sm text-slate-300">
+                {window.location.origin}/{savedUsername}
+              </p>
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <button
+                onClick={handleUsernameSave}
+                disabled={usernameSaving}
+                className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {usernameSaving ? "Saving..." : "Save Username"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  window.open(
+                    `${window.location.origin}/${savedUsername}`,
+                    "_blank",
+                  )
+                }
+                className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.05] hover:text-white"
+              >
+                View Portfolio ↗
+              </button>
+
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}/${username}`,
+                  );
+
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.05] hover:text-white"
+              >
+                Copy Link
+              </button>
+            </div>
+            {copied && (
+              <p className="mt-2 text-xs text-green-400">
+                ✓ Portfolio link copied
+              </p>
+            )}
           </div>
 
           {usernameError && (
@@ -288,13 +350,6 @@ export default function SettingsPage() {
           )}
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={handleUsernameSave}
-              disabled={usernameSaving}
-              className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {usernameSaving ? "Saving..." : "Save username"}
-            </button>
             {usernameSaved && (
               <p className="flex items-center gap-1 text-sm text-green-400">
                 <IconCheck size={14} stroke={2} />
@@ -358,35 +413,75 @@ export default function SettingsPage() {
             <label className="mb-1.5 block text-sm font-medium text-slate-300">
               Current password
             </label>
-            <input
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
+            <div className="relative">
+              <input
+                type={showCurrentPassword ? "text" : "password"}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-indigo-400"
+              >
+                {showCurrentPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-slate-300">
               New password
             </label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Min. 8 characters"
-              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
+            <div className="relative">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Min. 8 characters"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-indigo-400"
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
-              Confirm new password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-indigo-400"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           {passwordError && (
@@ -429,12 +524,26 @@ export default function SettingsPage() {
               <label className="mb-1.5 block text-sm font-medium text-slate-300">
                 Enter your password to confirm
               </label>
-              <input
-                type="password"
-                value={deletePassword}
-                onChange={(e) => setDeletePassword(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
-              />
+              <div className="relative">
+                <input
+                  type={showDeletePassword ? "text" : "password"}
+                  value={deletePassword}
+                  onChange={(e) => setDeletePassword(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowDeletePassword(!showDeletePassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-red-400"
+                >
+                  {showDeletePassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-slate-300">
