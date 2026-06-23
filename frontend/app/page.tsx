@@ -123,7 +123,7 @@ export default function LandingPage() {
               href="/login"
               className="text-sm text-slate-400 transition hover:text-white"
             >
-              Sign in
+              Log in
             </Link>
             <Link
               href="/register"
@@ -182,7 +182,7 @@ export default function LandingPage() {
               href="/login"
               className="rounded-lg border border-white/10 px-6 py-3 text-sm font-medium text-slate-300 transition hover:border-white/20 hover:text-white"
             >
-              Sign in →
+              Log in →
             </Link>
           </div>
 
