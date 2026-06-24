@@ -12,6 +12,7 @@ import {
   IconCheck,
   IconSparkles,
 } from "@tabler/icons-react";
+import { ChevronDown } from "lucide-react";
 import ProductPreview from "./ProductPreview";
 
 const features = [
@@ -19,32 +20,38 @@ const features = [
     icon: <IconFolder size={20} stroke={1.5} />,
     title: "Portfolio builder",
     description:
-      "Showcase your best work and create a portfolio that helps employers understand who you are beyond your resume.",},
+      "Showcase your best work and create a portfolio that helps employers understand who you are beyond your resume.",
+  },
   {
     icon: <IconBrandGithub size={20} stroke={1.5} />,
     title: "GitHub integration",
     description:
-      "Turn your GitHub activity into a professional portfolio and let recruiters see your real development experience.",},
+      "Turn your GitHub activity into a professional portfolio and let recruiters see your real development experience.",
+  },
   {
     icon: <IconFileText size={20} stroke={1.5} />,
     title: "Resume builder",
     description:
-      "Create professional resumes in seconds and keep them updated automatically as your portfolio grows.",},
+      "Create professional resumes in seconds and keep them updated automatically as your portfolio grows.",
+  },
   {
     icon: <IconCertificate size={20} stroke={1.5} />,
     title: "Certificate vault",
     description:
-      "Keep all your achievements in one place and prove your skills with certificates that employers can verify.",},
+      "Keep all your achievements in one place and prove your skills with certificates that employers can verify.",
+  },
   {
     icon: <IconBriefcase size={20} stroke={1.5} />,
     title: "Career tracker",
     description:
-      "Stay organized throughout your internship journey and never lose track of applications, interviews, or offers.",},
+      "Stay organized throughout your internship journey and never lose track of applications, interviews, or offers.",
+  },
   {
     icon: <IconChartBar size={20} stroke={1.5} />,
     title: "Analytics dashboard",
     description:
-      "Understand what attracts recruiters and discover which projects and skills get the most attention.",},
+      "Understand what attracts recruiters and discover which projects and skills get the most attention.",
+  },
 ];
 
 const steps = [
@@ -66,17 +73,6 @@ const steps = [
     description:
       "Apply with confidence, track opportunities,and grow your professional presence.",
   },
-];
-
-const pricingFeatures = [
-  "Public portfolio page",
-  "Portfolio builder (all sections)",
-  "GitHub integration",
-  "Resume PDF generation",
-  "Certificate vault",
-  "Career tracker",
-  "Analytics dashboard",
-  "AI resume reviewer (coming soon)",
 ];
 
 export default function LandingPage() {
@@ -112,10 +108,10 @@ export default function LandingPage() {
               How it works
             </Link>
             <Link
-              href="#pricing"
+              href="#faq"
               className="text-sm text-slate-400 transition hover:text-white"
             >
-              Pricing
+              FAQ
             </Link>
           </nav>
           <div className="flex items-center gap-3">
@@ -281,60 +277,132 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        {/* FAQ */}
+        <section id="faq" className="mx-auto mt-32 max-w-4xl px-6">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              Frequently Asked Questions
+            </h2>
+            <p className="mt-4 text-slate-400">
+              Everything you need to know about SkillBridge.
+            </p>
+          </div>
 
-        {/* Pricing */}
-        <section
-          id="pricing"
-          className="scroll-mt-20 border-t border-white/[0.04] px-6 py-32"
-        >
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-16 text-center">
-              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-indigo-400">
-                Pricing
-              </p>
-              <h2 className="mb-4 text-4xl font-semibold tracking-tight text-white">
-                Start building your career for free.
-              </h2>
-              <p className="text-slate-400">
-                Build your portfolio, showcase your achievements, and launch
-                your career at no cost.
-              </p>
-            </div>
-            <div className="mx-auto max-w-sm">
-              <div className="rounded-2xl border border-indigo-500/30 bg-gradient-to-b from-indigo-500/10 to-transparent p-8">
-                <div className="mb-2 text-sm font-medium text-indigo-400">
-                  EVERYTHING INCLUDED
+          <div className="space-y-4">
+            {[
+              {
+                question: "Is SkillBridge free to use?",
+                answer:
+                  "Yes. SkillBridge is completely free for students, graduates, and job seekers.",
+              },
+              {
+                question: "Do I need a portfolio to create a resume?",
+                answer:
+                  "No. You can generate a resume directly from the information you add to your profile.",
+              },
+              {
+                question: "Can I make my portfolio private?",
+                answer:
+                  "Yes. You can switch your portfolio between public and private anytime from Settings.",
+              },
+              {
+                question: "Can I sign in with GitHub?",
+                answer:
+                  "Yes. SkillBridge supports GitHub authentication for faster registration and login.",
+              },
+              {
+                question: "Can I download my resume as a PDF?",
+                answer:
+                  "Yes. SkillBridge generates ATS-friendly PDF resumes that you can download and share.",
+              },
+              {
+                question: "Who is SkillBridge for?",
+                answer:
+                  "SkillBridge is designed for students, fresh graduates, interns, and aspiring developers who want to showcase their skills and projects professionally.",
+              },
+              {
+                question: "Still have questions?",
+                answer: "Contact us at",
+              },
+            ].map((faq) => (
+              <details
+                key={faq.question}
+                className="
+    group
+    rounded-2xl
+    border border-white/[0.06]
+    bg-white/[0.02]
+    px-6 py-3.5
+    transition-all
+    duration-300
+    hover:border-indigo-500/40
+    hover:shadow-[0_0_20px_rgba(99,102,241,0.08)]
+    hover:bg-white/[0.03]
+    open:border-indigo-500/30
+    open:bg-indigo-600/[0.03]
+  "
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between font-medium text-white">
+                  <span className="transition-colors group-open:text-indigo-300">
+                    {faq.question}
+                  </span>
+
+                  <ChevronDown className="h-4 w-4 text-slate-500 transition-all duration-300 group-open:rotate-180 group-open:text-indigo-400" />
+                </summary>
+
+                <div className="overflow-hidden">
+                  <p className="mt-4 text-sm leading-relaxed text-slate-400">
+                    {faq.answer}
+                  </p>
                 </div>
-                <div className="mb-1 flex items-baseline gap-1">
-                  <span className="text-5xl font-semibold text-white">$0</span>
-                  <span className="text-slate-500">/ month</span>
-                </div>
-                <p className="mb-8 text-sm text-slate-500">
-                  Build your portfolio, showcase your achievements, and track
-                  your career journey—all in one place.
-                </p>
-                <ul className="mb-8 space-y-3">
-                  {pricingFeatures.map((feat) => (
-                    <li key={feat} className="flex items-center gap-3">
-                      <div className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500/20">
-                        <IconCheck
-                          size={10}
-                          stroke={2.5}
-                          className="text-indigo-400"
-                        />
-                      </div>
-                      <span className="text-sm text-slate-300">{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/register"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-500 py-3 text-sm font-medium text-white transition hover:bg-indigo-400"
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* Everything Included */}
+        <section className="mx-auto mt-32 max-w-6xl px-6">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              Everything Included
+            </h2>
+            <p className="mt-4 text-slate-400">
+              Everything you need to build your professional presence and start
+              your career.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-3xl rounded-3xl border border-white/[0.06] bg-white/[0.02] p-8">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                "Portfolio Builder",
+                "ATS-Friendly Resume Generator",
+                "Certificate Showcase",
+                "Career Tracker",
+                "Analytics Dashboard",
+                "GitHub Authentication",
+                "PDF Resume Export",
+                "Username Customization",
+              ].map((feature) => (
+                <div
+                  key={feature}
+                  className="flex items-center gap-3 rounded-xl border border-white/[0.04] bg-white/[0.02] px-4 py-3"
                 >
-                  Create my portfolio
-                  <IconArrowRight size={15} stroke={2} />
-                </Link>
-              </div>
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/15 text-indigo-400">
+                    ✓
+                  </div>
+                  <span className="text-sm text-slate-300">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-5 text-center">
+              <p className="text-lg font-semibold text-white">
+                Free for all students and job seekers
+              </p>
+              <p className="mt-2 text-sm text-slate-400">
+                No subscriptions. No credit card required.
+              </p>
             </div>
           </div>
         </section>

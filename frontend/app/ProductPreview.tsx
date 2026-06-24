@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   IconBrandGithub,
@@ -52,10 +52,13 @@ const tabs: Tab[] = [
 ];
 
 const fade = {
-  initial: { opacity: 0, y: 10 },
+  initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -10 },
-  transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const },
+  exit: { opacity: 0, y: -12 },
+  transition: {
+    duration: 0.35,
+    ease: [0.16, 1, 0.3, 1] as const,
+  },
 };
 
 function PortfolioPreview() {
@@ -515,6 +518,20 @@ const urlMap: Record<TabId, string> = {
 export default function ProductPreview() {
   const [active, setActive] = useState<TabId>("portfolio");
   const activeIndex = tabs.findIndex((t) => t.id === active);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActive((current) => {
+        const currentIndex = tabs.findIndex((tab) => tab.id === current);
+
+        const nextIndex =
+          currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
+
+        return tabs[nextIndex].id;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
   const ActivePanel = previewMap[active];
 
   const goTo = (index: number) => {
