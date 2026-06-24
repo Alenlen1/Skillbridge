@@ -62,6 +62,7 @@ model Portfolio {
   headline    String?
   location    String?
   website     String?
+  phone       String?
   skills      Skill[]
   education   Education[]
   experience  Experience[]

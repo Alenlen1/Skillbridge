@@ -98,20 +98,23 @@ export const getPublicPortfolio = async (
       },
     });
 
-    if (
-      !user ||
-      !user.portfolio ||
-      !user.portfolio.isPublic ||
-      !user.emailVerified
-    ) {
+    if (!user || !user.portfolio || !user.emailVerified) {
       res.status(404).json({
         success: false,
         error: { code: "NOT_FOUND", message: "Portfolio not found" },
       });
       return;
     }
-    // Increment view count, but skip it if the viewer is the portfolio owner
+
     const isOwnerViewing = req.user?.username === username;
+
+    if (!user.portfolio.isPublic && !isOwnerViewing) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
 
     if (!isOwnerViewing) {
       prisma.portfolio

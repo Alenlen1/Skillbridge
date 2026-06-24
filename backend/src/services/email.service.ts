@@ -40,7 +40,7 @@ export async function sendVerificationEmail(
       </div>
       <h2 style="color: #0a0a0f; margin-bottom: 8px;">Verify your email</h2>
       <p style="color: #555; line-height: 1.6;">
-        Hi ${safeName}, welcome to SkillBridge! Please verify your email address to make your portfolio public.
+        Hi ${safeName}, welcome to SkillBridge! Please verify your email address before logging in.
       </p>
       <a href="${verifyUrl}" style="display: inline-block; background: #6366f1; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 500; margin: 16px 0;">
         Verify email
