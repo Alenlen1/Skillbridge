@@ -619,3 +619,38 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
     });
   }
 };
+// GET /api/v1/auth/me
+export const getMe = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        name: true,
+        emailVerified: true,
+        avatar: true,
+      },
+    });
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "User not found" },
+      });
+      return;
+    }
+
+    res.json({ success: true, data: user });
+  } catch (error) {
+    console.error("Get me error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};

@@ -1,5 +1,9 @@
 import { Router } from "express";
 import {
+  connectGithub,
+  githubCallback,
+} from "../controllers/github.controller";
+import {
   register,
   login,
   refresh,
@@ -8,6 +12,7 @@ import {
   resendVerification,
   forgotPassword,
   resetPassword,
+  getMe,
 } from "../controllers/auth.controller";
 import { authenticate } from "../middleware/auth.middleware";
 import {
@@ -30,5 +35,7 @@ router.post(
 );
 router.post("/forgot-password", emailActionLimiter, forgotPassword);
 router.post("/reset-password", authLimiter, resetPassword);
-
+router.get("/me", authenticate, getMe);
+router.get("/github/connect", connectGithub);
+router.get("/github/callback", githubCallback);
 export default router;

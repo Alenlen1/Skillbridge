@@ -3,6 +3,7 @@ import axios from "axios";
 import { prisma } from "../lib/prisma";
 import { AuthRequest } from "../middleware/auth.middleware";
 import { encrypt, decrypt } from "../lib/crypto.service";
+import jwt from "jsonwebtoken";
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID as string;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET as string;
@@ -21,42 +22,65 @@ interface GithubRepo {
   updated_at: string;
 }
 
+interface GithubProfile {
+  id: number;
+  login: string;
+  name: string | null;
+  email: string | null;
+  avatar_url: string | null;
+}
+
+const generateAccessToken = (user: {
+  id: string;
+  email: string;
+  username: string;
+}) => {
+  return jwt.sign(user, process.env.JWT_ACCESS_SECRET!, { expiresIn: "15m" });
+};
+
+const generateRefreshToken = (user: {
+  id: string;
+  email: string;
+  username: string;
+}) => {
+  return jwt.sign(user, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+};
+
 // GET /api/v1/github/connect
-// Redirects the logged-in user to GitHub's OAuth authorization page.
-// We pass the userId in "state" so the callback knows who to attach the token to.
+// - Unauthenticated: state = "login" (social login / register)
 export const connectGithub = async (
   req: AuthRequest,
   res: Response,
 ): Promise<void> => {
-  const userId = req.user!.id;
+  const state = req.user?.id || "login";
 
   const params = new URLSearchParams({
     client_id: GITHUB_CLIENT_ID,
     redirect_uri: GITHUB_CALLBACK_URL,
-    scope: "read:user repo",
-    state: userId,
+    scope: "read:user user:email repo",
+    state,
   });
 
   res.redirect(`https://github.com/login/oauth/authorize?${params.toString()}`);
 };
 
 // GET /api/v1/github/callback
-// GitHub redirects here after the user approves. We exchange the code for an
-// access token, fetch their GitHub profile, and save it to the User record.
+// Shared callback for both social login and repo-connect flows.
+// Reads "state" to decide which path to take.
 export const githubCallback = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
     const code = req.query["code"] as string | undefined;
-    const userId = req.query["state"] as string | undefined;
+    const state = req.query["state"] as string | undefined;
 
-    if (!code || !userId) {
-      res.redirect(`${FRONTEND_URL}/portfolio?github=error`);
+    if (!code) {
+      res.redirect(`${FRONTEND_URL}/login?github=error`);
       return;
     }
 
-    // Exchange the temporary code for an access token
+    // Exchange code for GitHub access token
     const tokenRes = await axios.post(
       "https://github.com/login/oauth/access_token",
       {
@@ -68,37 +92,120 @@ export const githubCallback = async (
       { headers: { Accept: "application/json" } },
     );
 
-    const accessToken = tokenRes.data.access_token as string | undefined;
+    const githubAccessToken = tokenRes.data.access_token as string | undefined;
 
-    if (!accessToken) {
-      res.redirect(`${FRONTEND_URL}/portfolio?github=error`);
+    if (!githubAccessToken) {
+      res.redirect(`${FRONTEND_URL}/login?github=error`);
       return;
     }
 
-    // Fetch the GitHub user's profile so we can store their GitHub id
-    const profileRes = await axios.get("https://api.github.com/user", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    // Fetch the GitHub user profile
+    const profileRes = await axios.get<GithubProfile>(
+      "https://api.github.com/user",
+      { headers: { Authorization: `Bearer ${githubAccessToken}` } },
+    );
 
-    const githubId = String(profileRes.data.id);
+    const profile = profileRes.data;
+    const githubId = String(profile.id);
+    const encryptedToken = encrypt(githubAccessToken);
 
-    await prisma.user.update({
-      where: { id: userId },
+    // ── PATH A: Connect repos to an existing logged-in account ──────────
+    if (state && state !== "login") {
+      await prisma.user.update({
+        where: { id: state },
+        data: { githubId, githubToken: encryptedToken },
+      });
+      res.redirect(`${FRONTEND_URL}/portfolio?github=connected`);
+      return;
+    }
+
+    // ── PATH B: Social login / register ─────────────────────────────────
+
+    // Try to find an existing account linked to this GitHub id
+    let user = await prisma.user.findUnique({ where: { githubId } });
+
+    if (!user) {
+      // Try to find an existing account with the same email (account linking)
+      const githubEmail = profile.email;
+
+      if (githubEmail) {
+        user = await prisma.user.findUnique({ where: { email: githubEmail } });
+      }
+
+      if (user) {
+        // Link this GitHub account to the existing email-based account
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { githubId, githubToken: encryptedToken },
+        });
+      } else {
+        // Brand new user — create account automatically.
+        // Generate a unique username from their GitHub login.
+        let username = profile.login.toLowerCase().replace(/[^a-z0-9_]/g, "_");
+
+        // Ensure uniqueness by appending a random suffix if needed
+        const taken = await prisma.user.findUnique({ where: { username } });
+        if (taken) {
+          username = `${username}_${Math.random().toString(36).slice(2, 6)}`;
+        }
+
+        // GitHub email can be null if the user hides it — fall back to a
+        // placeholder that they can update in Settings later.
+        const email =
+          profile.email || `${githubId}@github.skillbridge.placeholder`;
+
+        user = await prisma.user.create({
+          data: {
+            email,
+            username,
+            name: profile.name || profile.login,
+            avatar: profile.avatar_url,
+            githubId,
+            githubToken: encryptedToken,
+            emailVerified: true, // GitHub already verified this email
+            portfolio: { create: {} },
+          },
+        });
+      }
+    } else {
+      // Existing GitHub-linked user — refresh the token in case it changed
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { githubToken: encryptedToken },
+      });
+    }
+
+    // Issue SkillBridge tokens and log the user in
+    const payload = { id: user.id, email: user.email, username: user.username };
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    await prisma.refreshToken.create({
       data: {
-        githubId,
-        githubToken: encrypt(accessToken),
+        token: refreshToken,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       },
     });
 
-    res.redirect(`${FRONTEND_URL}/portfolio?github=connected`);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    // Redirect to a frontend page that reads the token from the URL and
+    // stores it in the auth store. We pass it as a query param since we
+    // can't set localStorage from a server-side redirect.
+    res.redirect(`${FRONTEND_URL}/auth/github-callback?token=${accessToken}`);
   } catch (error) {
     console.error("GitHub callback error:", error);
-    res.redirect(`${FRONTEND_URL}/portfolio?github=error`);
+    res.redirect(`${FRONTEND_URL}/login?github=error`);
   }
 };
 
 // GET /api/v1/github/repos
-// Returns the connected user's GitHub repos, sorted by most recently updated.
 export const getRepos = async (
   req: AuthRequest,
   res: Response,
@@ -152,7 +259,6 @@ export const getRepos = async (
 };
 
 // POST /api/v1/github/import
-// Imports a selected GitHub repo as a Project in the user's portfolio.
 export const importRepo = async (
   req: AuthRequest,
   res: Response,
@@ -183,7 +289,6 @@ export const importRepo = async (
       return;
     }
 
-    // Prevent importing the same repo twice
     const existing = await prisma.project.findFirst({
       where: { portfolioId: portfolio.id, githubUrl: url },
     });
