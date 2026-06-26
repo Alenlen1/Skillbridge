@@ -9,11 +9,9 @@ import {
   IconFolder,
   IconArrowRight,
   IconStar,
-  IconCheck,
-  IconSparkles,
 } from "@tabler/icons-react";
 import { ChevronDown } from "lucide-react";
-import ProductPreview from "./ProductPreview";
+import ProductPreview from "../components/landing/ProductPreview";
 
 const features = [
   {
