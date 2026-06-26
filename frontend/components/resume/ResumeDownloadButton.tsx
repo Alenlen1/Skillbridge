@@ -2,13 +2,17 @@
 
 import { useState } from "react";
 import { IconDownload } from "@tabler/icons-react";
-import type { ResumeData } from "./ResumeDocument";
+import type { ResumeData } from "./ResumeTypes";
+
+type Template = "ats" | "student" | "developer";
 
 export default function ResumeDownloadButton({
   data,
+  template,
   fileName,
 }: {
   data: ResumeData;
+  template: Template;
   fileName: string;
 }) {
   const [generating, setGenerating] = useState(false);
@@ -16,13 +20,21 @@ export default function ResumeDownloadButton({
   const handleDownload = async () => {
     try {
       setGenerating(true);
-
-      // Dynamic imports keep react-pdf out of the server bundle entirely
       const { pdf } = await import("@react-pdf/renderer");
-      const { default: ResumeDocument } = await import("./ResumeDocument");
 
-      const blob = await pdf(<ResumeDocument data={data} />).toBlob();
+      let DocumentComponent;
+      if (template === "ats") {
+        const mod = await import("./ResumeATS");
+        DocumentComponent = mod.default;
+      } else if (template === "student") {
+        const mod = await import("./ResumeStudent");
+        DocumentComponent = mod.default;
+      } else {
+        const mod = await import("./ResumeDeveloper");
+        DocumentComponent = mod.default;
+      }
 
+      const blob = await pdf(<DocumentComponent data={data} />).toBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
