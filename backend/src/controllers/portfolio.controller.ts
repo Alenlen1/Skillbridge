@@ -43,13 +43,14 @@ export const updateMyPortfolio = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { about, headline, location, website, theme, accentColor, isPublic } = req.body;
+    const { about, headline, location, website, phone, theme, accentColor, isPublic } = req.body;
 
     const portfolio = await prisma.portfolio.update({
       where: { userId: req.user!.id },
       data: {
         ...(about !== undefined && { about }),
         ...(headline !== undefined && { headline }),
+        ...(phone !== undefined && { phone }),
         ...(location !== undefined && { location }),
         ...(website !== undefined && { website }),
         ...(theme !== undefined && { theme }),
@@ -378,6 +379,81 @@ export const deleteEducation = async (
     res.json({ success: true, data: { message: "Education deleted" } });
   } catch (error) {
     console.error("Delete education error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+// POST /api/v1/portfolio/me/social-links
+export const addSocialLink = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const { platform, url } = req.body;
+
+    if (!platform || !url) {
+      res.status(400).json({
+        success: false,
+        error: { code: "VALIDATION_ERROR", message: "Platform and URL are required" },
+      });
+      return;
+    }
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    const socialLink = await prisma.socialLink.create({
+      data: { platform, url, portfolioId: portfolio.id },
+    });
+
+    res.status(201).json({ success: true, data: socialLink });
+  } catch (error) {
+    console.error("Add social link error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// DELETE /api/v1/portfolio/me/social-links/:id
+export const deleteSocialLink = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    await prisma.socialLink.deleteMany({
+      where: { AND: [{ id }, { portfolioId: portfolio.id }] },
+    });
+
+    res.json({ success: true, data: { message: "Social link deleted" } });
+  } catch (error) {
+    console.error("Delete social link error:", error);
     res.status(500).json({
       success: false,
       error: { code: "SERVER_ERROR", message: "Something went wrong" },

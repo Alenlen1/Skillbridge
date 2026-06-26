@@ -40,6 +40,7 @@ interface Portfolio {
     current: boolean;
     description: string | null;
   }[];
+  socialLinks: { id: string; platform: string; url: string }[];
 }
 
 interface Certificate {
@@ -209,6 +210,17 @@ export default async function PublicPortfolioPage({
                       {portfolio.website.replace(/^https?:\/\//, "")}
                     </a>
                   )}
+                  {portfolio.socialLinks?.map((link) => (
+                    <a
+                      key={link.id}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-400 transition hover:bg-indigo-500/20"
+                    >
+                      {link.platform}
+                    </a>
+                  ))}
                 </div>
 
                 {portfolio.about && (

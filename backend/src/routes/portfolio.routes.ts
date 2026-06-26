@@ -9,6 +9,8 @@ import {
   deleteProject,
   addEducation,
   deleteEducation,
+  addSocialLink,
+  deleteSocialLink,
 } from "../controllers/portfolio.controller";
 import { authenticate } from "../middleware/auth.middleware";
 import { optionalAuthenticate } from "../middleware/auth.middleware";
@@ -23,5 +25,7 @@ router.delete("/me/projects/:id", authenticate, deleteProject);
 router.get("/:username", optionalAuthenticate, getPublicPortfolio);
 router.post("/me/education", authenticate, addEducation);
 router.delete("/me/education/:id", authenticate, deleteEducation);
+router.post("/me/social-links", authenticate, addSocialLink);
+router.delete("/me/social-links/:id", authenticate, deleteSocialLink);
 
 export default router;
