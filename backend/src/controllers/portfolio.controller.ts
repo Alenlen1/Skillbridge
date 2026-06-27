@@ -1,8 +1,6 @@
 import { Response } from "express";
 import { prisma } from "../lib/prisma";
 import { AuthRequest } from "../middleware/auth.middleware";
-
-// GET /api/v1/portfolio/me
 export const getMyPortfolio = async (
   req: AuthRequest,
   res: Response,
@@ -78,6 +76,7 @@ export const getPublicPortfolio = async (
     const user = await prisma.user.findUnique({
       where: { username },
       select: {
+        id: true,
         name: true,
         username: true,
         avatar: true,
@@ -107,31 +106,77 @@ export const getPublicPortfolio = async (
       return;
     }
 
-    const isOwnerViewing = req.user?.username === username;
+   const isOwnerViewing = req.user?.username === username;
 
-    if (!user.portfolio.isPublic && !isOwnerViewing) {
-      res.status(404).json({
-        success: false,
-        error: { code: "NOT_FOUND", message: "Portfolio not found" },
-      });
-      return;
-    }
+   if (!user.portfolio.isPublic && !isOwnerViewing) {
+     res.status(404).json({
+       success: false,
+       error: {
+         code: "NOT_FOUND",
+         message: "Portfolio not found",
+       },
+     });
+     return;
+   }
 
-    if (!isOwnerViewing) {
-      prisma.portfolio
-        .update({
-          where: { id: user.portfolio.id },
-          data: { views: { increment: 1 } },
-        })
-        .catch((err) => console.error("Failed to increment views:", err));
-    }
-
-    res.json({ success: true, data: user });
+   res.json({
+     success: true,
+     data: user,
+   });
   } catch (error) {
     console.error("Get public portfolio error:", error);
     res.status(500).json({
       success: false,
       error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+export const incrementPortfolioView = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const username = String(req.params.username);
+
+    const user = await prisma.user.findUnique({
+      where: { username },
+      include: {
+        portfolio: true,
+      },
+    });
+
+    if (!user || !user.portfolio) {
+      res.status(404).json({
+        success: false,
+        message: "Portfolio not found",
+      });
+      return;
+    }
+
+    // Don't count your own visit
+    if (req.user?.username === username) {
+      res.json({ success: true });
+      return;
+    }
+
+    await prisma.portfolio.update({
+      where: {
+        id: user.portfolio.id,
+      },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Increment portfolio view error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to increment portfolio view",
     });
   }
 };
