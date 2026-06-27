@@ -94,6 +94,8 @@ const demoResume: ResumeData = {
       id: "1",
       company: "Tech Solutions Inc.",
       role: "Frontend Intern",
+      employmentType: "Internship",
+      location: "Manila, Philippines",
       startDate: "2025-06-01",
       endDate: null,
       current: true,
@@ -178,21 +180,26 @@ export default function ResumeLandingPreview() {
         </button>
       </div>
 
-      <div className="rounded-2xl bg-[#09090f] p-4">
+      {/* Same card treatment as the real ResumePage preview:
+          gradient dark card, generous padding, max-w-[850px] inner
+          card with the same border/shadow as the real page. */}
+      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 to-black p-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={template}
-            initial={{ opacity: 0, x: 25 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -25 }}
-            transition={{ duration: 0.35 }}
+            initial={{ opacity: 0, scale: 0.98, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: -10 }}
+            transition={{ duration: 0.5 }}
             className="
               mx-auto
-              max-w-[720px]
+              max-w-[850px]
               overflow-hidden
-              rounded-xl
+              rounded-2xl
+              border
+              border-slate-200
               bg-white
-              shadow-2xl
+              shadow-[0_45px_120px_rgba(0,0,0,.45)]
             "
           >
             {template === "ats" && <ATSPreview data={demoResume} />}
@@ -203,7 +210,7 @@ export default function ResumeLandingPreview() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="mt-5 flex justify-center gap-3">
+        <div className="mt-8 flex justify-center gap-3">
           {TEMPLATES.map((t) => (
             <button
               key={t.id}

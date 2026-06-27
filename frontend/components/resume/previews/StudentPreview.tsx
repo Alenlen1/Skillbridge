@@ -36,6 +36,33 @@ export default function StudentPreview({ data }: Props) {
           </section>
         )}
 
+        {/* Education — students lead with this */}
+        {data.education.length > 0 && (
+          <section>
+            <h2 className="mb-4 border-b pb-2 text-sm font-bold uppercase tracking-widest text-indigo-600">
+              Education
+            </h2>
+
+            <div className="space-y-3">
+              {data.education.map((edu) => (
+                <div key={edu.id}>
+                  <div className="flex justify-between">
+                    <p className="font-semibold">{edu.school}</p>
+                    <span className="text-sm text-gray-500">
+                      {edu.startYear} – {edu.current ? "Present" : edu.endYear}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-gray-700">
+                    {edu.degree}
+                    {edu.field && ` · ${edu.field}`}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {data.experience.length > 0 && (
           <section>
             <h2 className="mb-4 border-b pb-2 text-sm font-bold uppercase tracking-widest text-indigo-600">
@@ -43,19 +70,43 @@ export default function StudentPreview({ data }: Props) {
             </h2>
 
             <div className="space-y-4">
-              {data.experience.map((exp) => (
-                <div key={exp.id}>
-                  <p className="font-semibold">{exp.role}</p>
+              {data.experience.map((exp) => {
+                const meta = [exp.company, exp.employmentType, exp.location]
+                  .filter(Boolean)
+                  .join(" · ");
+                return (
+                  <div key={exp.id}>
+                    <div className="flex justify-between">
+                      <p className="font-semibold">{exp.role}</p>
+                      <span className="text-sm text-gray-500">
+                        {exp.startDate
+                          ? new Date(exp.startDate).toLocaleDateString(
+                              "en-US",
+                              { month: "short", year: "numeric" },
+                            )
+                          : ""}
+                        {" – "}
+                        {exp.current
+                          ? "Present"
+                          : exp.endDate
+                            ? new Date(exp.endDate).toLocaleDateString(
+                                "en-US",
+                                { month: "short", year: "numeric" },
+                              )
+                            : ""}
+                      </span>
+                    </div>
 
-                  <p className="text-gray-600">{exp.company}</p>
+                    {meta && <p className="text-sm text-gray-500">{meta}</p>}
 
-                  {exp.description && (
-                    <p className="mt-1 text-sm text-gray-700">
-                      {exp.description}
-                    </p>
-                  )}
-                </div>
-              ))}
+                    {exp.description && (
+                      <p className="mt-1 text-sm text-gray-700">
+                        {exp.description}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
@@ -82,27 +133,6 @@ export default function StudentPreview({ data }: Props) {
                       {project.techStack.join(" • ")}
                     </p>
                   )}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {data.education.length > 0 && (
-          <section>
-            <h2 className="mb-4 border-b pb-2 text-sm font-bold uppercase tracking-widest text-indigo-600">
-              Education
-            </h2>
-
-            <div className="space-y-3">
-              {data.education.map((edu) => (
-                <div key={edu.id}>
-                  <p className="font-semibold">{edu.school}</p>
-
-                  <p className="text-sm text-gray-700">
-                    {edu.degree}
-                    {edu.field && ` • ${edu.field}`}
-                  </p>
                 </div>
               ))}
             </div>

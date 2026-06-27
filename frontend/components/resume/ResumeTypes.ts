@@ -19,6 +19,8 @@ export interface ResumeExperience {
   id: string;
   company: string;
   role: string;
+  employmentType: string | null;
+  location: string | null;
   startDate: string | null;
   endDate: string | null;
   current: boolean;

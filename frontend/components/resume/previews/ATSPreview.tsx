@@ -30,8 +30,10 @@ export default function ATSPreview({ data }: Props) {
 
   const github = data.socialLinks.find((l) => l.platform === "GitHub");
 
+  const isPlaceholder = (e: string) =>
+    e.includes("@github.skillbridge.placeholder");
   const contactItems = [
-    data.email,
+    !isPlaceholder(data.email) ? data.email : null,
     data.phone,
     data.location,
     data.website?.replace(/^https?:\/\//, ""),
@@ -44,7 +46,7 @@ export default function ATSPreview({ data }: Props) {
     <div className="bg-white p-12 text-black">
       {/* Header */}
 
-      <div className="text-center">
+      <div>
         <h1 className="text-3xl font-bold uppercase tracking-[0.25em]">
           {data.name}
         </h1>
@@ -53,7 +55,7 @@ export default function ATSPreview({ data }: Props) {
           <p className="mt-2 text-sm text-gray-600">{data.headline}</p>
         )}
 
-        <div className="mt-4 flex flex-wrap justify-center gap-2 text-xs text-gray-600">
+        <div className="mt-4 flex flex-wrap gap-2 text-xs text-gray-600">
           {contactItems.map((item, i) => (
             <span key={i}>
               {i > 0 && <span className="mx-2 text-gray-400">|</span>}
@@ -87,26 +89,31 @@ export default function ATSPreview({ data }: Props) {
           </h2>
 
           <div className="mt-4 space-y-5">
-            {data.experience.map((exp) => (
-              <div key={exp.id}>
-                <div className="flex justify-between">
-                  <h3 className="font-semibold">
-                    {exp.role} — {exp.company}
-                  </h3>
+            {data.experience.map((exp) => {
+              const meta = [exp.company, exp.employmentType, exp.location]
+                .filter(Boolean)
+                .join(" · ");
+              return (
+                <div key={exp.id}>
+                  <div className="flex justify-between">
+                    <h3 className="font-semibold">{exp.role}</h3>
 
-                  <span className="text-sm text-gray-500">
-                    {formatDate(exp.startDate)} —{" "}
-                    {exp.current ? "Present" : formatDate(exp.endDate)}
-                  </span>
+                    <span className="text-sm text-gray-500">
+                      {formatDate(exp.startDate)} —{" "}
+                      {exp.current ? "Present" : formatDate(exp.endDate)}
+                    </span>
+                  </div>
+
+                  {meta && <p className="text-sm text-gray-500">{meta}</p>}
+
+                  {exp.description && (
+                    <p className="mt-2 text-sm leading-6 text-gray-700">
+                      {exp.description}
+                    </p>
+                  )}
                 </div>
-
-                {exp.description && (
-                  <p className="mt-2 text-sm leading-6 text-gray-700">
-                    {exp.description}
-                  </p>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       )}

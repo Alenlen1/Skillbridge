@@ -2,149 +2,156 @@ import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { ResumeData } from "./ResumeTypes";
 
 const INDIGO = "#6366f1";
-const SIDEBAR_BG = "#0f0f1a";
-const SIDEBAR_WIDTH = 180;
+const INDIGO_LIGHT = "#818cf8";
+const DARK = "#0d0d1a";
+const DARK2 = "#16162a";
+const SIDEBAR_W = 175;
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
   page: {
     flexDirection: "row",
     fontFamily: "Helvetica",
-    fontSize: 10,
+    fontSize: 9.5,
     color: "#111111",
   },
-  // Sidebar
+
+  // ── Sidebar ────────────────────────────────────────────────────────
   sidebar: {
-    width: SIDEBAR_WIDTH,
-    backgroundColor: SIDEBAR_BG,
-    padding: 20,
-    minHeight: "100%",
+    width: SIDEBAR_W,
+    backgroundColor: DARK,
+    paddingTop: 28,
+    paddingBottom: 28,
+    paddingHorizontal: 18,
   },
-  sidebarName: {
-    fontSize: 14,
+  sbName: {
+    fontSize: 13,
     fontFamily: "Helvetica-Bold",
     color: "#ffffff",
-    marginBottom: 2,
-  },
-  sidebarHeadline: {
-    fontSize: 8.5,
-    color: INDIGO,
-    fontFamily: "Helvetica-Bold",
-    marginBottom: 10,
-  },
-  sidebarAbout: {
-    fontSize: 8,
-    color: "#aaaaaa",
-    lineHeight: 1.5,
-    marginBottom: 14,
-  },
-  sidebarSection: {
-    marginBottom: 14,
-  },
-  sidebarSectionTitle: {
-    fontSize: 8,
-    fontFamily: "Helvetica-Bold",
-    color: INDIGO,
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
-    marginBottom: 6,
-  },
-  sidebarContactItem: {
-    fontSize: 7.5,
-    color: "#cccccc",
     marginBottom: 3,
+    lineHeight: 1.3,
+  },
+  sbHeadline: {
+    fontSize: 8,
+    color: INDIGO_LIGHT,
+    fontFamily: "Helvetica-Bold",
+    letterSpacing: 0.3,
+    marginBottom: 12,
     lineHeight: 1.4,
   },
-  sidebarTagRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 3,
-  },
-  sidebarTag: {
+  sbAbout: {
     fontSize: 7.5,
-    color: "#cccccc",
-    backgroundColor: "#1a1a2e",
+    color: "#9ca3af",
+    lineHeight: 1.55,
+    marginBottom: 16,
+  },
+  sbDivider: {
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#2d2d4a",
+    marginBottom: 14,
+  },
+  sbSection: { marginBottom: 16 },
+  sbSectionTitle: {
+    fontSize: 7,
+    fontFamily: "Helvetica-Bold",
+    color: INDIGO_LIGHT,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 7,
+  },
+  sbContactItem: {
+    fontSize: 7.5,
+    color: "#d1d5db",
+    marginBottom: 4,
+    lineHeight: 1.4,
+  },
+  sbContactLabel: {
+    fontSize: 6.5,
+    color: "#6b7280",
+    marginBottom: 1,
+  },
+  sbChipRow: { flexDirection: "row", flexWrap: "wrap", gap: 3 },
+  sbChip: {
+    fontSize: 7,
+    color: "#c7d2fe",
+    backgroundColor: "#1e1b4b",
     paddingHorizontal: 5,
     paddingVertical: 2,
     borderRadius: 2,
     marginBottom: 3,
   },
-  sidebarCertItem: {
-    fontSize: 7.5,
-    color: "#cccccc",
-    marginBottom: 4,
-    lineHeight: 1.4,
-  },
-  // Main content
-  main: {
-    flex: 1,
-    padding: 24,
-    paddingLeft: 20,
-  },
-  mainSection: {
-    marginBottom: 14,
-  },
-  mainSectionTitle: {
-    fontSize: 10,
+  sbCertTitle: { fontSize: 7.5, color: "#e5e7eb", marginBottom: 1 },
+  sbCertIssuer: { fontSize: 7, color: "#6b7280", marginBottom: 5 },
+
+  // ── Main ───────────────────────────────────────────────────────────
+  main: { flex: 1, paddingTop: 28, paddingBottom: 28, paddingHorizontal: 22 },
+  mainSection: { marginBottom: 15 },
+  mainTitle: {
+    fontSize: 8.5,
     fontFamily: "Helvetica-Bold",
     color: INDIGO,
     textTransform: "uppercase",
-    letterSpacing: 0.8,
-    marginBottom: 2,
+    letterSpacing: 1,
+    marginBottom: 3,
   },
-  mainDivider: {
+  mainRule: {
     borderBottomWidth: 1,
     borderBottomColor: "#e5e7eb",
-    marginBottom: 8,
-  },
-  entry: {
     marginBottom: 9,
   },
-  entryHeader: {
+
+  // ── Entry (timeline style for exp/edu) ────────────────────────────
+  entry: { marginBottom: 9, paddingLeft: 11, position: "relative" },
+  dot: {
+    position: "absolute",
+    left: 0,
+    top: 3,
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: INDIGO,
+  },
+  entryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 1,
   },
-  entryTitle: {
-    fontSize: 10,
+  entryTitle: { fontSize: 9.5, fontFamily: "Helvetica-Bold", flex: 1 },
+  entryDate: { fontSize: 8, color: "#777777", marginLeft: 6 },
+  entryCompany: { fontSize: 9, color: INDIGO, marginBottom: 1 },
+  entryMeta: { fontSize: 8, color: "#888888", marginBottom: 2 },
+  entryDesc: { fontSize: 8.5, color: "#444444", lineHeight: 1.55 },
+
+  // ── Project card ──────────────────────────────────────────────────
+  projectCard: {
+    marginBottom: 8,
+    paddingLeft: 8,
+    borderLeftWidth: 2,
+    borderLeftColor: "#e0e7ff",
+  },
+  projectTitle: {
+    fontSize: 9.5,
     fontFamily: "Helvetica-Bold",
-    color: "#111111",
+    marginBottom: 1,
   },
-  entryDate: {
-    fontSize: 8.5,
-    color: "#777777",
-  },
-  entrySubtitle: {
-    fontSize: 9,
-    color: "#555555",
-    marginBottom: 2,
-  },
-  entryDescription: {
+  projectDesc: {
     fontSize: 8.5,
     color: "#444444",
     lineHeight: 1.5,
+    marginBottom: 3,
   },
-  tagRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 3,
-    marginTop: 3,
-  },
-  tag: {
+  techRow: { flexDirection: "row", flexWrap: "wrap", gap: 3, marginBottom: 2 },
+  techChip: {
     fontSize: 7.5,
     color: INDIGO,
     backgroundColor: "#eef2ff",
     paddingHorizontal: 5,
-    paddingVertical: 2,
+    paddingVertical: 1.5,
     borderRadius: 2,
   },
-  projectLink: {
-    fontSize: 8,
-    color: INDIGO,
-    marginTop: 2,
-  },
+  projectUrl: { fontSize: 7.5, color: "#9ca3af" },
 });
 
-function formatDate(date: string | null): string {
+function fmt(date: string | null): string {
   if (!date) return "";
   return new Date(date).toLocaleDateString("en-US", {
     month: "short",
@@ -152,140 +159,163 @@ function formatDate(date: string | null): string {
   });
 }
 
-export default function ResumeDeveloper({ data }: { data: ResumeData }) {
-  const skillsByCategory = data.skills.reduce<Record<string, string[]>>(
-    (acc, skill) => {
-      const cat = skill.category || "Other";
-      if (!acc[cat]) acc[cat] = [];
-      acc[cat].push(skill.name);
-      return acc;
-    },
-    {},
-  );
+function isPlaceholderEmail(email: string): boolean {
+  return email.includes("@github.skillbridge.placeholder");
+}
 
+export default function ResumeDeveloper({ data }: { data: ResumeData }) {
   const linkedin = data.socialLinks.find((l) => l.platform === "LinkedIn");
   const github = data.socialLinks.find((l) => l.platform === "GitHub");
 
+  const byCategory = data.skills.reduce<Record<string, string[]>>((acc, sk) => {
+    const c = sk.category || "Other";
+    if (!acc[c]) acc[c] = [];
+    acc[c].push(sk.name);
+    return acc;
+  }, {});
+
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        {/* Sidebar */}
-        <View style={styles.sidebar}>
-          <Text style={styles.sidebarName}>{data.name}</Text>
-          {data.headline && (
-            <Text style={styles.sidebarHeadline}>{data.headline}</Text>
-          )}
-          {data.about && <Text style={styles.sidebarAbout}>{data.about}</Text>}
+      <Page size="A4" style={s.page}>
+        {/* ── Sidebar ── */}
+        <View style={s.sidebar}>
+          <Text style={s.sbName}>{data.name}</Text>
+          {data.headline && <Text style={s.sbHeadline}>{data.headline}</Text>}
+          {data.about && <Text style={s.sbAbout}>{data.about}</Text>}
+          <View style={s.sbDivider} />
 
           {/* Contact */}
-          <View style={styles.sidebarSection}>
-            <Text style={styles.sidebarSectionTitle}>Contact</Text>
-            {data.email && (
-              <Text style={styles.sidebarContactItem}>{data.email}</Text>
+          <View style={s.sbSection}>
+            <Text style={s.sbSectionTitle}>Contact</Text>
+            {!isPlaceholderEmail(data.email) && (
+              <>
+                <Text style={s.sbContactLabel}>Email</Text>
+                <Text style={s.sbContactItem}>{data.email}</Text>
+              </>
             )}
             {data.phone && (
-              <Text style={styles.sidebarContactItem}>{data.phone}</Text>
+              <>
+                <Text style={s.sbContactLabel}>Phone</Text>
+                <Text style={s.sbContactItem}>{data.phone}</Text>
+              </>
             )}
             {data.location && (
-              <Text style={styles.sidebarContactItem}>{data.location}</Text>
+              <>
+                <Text style={s.sbContactLabel}>Location</Text>
+                <Text style={s.sbContactItem}>{data.location}</Text>
+              </>
             )}
             {data.website && (
-              <Text style={styles.sidebarContactItem}>
-                {data.website.replace(/^https?:\/\//, "")}
-              </Text>
-            )}
-            {linkedin && (
-              <Text style={styles.sidebarContactItem}>
-                {linkedin.url.replace(/^https?:\/\/(www\.)?/, "")}
-              </Text>
+              <>
+                <Text style={s.sbContactLabel}>Website</Text>
+                <Text style={s.sbContactItem}>
+                  {data.website.replace(/^https?:\/\//, "")}
+                </Text>
+              </>
             )}
             {github && (
-              <Text style={styles.sidebarContactItem}>
-                {github.url.replace(/^https?:\/\/(www\.)?/, "")}
-              </Text>
+              <>
+                <Text style={s.sbContactLabel}>GitHub</Text>
+                <Text style={s.sbContactItem}>
+                  {github.url.replace(/^https?:\/\/(www\.)?/, "")}
+                </Text>
+              </>
             )}
-            <Text style={styles.sidebarContactItem}>
-              skillbridge.app/{data.username}
-            </Text>
+            {linkedin && (
+              <>
+                <Text style={s.sbContactLabel}>LinkedIn</Text>
+                <Text style={s.sbContactItem}>
+                  {linkedin.url.replace(/^https?:\/\/(www\.)?/, "")}
+                </Text>
+              </>
+            )}
+            <Text style={s.sbContactLabel}>Portfolio</Text>
+            <Text style={s.sbContactItem}>skillbridge.app/{data.username}</Text>
           </View>
 
-          {/* Tech stack */}
+          {/* Skills as chips */}
           {data.skills.length > 0 && (
-            <View style={styles.sidebarSection}>
-              <Text style={styles.sidebarSectionTitle}>Tech Stack</Text>
-              <View style={styles.sidebarTagRow}>
-                {data.skills.map((skill) => (
-                  <Text key={skill.id} style={styles.sidebarTag}>
-                    {skill.name}
+            <View style={s.sbSection}>
+              <Text style={s.sbSectionTitle}>Tech Stack</Text>
+              <View style={s.sbChipRow}>
+                {data.skills.map((sk) => (
+                  <Text key={sk.id} style={s.sbChip}>
+                    {sk.name}
                   </Text>
                 ))}
               </View>
             </View>
           )}
 
-          {/* Certifications */}
+          {/* Certs */}
           {data.certificates.length > 0 && (
-            <View style={styles.sidebarSection}>
-              <Text style={styles.sidebarSectionTitle}>Certifications</Text>
-              {data.certificates.map((cert) => (
-                <Text key={cert.id} style={styles.sidebarCertItem}>
-                  {cert.title}
-                  {"\n"}
-                  <Text style={{ color: "#888888" }}>{cert.issuer}</Text>
-                </Text>
+            <View style={s.sbSection}>
+              <Text style={s.sbSectionTitle}>Certifications</Text>
+              {data.certificates.map((c) => (
+                <View key={c.id}>
+                  <Text style={s.sbCertTitle}>{c.title}</Text>
+                  <Text style={s.sbCertIssuer}>{c.issuer}</Text>
+                </View>
               ))}
             </View>
           )}
         </View>
 
-        {/* Main */}
-        <View style={styles.main}>
-          {/* Featured Projects */}
+        {/* ── Main ── */}
+        <View style={s.main}>
+          {/* Experience */}
+          {data.experience.length > 0 && (
+            <View style={s.mainSection}>
+              <Text style={s.mainTitle}>Experience</Text>
+              <View style={s.mainRule} />
+              {data.experience.map((exp) => {
+                const meta = [exp.employmentType, exp.location]
+                  .filter(Boolean)
+                  .join(" · ");
+                return (
+                  <View key={exp.id} style={s.entry}>
+                    <View style={s.dot} />
+                    <View style={s.entryRow}>
+                      <Text style={s.entryTitle}>{exp.role}</Text>
+                      <Text style={s.entryDate}>
+                        {fmt(exp.startDate)} –{" "}
+                        {exp.current ? "Present" : fmt(exp.endDate)}
+                      </Text>
+                    </View>
+                    <Text style={s.entryCompany}>{exp.company}</Text>
+                    {meta ? <Text style={s.entryMeta}>{meta}</Text> : null}
+                    {exp.description ? (
+                      <Text style={s.entryDesc}>{exp.description}</Text>
+                    ) : null}
+                  </View>
+                );
+              })}
+            </View>
+          )}
+
+          {/* Projects */}
           {data.projects.length > 0 && (
-            <View style={styles.mainSection}>
-              <Text style={styles.mainSectionTitle}>Featured Projects</Text>
-              <View style={styles.mainDivider} />
+            <View style={s.mainSection}>
+              <Text style={s.mainTitle}>Projects</Text>
+              <View style={s.mainRule} />
               {data.projects.map((p) => (
-                <View key={p.id} style={styles.entry}>
-                  <Text style={styles.entryTitle}>{p.title}</Text>
+                <View key={p.id} style={s.projectCard}>
+                  <Text style={s.projectTitle}>{p.title}</Text>
                   {p.description && (
-                    <Text style={styles.entryDescription}>{p.description}</Text>
+                    <Text style={s.projectDesc}>{p.description}</Text>
                   )}
                   {p.techStack.length > 0 && (
-                    <View style={styles.tagRow}>
-                      {p.techStack.map((tech) => (
-                        <Text key={tech} style={styles.tag}>
-                          {tech}
+                    <View style={s.techRow}>
+                      {p.techStack.map((t) => (
+                        <Text key={t} style={s.techChip}>
+                          {t}
                         </Text>
                       ))}
                     </View>
                   )}
-                  {p.githubUrl && (
-                    <Text style={styles.projectLink}>{p.githubUrl}</Text>
-                  )}
-                </View>
-              ))}
-            </View>
-          )}
-
-          {/* Experience */}
-          {data.experience.length > 0 && (
-            <View style={styles.mainSection}>
-              <Text style={styles.mainSectionTitle}>Experience</Text>
-              <View style={styles.mainDivider} />
-              {data.experience.map((exp) => (
-                <View key={exp.id} style={styles.entry}>
-                  <View style={styles.entryHeader}>
-                    <Text style={styles.entryTitle}>{exp.role}</Text>
-                    <Text style={styles.entryDate}>
-                      {formatDate(exp.startDate)} –{" "}
-                      {exp.current ? "Present" : formatDate(exp.endDate)}
-                    </Text>
-                  </View>
-                  <Text style={styles.entrySubtitle}>{exp.company}</Text>
-                  {exp.description && (
-                    <Text style={styles.entryDescription}>
-                      {exp.description}
+                  {(p.githubUrl || p.liveUrl) && (
+                    <Text style={s.projectUrl}>
+                      {[p.githubUrl, p.liveUrl].filter(Boolean).join("  ·  ")}
                     </Text>
                   )}
                 </View>
@@ -295,21 +325,26 @@ export default function ResumeDeveloper({ data }: { data: ResumeData }) {
 
           {/* Education */}
           {data.education.length > 0 && (
-            <View style={styles.mainSection}>
-              <Text style={styles.mainSectionTitle}>Education</Text>
-              <View style={styles.mainDivider} />
+            <View style={s.mainSection}>
+              <Text style={s.mainTitle}>Education</Text>
+              <View style={s.mainRule} />
               {data.education.map((edu) => (
-                <View key={edu.id} style={styles.entry}>
-                  <View style={styles.entryHeader}>
-                    <Text style={styles.entryTitle}>{edu.school}</Text>
-                    <Text style={styles.entryDate}>
-                      {edu.startYear} – {edu.current ? "Present" : edu.endYear}
+                <View key={edu.id} style={s.entry}>
+                  <View style={s.dot} />
+                  <View style={s.entryRow}>
+                    <Text style={s.entryTitle}>{edu.school}</Text>
+                    <Text style={s.entryDate}>
+                      {edu.startYear ?? ""}
+                      {edu.startYear || (!edu.current && edu.endYear)
+                        ? " – "
+                        : ""}
+                      {edu.current ? "Present" : (edu.endYear ?? "")}
                     </Text>
                   </View>
                   {edu.degree && (
-                    <Text style={styles.entrySubtitle}>
+                    <Text style={s.entryMeta}>
                       {edu.degree}
-                      {edu.field ? ` in ${edu.field}` : ""}
+                      {edu.field ? ` · ${edu.field}` : ""}
                     </Text>
                   )}
                 </View>
@@ -318,24 +353,24 @@ export default function ResumeDeveloper({ data }: { data: ResumeData }) {
           )}
 
           {/* Skills by category */}
-          {Object.keys(skillsByCategory).length > 0 && (
-            <View style={styles.mainSection}>
-              <Text style={styles.mainSectionTitle}>Skills</Text>
-              <View style={styles.mainDivider} />
-              {Object.entries(skillsByCategory).map(([cat, skills]) => (
-                <View key={cat} style={{ marginBottom: 5 }}>
+          {Object.keys(byCategory).length > 0 && (
+            <View style={s.mainSection}>
+              <Text style={s.mainTitle}>Skills</Text>
+              <View style={s.mainRule} />
+              {Object.entries(byCategory).map(([cat, skills]) => (
+                <View key={cat} style={{ marginBottom: 6 }}>
                   <Text
                     style={[
-                      styles.entrySubtitle,
-                      { fontFamily: "Helvetica-Bold" },
+                      s.entryMeta,
+                      { fontFamily: "Helvetica-Bold", marginBottom: 3 },
                     ]}
                   >
                     {cat}
                   </Text>
-                  <View style={styles.tagRow}>
-                    {skills.map((s) => (
-                      <Text key={s} style={styles.tag}>
-                        {s}
+                  <View style={s.techRow}>
+                    {skills.map((sk) => (
+                      <Text key={sk} style={s.techChip}>
+                        {sk}
                       </Text>
                     ))}
                   </View>

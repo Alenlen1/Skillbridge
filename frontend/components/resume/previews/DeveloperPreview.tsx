@@ -58,12 +58,13 @@ export default function DeveloperPreview({ data }: Props) {
             </h2>
 
             <div className="space-y-3 text-sm">
-              {data.email && (
-                <div className="flex items-center gap-3">
-                  <FaEnvelope className="text-indigo-400" />
-                  <span>{data.email}</span>
-                </div>
-              )}
+              {!data.email.includes("@github.skillbridge.placeholder") &&
+                data.email && (
+                  <div className="flex items-center gap-3">
+                    <FaEnvelope className="text-indigo-400" />
+                    <span>{data.email}</span>
+                  </div>
+                )}
 
               {data.phone && (
                 <div className="flex items-center gap-3">
@@ -149,6 +150,66 @@ export default function DeveloperPreview({ data }: Props) {
         {/* Main Content */}
 
         <main className="col-span-8 space-y-10 p-10">
+          {/* Experience — developers lead with this */}
+
+          {data.experience.length > 0 && (
+            <section>
+              <h2 className="mb-5 border-b pb-2 text-sm font-bold uppercase tracking-widest text-indigo-600">
+                Experience
+              </h2>
+
+              <div className="space-y-8">
+                {data.experience.map((exp) => {
+                  const meta = [exp.employmentType, exp.location]
+                    .filter(Boolean)
+                    .join(" · ");
+                  return (
+                    <div
+                      key={exp.id}
+                      className="relative border-l-2 border-indigo-300 pl-6"
+                    >
+                      <div className="absolute -left-[7px] top-1 h-3 w-3 rounded-full bg-indigo-500"></div>
+
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-semibold">{exp.role}</h3>
+
+                        <span className="text-sm text-slate-500">
+                          {exp.startDate
+                            ? new Date(exp.startDate).toLocaleDateString(
+                                "en-US",
+                                { month: "short", year: "numeric" },
+                              )
+                            : ""}
+                          {" – "}
+                          {exp.current
+                            ? "Present"
+                            : exp.endDate
+                              ? new Date(exp.endDate).toLocaleDateString(
+                                  "en-US",
+                                  { month: "short", year: "numeric" },
+                                )
+                              : ""}
+                        </span>
+                      </div>
+
+                      <p className="font-medium text-indigo-600">
+                        {exp.company}
+                      </p>
+
+                      {meta && <p className="text-sm text-slate-500">{meta}</p>}
+
+                      {exp.description && (
+                        <p className="mt-3 leading-7 text-slate-600">
+                          {exp.description}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
           {/* Featured Projects */}
 
           {data.projects.length > 0 && (
@@ -201,52 +262,6 @@ export default function DeveloperPreview({ data }: Props) {
             </section>
           )}
 
-          {/* Experience */}
-
-          {data.experience.length > 0 && (
-            <section>
-              <h2 className="mb-5 border-b pb-2 text-sm font-bold uppercase tracking-widest text-indigo-600">
-                Experience
-              </h2>
-
-              <div className="space-y-8">
-                {data.experience.map((exp) => (
-                  <div
-                    key={exp.id}
-                    className="relative border-l-2 border-indigo-300 pl-6"
-                  >
-                    <div className="absolute -left-[7px] top-1 h-3 w-3 rounded-full bg-indigo-500"></div>
-
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold">{exp.role}</h3>
-
-                      <span className="text-sm text-slate-500">
-                        {exp.startDate
-                          ? new Date(exp.startDate).getFullYear()
-                          : ""}
-
-                        {" - "}
-
-                        {exp.current
-                          ? "Present"
-                          : exp.endDate
-                            ? new Date(exp.endDate).getFullYear()
-                            : ""}
-                      </span>
-                    </div>
-
-                    <p className="text-indigo-600">{exp.company}</p>
-
-                    {exp.description && (
-                      <p className="mt-3 leading-7 text-slate-600">
-                        {exp.description}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
           {/* Education */}
 
           {data.education.length > 0 && (

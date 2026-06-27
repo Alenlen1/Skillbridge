@@ -1,126 +1,143 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { ResumeData } from "./ResumeTypes";
 
-const INDIGO = "#6366f1";
 
-const styles = StyleSheet.create({
+
+const INDIGO = "#6366f1";
+const INDIGO_PALE = "#eef2ff";
+
+const s = StyleSheet.create({
   page: {
-    paddingTop: 36,
-    paddingBottom: 36,
-    paddingHorizontal: 48,
+    paddingTop: 40,
+    paddingBottom: 40,
+    paddingHorizontal: 50,
     fontFamily: "Helvetica",
-    fontSize: 10,
+    fontSize: 9.5,
     color: "#111111",
+    lineHeight: 1.4,
   },
-  header: {
-    marginBottom: 14,
-  },
+
+  // ── Header ──────────────────────────────────────────────────────────
   name: {
-    fontSize: 22,
+    fontSize: 24,
     fontFamily: "Helvetica-Bold",
-    color: "#111111",
-    marginBottom: 2,
+    letterSpacing: 0.3,
+    lineHeight: 1.1,
+    marginBottom: 6,
   },
   headline: {
-    fontSize: 12,
+    fontSize: 11,
     color: INDIGO,
     fontFamily: "Helvetica-Bold",
-    marginBottom: 5,
+    lineHeight: 1.2,
+    marginBottom: 8,
   },
   contactRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
-    fontSize: 9,
+    fontSize: 8.5,
     color: "#555555",
+    gap: 0,
+    marginBottom: 2,
   },
-  divider: {
+  contactItem: { marginRight: 0 },
+  contactSep: { color: "#aaaaaa", marginHorizontal: 6 },
+
+  // ── Divider ──────────────────────────────────────────────────────────
+  rule: {
     borderBottomWidth: 2,
     borderBottomColor: INDIGO,
-    marginTop: 10,
-    marginBottom: 12,
+    marginTop: 12,
+    marginBottom: 14,
   },
-  thinDivider: {
+  thinRule: {
     borderBottomWidth: 0.5,
-    borderBottomColor: "#dddddd",
-    marginBottom: 8,
+    borderBottomColor: "#e5e7eb",
+    marginBottom: 9,
   },
-  section: {
-    marginBottom: 12,
-  },
+
+  // ── Sections ─────────────────────────────────────────────────────────
+  section: { marginBottom: 13 },
   sectionTitle: {
-    fontSize: 11,
+    fontSize: 9,
     fontFamily: "Helvetica-Bold",
-    color: INDIGO,
     textTransform: "uppercase",
-    letterSpacing: 0.8,
-    marginBottom: 6,
+    letterSpacing: 1.1,
+    color: INDIGO,
+    marginBottom: 5,
   },
+
+  // ── Entries with left accent border ──────────────────────────────────
   entry: {
     marginBottom: 8,
+    paddingLeft: 10,
+    borderLeftWidth: 2,
+    borderLeftColor: INDIGO_PALE,
   },
-  entryHeader: {
+  entryActiveLeft: {
+    borderLeftColor: INDIGO,
+  },
+  entryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 1,
   },
-  entryTitle: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-  },
-  entryDate: {
-    fontSize: 9,
-    color: "#777777",
-  },
-  entrySubtitle: {
+  entryTitle: { fontSize: 9.5, fontFamily: "Helvetica-Bold", flex: 1 },
+  entryDate: { fontSize: 8.5, color: "#777777", marginLeft: 8 },
+  entryMeta: { fontSize: 8.5, color: "#555555", marginBottom: 2 },
+  entryDesc: { fontSize: 9, color: "#333333", lineHeight: 1.55 },
+
+  // ── Projects ─────────────────────────────────────────────────────────
+  projectTitle: {
     fontSize: 9.5,
-    color: "#444444",
-    marginBottom: 2,
+    fontFamily: "Helvetica-Bold",
+    marginBottom: 1,
   },
-  entryDescription: {
+  projectDesc: {
     fontSize: 9,
-    color: "#444444",
-    lineHeight: 1.5,
-  },
-  tagRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 4,
-    marginTop: 3,
-  },
-  tag: {
-    fontSize: 8,
-    color: INDIGO,
-    backgroundColor: "#eef2ff",
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 3,
-  },
-  certTag: {
-    fontSize: 8,
-    color: "#444444",
-    backgroundColor: "#f3f4f6",
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 3,
-  },
-  skillRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 4,
-    marginBottom: 4,
-  },
-  skillTag: {
-    fontSize: 8.5,
     color: "#333333",
+    lineHeight: 1.5,
+    marginBottom: 3,
+  },
+  tagRow: { flexDirection: "row", flexWrap: "wrap", gap: 3, marginBottom: 2 },
+  tag: {
+    fontSize: 7.5,
+    color: INDIGO,
+    backgroundColor: INDIGO_PALE,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 3,
+  },
+  projectUrl: { fontSize: 8, color: "#9ca3af" },
+
+  // ── Skills ────────────────────────────────────────────────────────────
+  skillChipRow: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
+  skillChip: {
+    fontSize: 8.5,
+    color: "#374151",
     backgroundColor: "#f3f4f6",
     paddingHorizontal: 7,
     paddingVertical: 2.5,
     borderRadius: 3,
+    marginBottom: 3,
+  },
+
+  // ── Certs ─────────────────────────────────────────────────────────────
+  certRow: { flexDirection: "row", flexWrap: "wrap", gap: 5 },
+  certChip: {
+    fontSize: 8,
+    color: "#444444",
+    backgroundColor: "#f9fafb",
+    borderWidth: 0.5,
+    borderColor: "#d1d5db",
+    paddingHorizontal: 7,
+    paddingVertical: 2.5,
+    borderRadius: 3,
+    marginBottom: 3,
   },
 });
 
-function formatDate(date: string | null): string {
+function fmt(date: string | null): string {
   if (!date) return "";
   return new Date(date).toLocaleDateString("en-US", {
     month: "short",
@@ -128,146 +145,171 @@ function formatDate(date: string | null): string {
   });
 }
 
+function isPlaceholderEmail(email: string): boolean {
+  return email.includes("@github.skillbridge.placeholder");
+}
+
 export default function ResumeStudent({ data }: { data: ResumeData }) {
   const linkedin = data.socialLinks.find((l) => l.platform === "LinkedIn");
   const github = data.socialLinks.find((l) => l.platform === "GitHub");
 
-  const contactItems = [
-    data.email,
+  const contacts = [
+    !isPlaceholderEmail(data.email) ? data.email : null,
     data.phone,
     data.location,
     data.website?.replace(/^https?:\/\//, ""),
-    linkedin ? linkedin.url.replace(/^https?:\/\/(www\.)?/, "") : null,
-    github ? github.url.replace(/^https?:\/\/(www\.)?/, "") : null,
+    linkedin?.url.replace(/^https?:\/\/(www\.)?/, ""),
+    github?.url.replace(/^https?:\/\/(www\.)?/, ""),
     `skillbridge.app/${data.username}`,
   ].filter(Boolean) as string[];
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={s.page}>
         {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.name}>{data.name}</Text>
-          {data.headline && (
-            <Text style={styles.headline}>{data.headline}</Text>
-          )}
-          <View style={styles.contactRow}>
-            {contactItems.map((item, i) => (
-              <Text key={i}>{item}</Text>
-            ))}
-          </View>
+        <Text style={s.name}>{data.name}</Text>
+        {data.headline && <Text style={s.headline}>{data.headline}</Text>}
+        <View style={s.contactRow}>
+          {contacts.map((c, i) => (
+            <View key={i} style={{ flexDirection: "row" }}>
+              {i > 0 && <Text style={s.contactSep}>·</Text>}
+              <Text style={s.contactItem}>{c}</Text>
+            </View>
+          ))}
         </View>
-
-        <View style={styles.divider} />
+        <View style={s.rule} />
 
         {/* Summary */}
         {data.about && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Summary</Text>
-            <View style={styles.thinDivider} />
-            <Text style={styles.entryDescription}>{data.about}</Text>
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Summary</Text>
+            <View style={s.thinRule} />
+            <Text style={s.entryDesc}>{data.about}</Text>
           </View>
         )}
 
-        {/* Projects */}
-        {data.projects.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Projects</Text>
-            <View style={styles.thinDivider} />
-            {data.projects.map((p) => (
-              <View key={p.id} style={styles.entry}>
-                <Text style={styles.entryTitle}>{p.title}</Text>
-                {p.description && (
-                  <Text style={styles.entryDescription}>{p.description}</Text>
-                )}
-                {p.techStack.length > 0 && (
-                  <View style={styles.tagRow}>
-                    {p.techStack.map((tech) => (
-                      <Text key={tech} style={styles.tag}>
-                        {tech}
-                      </Text>
-                    ))}
-                  </View>
-                )}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Education */}
+        {/* Education — first for students */}
         {data.education.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Education</Text>
-            <View style={styles.thinDivider} />
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Education</Text>
+            <View style={s.thinRule} />
             {data.education.map((edu) => (
-              <View key={edu.id} style={styles.entry}>
-                <View style={styles.entryHeader}>
-                  <Text style={styles.entryTitle}>{edu.school}</Text>
-                  <Text style={styles.entryDate}>
-                    {edu.startYear} – {edu.current ? "Present" : edu.endYear}
+              <View
+                key={edu.id}
+                style={[s.entry, edu.current ? s.entryActiveLeft : {}]}
+              >
+                <View style={s.entryRow}>
+                  <Text style={s.entryTitle}>{edu.school}</Text>
+                  <Text style={s.entryDate}>
+                    {edu.startYear ?? ""}
+                    {edu.startYear || (!edu.current && edu.endYear)
+                      ? " – "
+                      : ""}
+                    {edu.current ? "Present" : (edu.endYear ?? "")}
                   </Text>
                 </View>
                 {edu.degree && (
-                  <Text style={styles.entrySubtitle}>
+                  <Text style={s.entryMeta}>
                     {edu.degree}
-                    {edu.field ? ` in ${edu.field}` : ""}
+                    {edu.field ? ` · ${edu.field}` : ""}
                   </Text>
                 )}
               </View>
             ))}
-          </View>
-        )}
-
-        {/* Certifications */}
-        {data.certificates.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Certifications</Text>
-            <View style={styles.thinDivider} />
-            <View style={styles.tagRow}>
-              {data.certificates.map((cert) => (
-                <Text key={cert.id} style={styles.certTag}>
-                  {cert.title} – {cert.issuer}
-                </Text>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* Skills */}
-        {data.skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            <View style={styles.thinDivider} />
-            <View style={styles.skillRow}>
-              {data.skills.map((skill) => (
-                <Text key={skill.id} style={styles.skillTag}>
-                  {skill.name}
-                </Text>
-              ))}
-            </View>
           </View>
         )}
 
         {/* Experience */}
         {data.experience.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            <View style={styles.thinDivider} />
-            {data.experience.map((exp) => (
-              <View key={exp.id} style={styles.entry}>
-                <View style={styles.entryHeader}>
-                  <Text style={styles.entryTitle}>{exp.role}</Text>
-                  <Text style={styles.entryDate}>
-                    {formatDate(exp.startDate)} –{" "}
-                    {exp.current ? "Present" : formatDate(exp.endDate)}
-                  </Text>
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Experience</Text>
+            <View style={s.thinRule} />
+            {data.experience.map((exp) => {
+              const meta = [exp.company, exp.employmentType, exp.location]
+                .filter(Boolean)
+                .join(" · ");
+              return (
+                <View
+                  key={exp.id}
+                  style={[s.entry, exp.current ? s.entryActiveLeft : {}]}
+                >
+                  <View style={s.entryRow}>
+                    <Text style={s.entryTitle}>{exp.role}</Text>
+                    <Text style={s.entryDate}>
+                      {fmt(exp.startDate)} –{" "}
+                      {exp.current ? "Present" : fmt(exp.endDate)}
+                    </Text>
+                  </View>
+                  {meta ? <Text style={s.entryMeta}>{meta}</Text> : null}
+                  {exp.description ? (
+                    <Text style={s.entryDesc}>{exp.description}</Text>
+                  ) : null}
                 </View>
-                <Text style={styles.entrySubtitle}>{exp.company}</Text>
-                {exp.description && (
-                  <Text style={styles.entryDescription}>{exp.description}</Text>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Projects */}
+        {data.projects.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Projects</Text>
+            <View style={s.thinRule} />
+            {data.projects.map((p) => (
+              <View
+                key={p.id}
+                style={[s.entry, { borderLeftColor: "#c7d2fe" }]}
+              >
+                <Text style={s.projectTitle}>{p.title}</Text>
+                {p.description && (
+                  <Text style={s.projectDesc}>{p.description}</Text>
+                )}
+                {p.techStack.length > 0 && (
+                  <View style={s.tagRow}>
+                    {p.techStack.map((t) => (
+                      <Text key={t} style={s.tag}>
+                        {t}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+                {(p.githubUrl || p.liveUrl) && (
+                  <Text style={s.projectUrl}>
+                    {[p.githubUrl, p.liveUrl].filter(Boolean).join("  ·  ")}
+                  </Text>
                 )}
               </View>
             ))}
+          </View>
+        )}
+
+        {/* Skills */}
+        {data.skills.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Skills</Text>
+            <View style={s.thinRule} />
+            <View style={s.skillChipRow}>
+              {data.skills.map((sk) => (
+                <Text key={sk.id} style={s.skillChip}>
+                  {sk.name}
+                </Text>
+              ))}
+            </View>
+          </View>
+        )}
+
+        {/* Certifications */}
+        {data.certificates.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Certifications</Text>
+            <View style={s.thinRule} />
+            <View style={s.certRow}>
+              {data.certificates.map((c) => (
+                <Text key={c.id} style={s.certChip}>
+                  {c.title} — {c.issuer}
+                </Text>
+              ))}
+            </View>
           </View>
         )}
       </Page>
