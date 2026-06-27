@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import PortfolioViewTracker from "@/components/portfolio/PortfolioViewTracker";
+export const dynamic = "force-dynamic";
 interface Portfolio {
   about: string | null;
   headline: string | null;
@@ -66,7 +67,7 @@ async function getUser(username: string): Promise<User | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1"}/portfolio/${username}`,
-      { next: { revalidate: 10 } },
+      { cache: "no-store" },
     );
     if (!res.ok) return null;
     const data = await res.json();

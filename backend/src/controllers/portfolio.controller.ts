@@ -96,7 +96,7 @@ export const getPublicPortfolio = async (
           },
         },
       },
-    });
+     });  
 
     if (!user || !user.portfolio || !user.emailVerified) {
       res.status(404).json({

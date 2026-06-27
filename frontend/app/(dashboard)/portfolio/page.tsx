@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -30,8 +30,32 @@ export default function PortfolioPage() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+  useEffect(() => {
+    const loadPortfolio = async () => {
+      try {
+        const res = await api.get("/portfolio/me");
+
+        const portfolio = res.data.data;
+
+        reset({
+          about: portfolio.about ?? "",
+          headline: portfolio.headline ?? "",
+          location: portfolio.location ?? "",
+          website: portfolio.website ?? "",
+          phone: portfolio.phone ?? "",
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadPortfolio();
+  }, [reset]);
 
   const onSubmit = async (values: FormData) => {
     try {
