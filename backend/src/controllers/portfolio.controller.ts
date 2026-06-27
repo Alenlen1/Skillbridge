@@ -394,7 +394,156 @@ export const addEducation = async (
     });
   }
 };
+// POST /api/v1/portfolio/me/experience
+export const addExperience = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const {
+      company,
+      role,
+      employmentType,
+      location,
+      startDate,
+      endDate,
+      current,
+      description,
+    } = req.body;
 
+    if (!company || !role) {
+      res.status(400).json({
+        success: false,
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Company and role are required",
+        },
+      });
+      return;
+    }
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: {
+        userId: req.user!.id,
+      },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: {
+          code: "NOT_FOUND",
+          message: "Portfolio not found",
+        },
+      });
+      return;
+    }
+
+    const experience = await prisma.experience.create({
+      data: {
+        company,
+        role,
+        employmentType: employmentType || null,
+        location: location || null,
+        startDate: startDate ? new Date(startDate) : null,
+        endDate: current ? null : endDate ? new Date(endDate) : null,
+        current: current || false,
+        description: description || null,
+        portfolioId: portfolio.id,
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      data: experience,
+    });
+  } catch (error) {
+    console.error("Add experience error:", error);
+
+    res.status(500).json({
+      success: false,
+      error: {
+        code: "SERVER_ERROR",
+        message: "Something went wrong",
+      },
+    });
+  }
+};
+// PUT /api/v1/portfolio/me/experience/:id
+export const updateExperience = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+
+    const {
+      company,
+      role,
+      employmentType,
+      location,
+      startDate,
+      endDate,
+      current,
+      description,
+    } = req.body;
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: {
+        userId: req.user!.id,
+      },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: {
+          code: "NOT_FOUND",
+          message: "Portfolio not found",
+        },
+      });
+      return;
+    }
+
+    const experience = await prisma.experience.updateMany({
+      where: {
+        id,
+        portfolioId: portfolio.id,
+      },
+      data: {
+        ...(company !== undefined && { company }),
+        ...(role !== undefined && { role }),
+        ...(employmentType !== undefined && {
+          employmentType,
+        }),
+        ...(location !== undefined && { location }),
+        ...(startDate !== undefined && {
+          startDate: startDate ? new Date(startDate) : null,
+        }),
+        ...(endDate !== undefined && {
+          endDate: current ? null : endDate ? new Date(endDate) : null,
+        }),
+        ...(current !== undefined && { current }),
+        ...(description !== undefined && { description }),
+      },
+    });
+
+    res.json({
+      success: true,
+      data: experience,
+    });
+  } catch (error) {
+    console.error("Update experience error:", error);
+
+    res.status(500).json({
+      success: false,
+      error: {
+        code: "SERVER_ERROR",
+        message: "Something went wrong",
+      },
+    });
+  }
+};
 // DELETE /api/v1/portfolio/me/education/:id
 export const deleteEducation = async (
   req: AuthRequest,
@@ -430,6 +579,59 @@ export const deleteEducation = async (
     });
   }
 };
+// DELETE /api/v1/portfolio/me/experience/:id
+export const deleteExperience = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: {
+        userId: req.user!.id,
+      },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: {
+          code: "NOT_FOUND",
+          message: "Portfolio not found",
+        },
+      });
+      return;
+    }
+
+    await prisma.experience.deleteMany({
+      where: {
+        AND: [
+          { id },
+          { portfolioId: portfolio.id },
+        ],
+      },
+    });
+
+    res.json({
+      success: true,
+      data: {
+        message: "Experience deleted",
+      },
+    });
+  } catch (error) {
+    console.error("Delete experience error:", error);
+
+    res.status(500).json({
+      success: false,
+      error: {
+        code: "SERVER_ERROR",
+        message: "Something went wrong",
+      },
+    });
+  }
+};
+
 // POST /api/v1/portfolio/me/social-links
 export const addSocialLink = async (
   req: AuthRequest,

@@ -93,15 +93,18 @@ model Education {
 }
 
 model Experience {
-  id          String    @id @default(cuid())
-  portfolioId String
-  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
-  company     String
-  role        String
-  startDate   DateTime?
-  endDate     DateTime?
-  current     Boolean   @default(false)
-  description String?
+  id             String    @id @default(cuid())
+  portfolioId    String
+  portfolio      Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  company         String
+  role            String
+  employmentType  String?
+  location         String?
+  startDate       DateTime?
+  endDate         DateTime?
+  current         Boolean   @default(false)
+  description     String?
+  createdAt       DateTime @default(now())
 }
 
 model Project {

@@ -9,6 +9,7 @@ import api from "@/lib/api";
 import SkillsSection from "@/components/portfolio/SkillsSection";
 import ProjectsSection from "@/components/portfolio/ProjectsSection";
 import EducationSection from "@/components/portfolio/EducationSection";
+import ExperienceSection from "@/components/portfolio/ExperienceSection";
 import GithubSection from "@/components/portfolio/GithubSection";
 import SocialLinksSection from "@/components/portfolio/SocialLinksSection";
 
@@ -186,6 +187,7 @@ export default function PortfolioPage() {
       <SkillsSection />
       <ProjectsSection />
       <EducationSection />
+      <ExperienceSection/>
       <GithubSection />
       <SocialLinksSection />
     </div>
