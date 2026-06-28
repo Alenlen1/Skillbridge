@@ -1,8 +1,11 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import PortfolioViewTracker from "@/components/portfolio/PortfolioViewTracker";
-export const dynamic = "force-dynamic";
+
 interface Portfolio {
   about: string | null;
   headline: string | null;
@@ -65,9 +68,15 @@ interface User {
 
 async function getUser(username: string): Promise<User | null> {
   try {
+    const token = localStorage.getItem("accessToken");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1"}/portfolio/${username}`,
-      { cache: "no-store" },
+      {
+        cache: "no-store",
+        headers: {
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      },
     );
     if (!res.ok) return null;
     const data = await res.json();
@@ -77,15 +86,44 @@ async function getUser(username: string): Promise<User | null> {
   }
 }
 
-export default async function PublicPortfolioPage({
-  params,
-}: {
-  params: Promise<{ username: string }>;
-}) {
-  const { username } = await params;
-  const user = await getUser(username);
+export default function PublicPortfolioPage() {
+  const params = useParams();
+  const username = params.username as string;
 
-  if (!user || !user.portfolio) notFound();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getUser(username).then((data) => {
+      setUser(data);
+      setLoading(false);
+    });
+  }, [username]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0f]">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-indigo-400" />
+      </div>
+    );
+  }
+
+  if (!user || !user.portfolio) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0f] text-center">
+        <p className="text-2xl font-semibold text-white">Portfolio not found</p>
+        <p className="mt-2 text-sm text-slate-500">
+          This portfolio may be private or does not exist.
+        </p>
+        <Link
+          href="/"
+          className="mt-6 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-400"
+        >
+          Go home
+        </Link>
+      </div>
+    );
+  }
 
   const { portfolio } = user;
   const certificates = user.certificates || [];
@@ -139,7 +177,6 @@ export default async function PublicPortfolioPage({
         <main className="pt-14">
           {/* Hero section with glow */}
           <div className="relative overflow-hidden border-b border-white/[0.06] px-6 py-16">
-            {/* Indigo glow — same as landing page */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 flex items-center justify-center"
@@ -361,6 +398,7 @@ export default async function PublicPortfolioPage({
                 </div>
               </section>
             )}
+
             {/* Certificates */}
             {certificates.length > 0 && (
               <section>
