@@ -127,7 +127,8 @@ export default function ResumePage() {
     (portfolio.skills?.length ?? 0) === 0 &&
     (portfolio.education?.length ?? 0) === 0 &&
     (portfolio.experience?.length ?? 0) === 0 &&
-    (portfolio.projects?.length ?? 0) === 0;
+    (portfolio.projects?.length ?? 0) === 0 &&
+    certificates.length === 0;
 
   return (
     <div>
