@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {
   FaFileAlt,
-  FaBriefcase,
+  FaFolderOpen,
   FaChartBar,
   FaEnvelopeOpenText,
   FaRoad,
@@ -35,9 +35,9 @@ const AI_TOOLS: Tool[] = [
     title: "Portfolio Review",
     description:
       "Receive feedback on your portfolio presentation, project descriptions, and overall first impression for recruiters and clients.",
-    icon: <FaBriefcase size={20} />,
+    icon: <FaFolderOpen size={20} />,
     href: "/ai-assistant/portfolio-review",
-    available: false,
+    available: true,
   },
   {
     id: "skill-gap",
@@ -46,7 +46,7 @@ const AI_TOOLS: Tool[] = [
       "Compare your current skill set against your target role and discover exactly what to learn next to close the gap.",
     icon: <FaChartBar size={20} />,
     href: "/ai-assistant/skill-gap",
-    available: false,
+    available: true,
   },
   {
     id: "cover-letter",
