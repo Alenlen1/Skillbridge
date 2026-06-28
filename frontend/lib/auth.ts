@@ -7,6 +7,7 @@ interface User {
   username: string;
   name: string | null;
   emailVerified: boolean;
+  hasPassword: boolean;
 }
 
 interface AuthState {

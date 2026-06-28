@@ -195,6 +195,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
           username: user.username,
           name: user.name,
           emailVerified: user.emailVerified,
+          hasPassword: true,
         },
       },
     });
@@ -249,6 +250,7 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
         username: true,
         name: true,
         emailVerified: true,
+        hasPassword: true,
       },
     });
 
@@ -415,6 +417,7 @@ export const verifyEmail = async (req: Request, res: Response): Promise<void> =>
             username: user.username,
             name: user.name,
             emailVerified: user.emailVerified,
+            hasPassword: true,
           },
         },
       });
@@ -625,7 +628,7 @@ export const getMe = async (
   res: Response
 ): Promise<void> => {
   try {
-    const user = await prisma.user.findUnique({
+    const rawUser = await prisma.user.findUnique({
       where: { id: req.user!.id },
       select: {
         id: true,
@@ -634,8 +637,20 @@ export const getMe = async (
         name: true,
         emailVerified: true,
         avatar: true,
+        password: true,
       },
     });
+
+    if (!rawUser) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "User not found" },
+      });
+      return;
+    }
+
+    const { password, ...user } = rawUser;
+    const userWithFlag = { ...user, hasPassword: !!password };
 
     if (!user) {
       res.status(404).json({
@@ -645,7 +660,7 @@ export const getMe = async (
       return;
     }
 
-    res.json({ success: true, data: user });
+    res.json({ success: true, data: userWithFlag });
   } catch (error) {
     console.error("Get me error:", error);
     res.status(500).json({

@@ -10,6 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 export default function SettingsPage() {
   const router = useRouter();
   const { user, setAuth, logout } = useAuthStore();
+  const isOAuthUser = !(user?.hasPassword ?? true);
 
   // Profile (name) state
   const [name, setName] = useState(user?.name || "");
@@ -106,8 +107,6 @@ export default function SettingsPage() {
         setAuth(data.data, localStorage.getItem("accessToken") || "");
       }
 
-      // The username changing means the public portfolio URL changed too,
-      // so throw away the cached page for the old AND new username.
       fetch("/api/revalidate-portfolio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -185,7 +184,7 @@ export default function SettingsPage() {
   const handleDeleteAccount = async () => {
     setDeleteError("");
 
-    if (!deletePassword) {
+    if (!isOAuthUser && !deletePassword) {
       setDeleteError("Password is required");
       return;
     }
@@ -374,105 +373,112 @@ export default function SettingsPage() {
         )}
       </section>
 
-      {/* Password section */}
-      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-white">Password</h2>
-        <p className="mb-5 text-sm text-slate-500">
-          Change your account password. You&apos;ll need to log in again
-          afterward.
-        </p>
+      {/* Password section — hidden for GitHub/OAuth users */}
+      {isOAuthUser ? (
+        <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+          <h2 className="mb-1 text-sm font-semibold text-white">Password</h2>
+          <p className="text-sm text-slate-500">
+            You signed in with GitHub — your login is managed by GitHub, not a
+            password.
+          </p>
+        </section>
+      ) : (
+        <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+          <h2 className="mb-1 text-sm font-semibold text-white">Password</h2>
+          <p className="mb-5 text-sm text-slate-500">
+            Change your account password. You&apos;ll need to log in again
+            afterward.
+          </p>
 
-        <div className="space-y-4">
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
-              Current password
-            </label>
-            <div className="relative">
-              <input
-                type={showCurrentPassword ? "text" : "password"}
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-indigo-400"
-              >
-                {showCurrentPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
+          <div className="space-y-4">
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-slate-300">
+                Current password
+              </label>
+              <div className="relative">
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-indigo-400"
+                >
+                  {showCurrentPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
             </div>
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-slate-300">
+                New password
+              </label>
+              <div className="relative">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Min. 8 characters"
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-indigo-400"
+                >
+                  {showNewPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+            <div>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm your password"
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-indigo-400"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {passwordError && (
+              <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                {passwordError}
+              </div>
+            )}
+
+            <button
+              onClick={handlePasswordSave}
+              disabled={passwordSaving}
+              className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {passwordSaving ? "Updating..." : "Update password"}
+            </button>
           </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
-              New password
-            </label>
-            <div className="relative">
-              <input
-                type={showNewPassword ? "text" : "password"}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Min. 8 characters"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-indigo-400"
-              >
-                {showNewPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-          </div>
-          <div>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm your password"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-indigo-400"
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {passwordError && (
-            <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-              {passwordError}
-            </div>
-          )}
-
-          <button
-            onClick={handlePasswordSave}
-            disabled={passwordSaving}
-            className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {passwordSaving ? "Updating..." : "Update password"}
-          </button>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Danger zone */}
       <section className="rounded-xl border border-red-500/20 bg-red-500/[0.03] p-6">
@@ -494,31 +500,33 @@ export default function SettingsPage() {
           </button>
         ) : (
           <div className="space-y-4 rounded-lg border border-red-500/20 bg-red-500/5 p-4">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-300">
-                Enter your password to confirm
-              </label>
-              <div className="relative">
-                <input
-                  type={showDeletePassword ? "text" : "password"}
-                  value={deletePassword}
-                  onChange={(e) => setDeletePassword(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setShowDeletePassword(!showDeletePassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-red-400"
-                >
-                  {showDeletePassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
+            {/* Password field — hidden for OAuth users */}
+            {!isOAuthUser && (
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-300">
+                  Enter your password to confirm
+                </label>
+                <div className="relative">
+                  <input
+                    type={showDeletePassword ? "text" : "password"}
+                    value={deletePassword}
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                    className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowDeletePassword(!showDeletePassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-red-400"
+                  >
+                    {showDeletePassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
             <div>
               <label className="mb-1.5 block text-sm font-medium text-slate-300">
                 Type your email{" "}

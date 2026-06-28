@@ -82,10 +82,21 @@ export const updatePassword = async (
 
     const user = await prisma.user.findUnique({ where: { id: req.user!.id } });
 
-    if (!user || !user.password) {
+    if (!user) {
       res.status(404).json({
         success: false,
         error: { code: "NOT_FOUND", message: "User not found" },
+      });
+      return;
+    }
+
+    if (!user.password) {
+      res.status(400).json({
+        success: false,
+        error: {
+          code: "OAUTH_USER",
+          message: "You signed in with GitHub and don't have a password.",
+        },
       });
       return;
     }
@@ -239,6 +250,18 @@ export const deleteAccount = async (
   try {
     const { password } = req.body;
 
+    const user = await prisma.user.findUnique({ where: { id: req.user!.id } });
+
+  if (!user) {
+    res.status(404).json({
+      success: false,
+      error: { code: "NOT_FOUND", message: "User not found" },
+    });
+    return;
+  }
+
+  // OAuth users (GitHub, Google, etc.) have no password — skip the check
+  if (user.password) {
     if (!password) {
       res.status(400).json({
         success: false,
@@ -250,26 +273,18 @@ export const deleteAccount = async (
       return;
     }
 
-    const user = await prisma.user.findUnique({ where: { id: req.user!.id } });
-
-    if (!user || !user.password) {
-      res.status(404).json({
-        success: false,
-        error: { code: "NOT_FOUND", message: "User not found" },
-      });
-      return;
-    }
-
     const valid = await bcrypt.compare(password, user.password);
-
     if (!valid) {
       res.status(401).json({
         success: false,
-        error: { code: "INVALID_CREDENTIALS", message: "Password is incorrect" },
+        error: {
+          code: "INVALID_CREDENTIALS",
+          message: "Password is incorrect",
+        },
       });
       return;
     }
-
+  }
     // The schema's onDelete: Cascade on every related model (Portfolio,
     // Certificate, Application, AnalyticsEvent, RefreshToken,
     // VerificationToken) means this single delete removes everything

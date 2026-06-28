@@ -99,13 +99,24 @@ export const githubCallback = async (
       return;
     }
 
-    // Fetch the GitHub user profile
-    const profileRes = await axios.get<GithubProfile>(
-      "https://api.github.com/user",
-      { headers: { Authorization: `Bearer ${githubAccessToken}` } },
-    );
+   const profileRes = await axios.get<GithubProfile>(
+     "https://api.github.com/user",
+     { headers: { Authorization: `Bearer ${githubAccessToken}` } },
+   );
 
-    const profile = profileRes.data;
+   const profile = profileRes.data;
+
+   // If GitHub didn't return a public email, fetch from the emails endpoint
+   let githubEmail = profile.email;
+   if (!githubEmail) {
+     const emailsRes = await axios.get<
+       { email: string; primary: boolean; verified: boolean }[]
+     >("https://api.github.com/user/emails", {
+       headers: { Authorization: `Bearer ${githubAccessToken}` },
+     });
+     const primary = emailsRes.data.find((e) => e.primary && e.verified);
+     githubEmail = primary?.email || null;
+   }
     const githubId = String(profile.id);
     const encryptedToken = encrypt(githubAccessToken);
 
@@ -126,33 +137,24 @@ export const githubCallback = async (
 
     if (!user) {
       // Try to find an existing account with the same email (account linking)
-      const githubEmail = profile.email;
-
       if (githubEmail) {
         user = await prisma.user.findUnique({ where: { email: githubEmail } });
       }
 
       if (user) {
-        // Link this GitHub account to the existing email-based account
         await prisma.user.update({
           where: { id: user.id },
           data: { githubId, githubToken: encryptedToken },
         });
       } else {
-        // Brand new user — create account automatically.
-        // Generate a unique username from their GitHub login.
         let username = profile.login.toLowerCase().replace(/[^a-z0-9_]/g, "_");
-
-        // Ensure uniqueness by appending a random suffix if needed
         const taken = await prisma.user.findUnique({ where: { username } });
         if (taken) {
           username = `${username}_${Math.random().toString(36).slice(2, 6)}`;
         }
 
-        // GitHub email can be null if the user hides it — fall back to a
-        // placeholder that they can update in Settings later.
         const email =
-          profile.email || `${githubId}@github.skillbridge.placeholder`;
+          githubEmail || `${githubId}@github.skillbridge.placeholder`;
 
         user = await prisma.user.create({
           data: {
@@ -162,7 +164,7 @@ export const githubCallback = async (
             avatar: profile.avatar_url,
             githubId,
             githubToken: encryptedToken,
-            emailVerified: true, // GitHub already verified this email
+            emailVerified: true,
             portfolio: { create: {} },
           },
         });
