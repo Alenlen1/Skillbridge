@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface Tab {
   id: string;
@@ -49,13 +49,12 @@ export default function BrowserMockup({
             <div className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
             <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/60" />
             <div className="h-2.5 w-2.5 rounded-full bg-green-500/60" />
-
-            <div className="ml-3 flex-1 overflow-hidden rounded-md bg-white/[0.05] py-1 px-3">
+            <div className="ml-3 flex-1 overflow-hidden rounded-md bg-white/[0.05] px-3 py-1">
               <span className="truncate text-xs text-slate-500">{url}</span>
             </div>
           </div>
 
-          {/* Preview */}
+          {/* Preview — no AnimatePresence, no transition */}
           <motion.div
             className="touch-pan-y cursor-grab overflow-hidden rounded-xl bg-[#0d0d18] active:cursor-grabbing"
             drag="x"
@@ -64,9 +63,7 @@ export default function BrowserMockup({
             onDragEnd={handleDragEnd}
           >
             <div className="h-[420px] overflow-y-auto sm:h-[500px] lg:h-[560px]">
-              <AnimatePresence mode="wait">
-                <ActivePanel key={active} />
-              </AnimatePresence>
+              <ActivePanel key={active} />
             </div>
           </motion.div>
         </div>
@@ -88,7 +85,7 @@ export default function BrowserMockup({
         </div>
       </div>
 
-      {/* Bottom Fade */}
+      {/* Bottom fade */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f]" />
     </>
   );

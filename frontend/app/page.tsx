@@ -9,7 +9,18 @@ import {
   IconFolder,
   IconArrowRight,
   IconStar,
+  IconRobot,
 } from "@tabler/icons-react";
+import {
+  FaFileAlt,
+  FaFolderOpen,
+  FaChartBar,
+  FaEnvelopeOpenText,
+  FaRoad,
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaLightbulb,
+} from "react-icons/fa";
 import { ChevronDown } from "lucide-react";
 import ProductPreview from "../components/landing/ProductPreview";
 
@@ -225,6 +236,192 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        {/* AI Assistant */}
+        <section className="border-t border-white/[0.04] px-6 py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid items-center gap-12 lg:grid-cols-2">
+              {/* Left */}
+
+              <div>
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-2">
+                  <IconRobot
+                    size={16}
+                    stroke={1.8}
+                    className="text-indigo-400"
+                  />
+
+                  <span className="text-xs font-semibold uppercase tracking-wider text-indigo-300">
+                    Powered by Gemini AI
+                  </span>
+                </div>
+
+                <h2 className="text-4xl font-semibold leading-tight text-white">
+                  Your personal
+                  <span className="text-indigo-400"> AI Career Assistant</span>
+                </h2>
+
+                <p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-400">
+                  Receive intelligent feedback on your resume and portfolio,
+                  identify missing skills, generate personalized cover letters,
+                  and build a roadmap toward your dream career.
+                </p>
+
+                <div className="mt-10 space-y-4">
+                  {[
+                    {
+                      title: "Resume Review",
+                      icon: FaFileAlt,
+                    },
+                    {
+                      title: "Portfolio Review",
+                      icon: FaFolderOpen,
+                    },
+                    {
+                      title: "Skill Gap Analysis",
+                      icon: FaChartBar,
+                    },
+                    {
+                      title: "Cover Letter Generator",
+                      icon: FaEnvelopeOpenText,
+                    },
+                    {
+                      title: "Career Roadmap",
+                      icon: FaRoad,
+                    },
+                  ].map((item) => {
+                    const Icon = item.icon;
+
+                    return (
+                      <div key={item.title} className="flex items-center gap-3">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10">
+                          <Icon size={14} className="text-indigo-400" />
+                        </div>
+
+                        <span className="text-slate-300">{item.title}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <Link
+                  href="/register"
+                  className="mt-10 inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-6 py-3 text-sm font-medium text-white transition hover:bg-indigo-400"
+                >
+                  Try AI Assistant
+                  <IconArrowRight size={15} stroke={2} />
+                </Link>
+              </div>
+
+              {/* Right */}
+              <div className="rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 via-[#111827] to-[#0a0a0f] p-6">
+                {/* Header */}
+                <div className="flex items-start gap-5">
+                  {/* Score */}
+
+                  <div className="flex flex-col items-center">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-full border-[6px] border-indigo-500">
+                      <div className="text-center">
+                        <p className="text-4xl font-bold text-indigo-400">91</p>
+
+                        <p className="text-xs text-slate-500">/100</p>
+                      </div>
+                    </div>
+
+                    <p className="mt-2 text-sm font-semibold text-green-400">
+                      Excellent
+                    </p>
+                  </div>
+
+                  {/* Content */}
+
+                  <div className="flex-1">
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-indigo-400">
+                      AI Resume Review
+                    </p>
+
+                    <h3 className="mt-2 text-3xl font-bold text-white">
+                      Overall Resume Score
+                    </h3>
+
+                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                      Reviewed as a
+                      <span className="mx-1 font-semibold text-indigo-300">
+                        Developer Resume
+                      </span>
+                      using ATS, recruiter readability and technical best
+                      practices.
+                    </p>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <span className="rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
+                        3 Strengths
+                      </span>
+
+                      <span className="rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400">
+                        2 Improvements
+                      </span>
+
+                      <span className="rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300">
+                        4 Suggestions
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Divider */}
+
+                <div className="my-6 h-px bg-white/10" />
+
+                {/* AI Preview */}
+
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 rounded-xl border border-green-500/20 bg-green-500/[0.04] p-4">
+                    <FaCheckCircle className="mt-0.5 text-green-400" />
+
+                    <div>
+                      <p className="font-medium text-green-400">
+                        Strong technical stack
+                      </p>
+
+                      <p className="mt-1 text-sm text-slate-400">
+                        Modern technologies and ATS-friendly formatting
+                        detected.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/[0.04] p-4">
+                    <FaExclamationTriangle className="mt-0.5 text-red-400" />
+
+                    <div>
+                      <p className="font-medium text-red-400">
+                        Needs improvement
+                      </p>
+
+                      <p className="mt-1 text-sm text-slate-400">
+                        Add measurable achievements to strengthen your projects.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-4">
+                    <FaLightbulb className="mt-0.5 text-indigo-300" />
+
+                    <div>
+                      <p className="font-medium text-indigo-300">
+                        AI Suggestion
+                      </p>
+
+                      <p className="mt-1 text-sm text-slate-400">
+                        Rewrite bullet points using stronger action verbs.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* How it works */}
         <section
@@ -381,6 +578,11 @@ export default function LandingPage() {
                 "GitHub Authentication",
                 "PDF Resume Export",
                 "Username Customization",
+                "AI Resume Review",
+                "AI Portfolio Review",
+                "AI Skill Gap Analysis",
+                "AI Cover Letter Generator",
+                "AI Career Roadmap",
               ].map((feature) => (
                 <div
                   key={feature}
