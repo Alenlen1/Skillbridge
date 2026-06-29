@@ -11,6 +11,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { user, setAuth, logout } = useAuthStore();
   const isOAuthUser = !(user?.hasPassword ?? true);
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
   // Profile (name) state
   const [name, setName] = useState(user?.name || "");
@@ -277,7 +278,9 @@ export default function SettingsPage() {
               Username
             </label>
             <div className="flex items-center rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 transition focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
-              <span className="text-sm text-slate-600">skillbridge.app/</span>
+              <span className="select-none text-sm text-slate-500">
+                {baseUrl}/
+              </span>
               <input
                 type="text"
                 value={username}
@@ -296,12 +299,12 @@ export default function SettingsPage() {
 
             <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
               <a
-                href={`${window.location.origin}/${savedUsername}`}
+                href={`${baseUrl}/${savedUsername}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="truncate text-sm text-indigo-400 hover:text-indigo-300"
               >
-                {window.location.origin}/{savedUsername}
+                {baseUrl}/{savedUsername}
               </a>
             </div>
 
