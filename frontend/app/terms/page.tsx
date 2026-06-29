@@ -4,16 +4,15 @@ import Image from "next/image";
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] font-sans text-white antialiased">
-      {/* Nav - matches landing page */}
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/logo.png"
               alt="SkillBridge"
-              width={80}
-              height={49}
-              className="h-12 w-auto"
+              width={36}
+              height={22}
+              className="h-9 w-auto"
               priority
             />
             <span className="text-sm font-semibold text-white">
@@ -79,43 +78,94 @@ export default function TermsPage() {
                 third-party rights.
               </p>
             </section>
-
             <section>
               <h2 className="mb-3 text-base font-semibold text-white">
-                5. Public portfolios
+                5. Intellectual Property
               </h2>
               <p>
-                By default, your portfolio is public and visible to anyone with
-                your portfolio URL. You can make your portfolio private at any
-                time from your dashboard settings.
+                The SkillBridge name, logo, and platform design are the
+                intellectual property of the project creators. Users retain
+                ownership of the content they upload, including resumes,
+                portfolios, projects, and certificates.
               </p>
             </section>
 
             <section>
               <h2 className="mb-3 text-base font-semibold text-white">
-                6. Termination
+                6. AI Assistant
               </h2>
               <p>
-                We reserve the right to suspend or terminate accounts that
-                violate these terms. You can delete your account at any time by
-                contacting us at support@skillbridge.app.
+                SkillBridge includes an AI Assistant powered by Google Gemini
+                AI. By using these features, you agree that your portfolio data,
+                resume content, and job descriptions may be sent to
+                Google&apos;s API for processing. AI-generated content may
+                contain inaccuracies or outdated information. Users are
+                responsible for reviewing and verifying all AI-generated content
+                before using it for employment, education, or professional
+                purposes. SkillBridge does not guarantee the accuracy or
+                completeness of AI-generated results. You are solely responsible
+                for how you use AI-generated content.
               </p>
             </section>
 
             <section>
               <h2 className="mb-3 text-base font-semibold text-white">
-                7. Disclaimer
+                7. Public portfolios
+              </h2>
+              <p>
+                You control the visibility of your portfolio. You may choose to
+                make it public or private through your account settings. Public
+                portfolios can be viewed by anyone with the portfolio URL.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-base font-semibold text-white">
+                8. Termination
+              </h2>
+              <p>
+                We may suspend or terminate accounts involved in spam, abuse,
+                illegal activities, impersonation, or violations of these Terms
+                of Service.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-base font-semibold text-white">
+                9. Disclaimer
               </h2>
               <p>
                 SkillBridge is provided as-is without warranties of any kind. We
                 are not responsible for any damages arising from your use of the
-                platform.
+                platform, including any reliance on AI-generated content.
               </p>
             </section>
 
             <section>
               <h2 className="mb-3 text-base font-semibold text-white">
-                8. Contact
+                10. Open source license
+              </h2>
+              <p>
+                The SkillBridge source code is licensed under the Apache License
+                2.0. This license applies only to the source code and does not
+                grant ownership of user-generated content., Version 2.0.
+                Copyright 2026 Alen Andrei R. Amarante. A copy of the license is
+                available at{" "}
+                <a
+                  href="https://www.apache.org/licenses/LICENSE-2.0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-indigo-400 transition hover:text-indigo-300"
+                >
+                  apache.org/licenses/LICENSE-2.0
+                </a>
+                .
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-base font-semibold text-white">
+                11. Contact
               </h2>
               <p>
                 If you have any questions about these Terms, please contact us
@@ -126,7 +176,6 @@ export default function TermsPage() {
         </div>
       </main>
 
-      {/* Footer - matches landing page */}
       <footer className="border-t border-white/[0.04] px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm sm:flex-row">
           <div className="flex items-center gap-2 text-slate-500">
@@ -140,6 +189,7 @@ export default function TermsPage() {
             <span className="font-medium text-white">SkillBridge</span>
             <span>·</span>
             <span>Built by</span>
+
             <a
               href="https://www.facebook.com/alenlenamarante"
               target="_blank"
@@ -149,7 +199,6 @@ export default function TermsPage() {
               Alen Amarante
             </a>
           </div>
-
           <div className="flex gap-6">
             <Link
               href="/privacy"
@@ -163,6 +212,7 @@ export default function TermsPage() {
             >
               Terms
             </Link>
+
             <a
               href="https://github.com/Alenlen1"
               target="_blank"
