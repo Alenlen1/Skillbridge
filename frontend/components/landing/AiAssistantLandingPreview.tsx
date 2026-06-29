@@ -1,33 +1,22 @@
 import {
   FaFileAlt,
-  FaFolderOpen,
+  FaBriefcase,
   FaChartBar,
   FaEnvelopeOpenText,
   FaRoad,
+  FaComments,
   FaCheckCircle,
-  FaTimesCircle,
   FaLightbulb,
 } from "react-icons/fa";
 import { IconRobot } from "@tabler/icons-react";
 
 const tools = [
-  { icon: <FaFileAlt size={13} />, label: "Resume Review", available: true },
-  {
-    icon: <FaFolderOpen size={13} />,
-    label: "Portfolio Review",
-    available: true,
-  },
-  {
-    icon: <FaChartBar size={13} />,
-    label: "Skill Gap Analysis",
-    available: true,
-  },
-  {
-    icon: <FaEnvelopeOpenText size={13} />,
-    label: "Cover Letter Generator",
-    available: true,
-  },
-  { icon: <FaRoad size={13} />, label: "Career Roadmap", available: true },
+  { icon: <FaFileAlt size={11} />, label: "Resume Review" },
+  { icon: <FaBriefcase size={11} />, label: "Portfolio Review" },
+  { icon: <FaChartBar size={11} />, label: "Skill Gap Analysis" },
+  { icon: <FaEnvelopeOpenText size={11} />, label: "Cover Letter" },
+  { icon: <FaRoad size={11} />, label: "Career Roadmap" },
+  { icon: <FaComments size={11} />, label: "Interview Prep" },
 ];
 
 const strengths = [
@@ -46,7 +35,7 @@ export default function AIAssistantLandingPreview() {
   return (
     <div className="min-h-full bg-[#0d0d18] p-5">
       {/* Header */}
-      <div className="mb-5 flex items-center gap-2.5">
+      <div className="mb-4 flex items-center gap-2.5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-400">
           <IconRobot size={16} stroke={1.5} />
         </div>
@@ -59,14 +48,14 @@ export default function AIAssistantLandingPreview() {
       </div>
 
       {/* Tool cards */}
-      <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="mb-4 grid grid-cols-3 gap-1.5">
         {tools.map((tool) => (
           <div
             key={tool.label}
-            className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5"
+            className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-2 py-2"
           >
             <span className="text-indigo-400">{tool.icon}</span>
-            <span className="text-[11px] font-medium text-slate-300">
+            <span className="text-[10px] font-medium text-slate-400">
               {tool.label}
             </span>
           </div>
@@ -76,7 +65,7 @@ export default function AIAssistantLandingPreview() {
       {/* Resume review result preview */}
       <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
         {/* Score row */}
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <p className="text-xs font-semibold text-white">
             Resume Review Result
           </p>

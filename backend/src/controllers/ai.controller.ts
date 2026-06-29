@@ -20,6 +20,10 @@ import {
 } from "../prompts/coverLetter.prompt";
 import { buildRoadmapPrompt, RoadmapResult } from "../prompts/roadmap.prompt";
 import {
+  buildInterviewPrepPrompt,
+  InterviewPrepResult,
+} from "../prompts/interviewPrep.prompt";
+import {
   extractTextFromBuffer,
   SUPPORTED_MIME_TYPES,
 } from "../services/resume-parser.service";
@@ -536,16 +540,13 @@ export const generateRoadmap = async (
       where: { userId: req.user!.id },
       include: { skills: true },
     });
-
     const currentSkills = portfolio?.skills ?? [];
-
     const prompt = buildRoadmapPrompt({
       currentRole: currentRole.trim(),
       targetRole: targetRole.trim(),
       yearsOfExperience,
       currentSkills,
     });
-
     const result = await generateStructuredResponse<RoadmapResult>(prompt);
     res.json({ success: true, data: result });
   } catch (error) {
@@ -570,6 +571,88 @@ export const generateRoadmap = async (
         error: {
           code: "SERVER_ERROR",
           message: "Something went wrong while generating your roadmap",
+        },
+      });
+  }
+};
+
+// POST /api/v1/ai/interview-prep
+export const generateInterviewPrep = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { targetRole, jobDescription } = req.body as {
+      targetRole?: string;
+      jobDescription?: string;
+    };
+
+    if (
+      !targetRole ||
+      typeof targetRole !== "string" ||
+      targetRole.trim().length === 0
+    ) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Target role is required.",
+          },
+        });
+      return;
+    }
+    if (targetRole.trim().length > 100) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Target role must be under 100 characters.",
+          },
+        });
+      return;
+    }
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+      include: { skills: true },
+    });
+    const currentSkills = portfolio?.skills ?? [];
+
+    const prompt = buildInterviewPrepPrompt({
+      targetRole: targetRole.trim(),
+      jobDescription: jobDescription?.trim() || null,
+      currentSkills,
+    });
+
+    const result =
+      await generateStructuredResponse<InterviewPrepResult>(prompt);
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error("Interview prep error:", error);
+    if (error instanceof SyntaxError) {
+      res
+        .status(502)
+        .json({
+          success: false,
+          error: {
+            code: "AI_PARSE_ERROR",
+            message:
+              "The AI returned an unexpected response. Please try again.",
+          },
+        });
+      return;
+    }
+    res
+      .status(500)
+      .json({
+        success: false,
+        error: {
+          code: "SERVER_ERROR",
+          message: "Something went wrong while generating your interview prep",
         },
       });
   }

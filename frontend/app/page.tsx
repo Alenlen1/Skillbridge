@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -20,6 +23,7 @@ import {
   FaCheckCircle,
   FaExclamationTriangle,
   FaLightbulb,
+  FaComments,
 } from "react-icons/fa";
 import { ChevronDown } from "lucide-react";
 import ProductPreview from "../components/landing/ProductPreview";
@@ -80,11 +84,75 @@ const steps = [
     number: "03",
     title: "Launch your career",
     description:
-      "Apply with confidence, track opportunities,and grow your professional presence.",
+      "Apply with confidence, track opportunities, and grow your professional presence.",
+  },
+];
+
+const faqs = [
+  {
+    question: "Is SkillBridge free to use?",
+    answer:
+      "Yes. SkillBridge is completely free for students, graduates, and job seekers.",
+  },
+  {
+    question: "Do I need a portfolio to create a resume?",
+    answer:
+      "No. You can generate a resume directly from the information you add to your profile.",
+  },
+  {
+    question: "Can I make my portfolio private?",
+    answer:
+      "Yes. You can switch your portfolio between public and private anytime from Settings.",
+  },
+  {
+    question: "Can I track my job applications?",
+    answer:
+      "Yes. SkillBridge has a built-in job tracker where you can manage and monitor all your job applications in one place.",
+  },
+  {
+    question: "What is the AI Assistant?",
+    answer:
+      "The AI Assistant helps you improve your portfolio, suggest project descriptions, and give career advice based on your profile.",
+  },
+  {
+    question: "Can I add certificates to my portfolio?",
+    answer:
+      "Yes. You can upload and display your certificates directly on your portfolio for employers to see.",
+  },
+  {
+    question: "Can employers see my portfolio?",
+    answer:
+      "Yes. If your portfolio is set to public, anyone with your portfolio link can view it.",
+  },
+  {
+    question: "Do I need to verify my email?",
+    answer:
+      "Yes. Email verification is required to activate your account and access all features.",
+  },
+  {
+    question: "Can I sign in with GitHub?",
+    answer:
+      "Yes. SkillBridge supports GitHub authentication for faster registration and login.",
+  },
+  {
+    question: "Can I download my resume as a PDF?",
+    answer:
+      "Yes. SkillBridge generates ATS-friendly PDF resumes that you can download and share.",
+  },
+  {
+    question: "Who is SkillBridge for?",
+    answer:
+      "SkillBridge is designed for students, fresh graduates, interns, and aspiring developers who want to showcase their skills and projects professionally.",
+  },
+  {
+    question: "Still have questions?",
+    answer: "Contact us at",
   },
 ];
 
 export default function LandingPage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
   return (
     <div className="min-h-screen bg-[#0a0a0f] font-sans text-white antialiased">
       {/* Nav */}
@@ -195,7 +263,6 @@ export default function LandingPage() {
             Free to use · No credit card required
           </p>
 
-          {/* Interactive product preview */}
           <ProductPreview />
         </section>
 
@@ -236,12 +303,11 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
         {/* AI Assistant */}
         <section className="border-t border-white/[0.04] px-6 py-32">
           <div className="mx-auto max-w-6xl">
             <div className="grid items-center gap-12 lg:grid-cols-2">
-              {/* Left */}
-
               <div>
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-2">
                   <IconRobot
@@ -249,7 +315,6 @@ export default function LandingPage() {
                     stroke={1.8}
                     className="text-indigo-400"
                   />
-
                   <span className="text-xs font-semibold uppercase tracking-wider text-indigo-300">
                     Powered by Gemini AI
                   </span>
@@ -268,35 +333,22 @@ export default function LandingPage() {
 
                 <div className="mt-10 space-y-4">
                   {[
-                    {
-                      title: "Resume Review",
-                      icon: FaFileAlt,
-                    },
-                    {
-                      title: "Portfolio Review",
-                      icon: FaFolderOpen,
-                    },
-                    {
-                      title: "Skill Gap Analysis",
-                      icon: FaChartBar,
-                    },
+                    { title: "Resume Review", icon: FaFileAlt },
+                    { title: "Portfolio Review", icon: FaFolderOpen },
+                    { title: "Skill Gap Analysis", icon: FaChartBar },
                     {
                       title: "Cover Letter Generator",
                       icon: FaEnvelopeOpenText,
                     },
-                    {
-                      title: "Career Roadmap",
-                      icon: FaRoad,
-                    },
+                    { title: "Career Roadmap", icon: FaRoad },
+                    { title: "Interview Preparation", icon: FaComments },
                   ].map((item) => {
                     const Icon = item.icon;
-
                     return (
                       <div key={item.title} className="flex items-center gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10">
                           <Icon size={14} className="text-indigo-400" />
                         </div>
-
                         <span className="text-slate-300">{item.title}</span>
                       </div>
                     );
@@ -312,37 +364,27 @@ export default function LandingPage() {
                 </Link>
               </div>
 
-              {/* Right */}
               <div className="rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 via-[#111827] to-[#0a0a0f] p-6">
-                {/* Header */}
                 <div className="flex items-start gap-5">
-                  {/* Score */}
-
                   <div className="flex flex-col items-center">
                     <div className="flex h-24 w-24 items-center justify-center rounded-full border-[6px] border-indigo-500">
                       <div className="text-center">
                         <p className="text-4xl font-bold text-indigo-400">91</p>
-
                         <p className="text-xs text-slate-500">/100</p>
                       </div>
                     </div>
-
                     <p className="mt-2 text-sm font-semibold text-green-400">
                       Excellent
                     </p>
                   </div>
 
-                  {/* Content */}
-
                   <div className="flex-1">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-indigo-400">
                       AI Resume Review
                     </p>
-
                     <h3 className="mt-2 text-3xl font-bold text-white">
                       Overall Resume Score
                     </h3>
-
                     <p className="mt-2 text-sm leading-6 text-slate-400">
                       Reviewed as a
                       <span className="mx-1 font-semibold text-indigo-300">
@@ -351,16 +393,13 @@ export default function LandingPage() {
                       using ATS, recruiter readability and technical best
                       practices.
                     </p>
-
                     <div className="mt-4 flex flex-wrap gap-2">
                       <span className="rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
                         3 Strengths
                       </span>
-
                       <span className="rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400">
                         2 Improvements
                       </span>
-
                       <span className="rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300">
                         4 Suggestions
                       </span>
@@ -368,21 +407,15 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                {/* Divider */}
-
                 <div className="my-6 h-px bg-white/10" />
-
-                {/* AI Preview */}
 
                 <div className="space-y-3">
                   <div className="flex items-start gap-3 rounded-xl border border-green-500/20 bg-green-500/[0.04] p-4">
                     <FaCheckCircle className="mt-0.5 text-green-400" />
-
                     <div>
                       <p className="font-medium text-green-400">
                         Strong technical stack
                       </p>
-
                       <p className="mt-1 text-sm text-slate-400">
                         Modern technologies and ATS-friendly formatting
                         detected.
@@ -392,12 +425,10 @@ export default function LandingPage() {
 
                   <div className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/[0.04] p-4">
                     <FaExclamationTriangle className="mt-0.5 text-red-400" />
-
                     <div>
                       <p className="font-medium text-red-400">
                         Needs improvement
                       </p>
-
                       <p className="mt-1 text-sm text-slate-400">
                         Add measurable achievements to strengthen your projects.
                       </p>
@@ -406,12 +437,10 @@ export default function LandingPage() {
 
                   <div className="flex items-start gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-4">
                     <FaLightbulb className="mt-0.5 text-indigo-300" />
-
                     <div>
                       <p className="font-medium text-indigo-300">
                         AI Suggestion
                       </p>
-
                       <p className="mt-1 text-sm text-slate-400">
                         Rewrite bullet points using stronger action verbs.
                       </p>
@@ -434,10 +463,10 @@ export default function LandingPage() {
                 How it works
               </p>
               <h2 className="text-4xl font-semibold tracking-tight text-white">
-                Turn your skills into opportunities{" "}
+                Turn your skills into opportunities
               </h2>
             </div>
-            {/* Connector row, desktop only */}
+
             <div aria-hidden className="mb-4 hidden items-center md:flex">
               {steps.map((step, i) => (
                 <div key={step.number} className="flex flex-1 items-center">
@@ -472,6 +501,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
         {/* FAQ */}
         <section id="faq" className="mx-auto mt-32 max-w-4xl px-6">
           <div className="mb-12 text-center">
@@ -484,73 +514,33 @@ export default function LandingPage() {
           </div>
 
           <div className="space-y-4">
-            {[
-              {
-                question: "Is SkillBridge free to use?",
-                answer:
-                  "Yes. SkillBridge is completely free for students, graduates, and job seekers.",
-              },
-              {
-                question: "Do I need a portfolio to create a resume?",
-                answer:
-                  "No. You can generate a resume directly from the information you add to your profile.",
-              },
-              {
-                question: "Can I make my portfolio private?",
-                answer:
-                  "Yes. You can switch your portfolio between public and private anytime from Settings.",
-              },
-              {
-                question: "Can I sign in with GitHub?",
-                answer:
-                  "Yes. SkillBridge supports GitHub authentication for faster registration and login.",
-              },
-              {
-                question: "Can I download my resume as a PDF?",
-                answer:
-                  "Yes. SkillBridge generates ATS-friendly PDF resumes that you can download and share.",
-              },
-              {
-                question: "Who is SkillBridge for?",
-                answer:
-                  "SkillBridge is designed for students, fresh graduates, interns, and aspiring developers who want to showcase their skills and projects professionally.",
-              },
-              {
-                question: "Still have questions?",
-                answer: "Contact us at",
-              },
-            ].map((faq) => (
-              <details
+            {faqs.map((faq, index) => (
+              <div
                 key={faq.question}
-                className="
-    group
-    rounded-2xl
-    border border-white/[0.06]
-    bg-white/[0.02]
-    px-6 py-3.5
-    transition-all
-    duration-300
-    hover:border-indigo-500/40
-    hover:shadow-[0_0_20px_rgba(99,102,241,0.08)]
-    hover:bg-white/[0.03]
-    open:border-indigo-500/30
-    open:bg-indigo-600/[0.03]
-  "
+                onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                className={`cursor-pointer rounded-2xl border px-6 py-4 transition-all duration-300 hover:shadow-[0_0_20px_rgba(99,102,241,0.08)] ${
+                  openFaq === index
+                    ? "border-indigo-500/30 bg-indigo-600/[0.03]"
+                    : "border-white/[0.06] bg-white/[0.02] hover:border-indigo-500/40 hover:bg-white/[0.03]"
+                }`}
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between font-medium text-white">
-                  <span className="transition-colors group-open:text-indigo-300">
+                <div className="flex items-center justify-between font-medium text-white">
+                  <span className={openFaq === index ? "text-indigo-300" : ""}>
                     {faq.question}
                   </span>
+                  <ChevronDown
+                    className={`h-4 w-4 flex-shrink-0 text-slate-500 transition-all duration-300 ${
+                      openFaq === index ? "rotate-180 text-indigo-400" : ""
+                    }`}
+                  />
+                </div>
 
-                  <ChevronDown className="h-4 w-4 text-slate-500 transition-all duration-300 group-open:rotate-180 group-open:text-indigo-400" />
-                </summary>
-
-                <div className="overflow-hidden">
+                {openFaq === index && (
                   <p className="mt-4 text-sm leading-relaxed text-slate-400">
                     {faq.answer}
                   </p>
-                </div>
-              </details>
+                )}
+              </div>
             ))}
           </div>
         </section>
@@ -583,6 +573,7 @@ export default function LandingPage() {
                 "AI Skill Gap Analysis",
                 "AI Cover Letter Generator",
                 "AI Career Roadmap",
+                "AI Interview Preparation",
               ].map((feature) => (
                 <div
                   key={feature}
@@ -672,7 +663,7 @@ export default function LandingPage() {
               width={52}
               height={32}
               className="h-8 w-auto opacity-70"
-            />{" "}
+            />
             <span className="font-medium text-white">SkillBridge</span>
             <span>·</span>
             <span>Built by</span>
@@ -693,14 +684,12 @@ export default function LandingPage() {
             >
               Privacy
             </Link>
-
             <Link
               href="/terms"
               className="text-indigo-400 transition hover:text-indigo-300"
             >
               Terms
             </Link>
-
             <a
               href="https://github.com/Alenlen1"
               target="_blank"

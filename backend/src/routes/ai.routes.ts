@@ -7,6 +7,7 @@ import {
   analyzeSkillGap,
   generateCoverLetter,
   generateRoadmap,
+  generateInterviewPrep,
 } from "../controllers/ai.controller";
 
 const router = Router();
@@ -18,5 +19,6 @@ router.post("/portfolio-review", reviewPortfolio);
 router.post("/skill-gap", analyzeSkillGap);
 router.post("/cover-letter", upload.single("resume"), generateCoverLetter);
 router.post("/roadmap", generateRoadmap);
+router.post("/interview-prep", generateInterviewPrep);
 
 export default router;

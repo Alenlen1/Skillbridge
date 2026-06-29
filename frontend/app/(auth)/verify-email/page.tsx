@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
@@ -93,9 +94,14 @@ export default function VerifyEmailPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#0a0a0f] px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500">
-            <span className="text-lg font-bold text-white">S</span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="SkillBridge"
+            width={36}
+            height={22}
+            className="h-9 w-auto"
+            priority
+          />
           <h1 className="text-xl font-semibold text-white">
             Email Verification
           </h1>

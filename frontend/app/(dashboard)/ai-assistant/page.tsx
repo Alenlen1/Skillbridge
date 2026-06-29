@@ -3,13 +3,13 @@
 import Link from "next/link";
 import {
   FaFileAlt,
-  FaFolderOpen,
+  FaBriefcase,
   FaChartBar,
   FaEnvelopeOpenText,
   FaRoad,
-  FaCheckCircle,
+  FaComments,
 } from "react-icons/fa";
-import { IconSparkles } from "@tabler/icons-react";
+import { IconRobot } from "@tabler/icons-react";
 
 interface Tool {
   id: string;
@@ -35,7 +35,7 @@ const AI_TOOLS: Tool[] = [
     title: "Portfolio Review",
     description:
       "Receive feedback on your portfolio presentation, project descriptions, and overall first impression for recruiters and clients.",
-    icon: <FaFolderOpen size={20} />,
+    icon: <FaBriefcase size={20} />,
     href: "/ai-assistant/portfolio-review",
     available: true,
   },
@@ -64,6 +64,15 @@ const AI_TOOLS: Tool[] = [
       "Get a personalized step-by-step roadmap from your current position to your target role with milestones and timelines.",
     icon: <FaRoad size={20} />,
     href: "/ai-assistant/roadmap",
+    available: true,
+  },
+  {
+    id: "interview-prep",
+    title: "Interview Prep",
+    description:
+      "Get role-specific interview questions with expert tips on how to answer them, tailored to your skills and target position.",
+    icon: <FaComments size={20} />,
+    href: "/ai-assistant/interview-prep",
     available: true,
   },
 ];
@@ -142,7 +151,7 @@ export default function AIAssistantPage() {
       <div className="mb-8">
         <div className="mb-3 flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-400">
-            <IconSparkles size={18} stroke={1.5} />
+            <IconRobot size={18} stroke={1.5} />
           </div>
           <h1 className="text-xl font-semibold text-white">AI Assistant</h1>
         </div>
