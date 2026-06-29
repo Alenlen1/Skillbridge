@@ -35,9 +35,7 @@ export async function sendVerificationEmail(
 
   const html = `
     <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px;">
-      <div style="width: 40px; height: 40px; background: #6366f1; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-        <span style="color: white; font-weight: bold; font-size: 18px;">S</span>
-      </div>
+      <img src="${FRONTEND_URL}/logo.png" alt="SkillBridge" style="height: 36px; width: auto; margin-bottom: 24px;" />
       <h2 style="color: #0a0a0f; margin-bottom: 8px;">Verify your email</h2>
       <p style="color: #555; line-height: 1.6;">
         Hi ${safeName}, welcome to SkillBridge! Please verify your email address before logging in.
@@ -64,9 +62,7 @@ export async function sendPasswordResetEmail(
 
   const html = `
     <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px;">
-      <div style="width: 40px; height: 40px; background: #6366f1; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-        <span style="color: white; font-weight: bold; font-size: 18px;">S</span>
-      </div>
+      <img src="${FRONTEND_URL}/logo.png" alt="SkillBridge" style="height: 36px; width: auto; margin-bottom: 24px;" />
       <h2 style="color: #0a0a0f; margin-bottom: 8px;">Reset your password</h2>
       <p style="color: #555; line-height: 1.6;">
         Hi ${safeName}, we received a request to reset your SkillBridge password.
