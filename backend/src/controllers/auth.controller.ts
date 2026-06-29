@@ -181,8 +181,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", 
     });
 
     res.json({
@@ -240,9 +239,7 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
       username: string;
     };
 
-    await prisma.refreshToken.delete({ where: { token } });
-
-    const user = await prisma.user.findUnique({
+    const rawUser = await prisma.user.findUnique({
       where: { id: decoded.id },
       select: {
         id: true,
@@ -250,17 +247,22 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
         username: true,
         name: true,
         emailVerified: true,
-        hasPassword: true,
+        password: true, // ← select password instead
       },
     });
 
-    if (!user) {
+    if (!rawUser) {
       res.status(401).json({
         success: false,
         error: { code: "UNAUTHORIZED", message: "User not found" },
       });
       return;
     }
+
+    await prisma.refreshToken.delete({ where: { token } });
+
+    const { password, ...user } = rawUser;
+    const userWithFlag = { ...user, hasPassword: !!password };
 
     const payload = { id: user.id, email: user.email, username: user.username };
     const newAccessToken = generateAccessToken(payload);
@@ -274,14 +276,16 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
       },
     });
 
-    res.cookie("refreshToken", newRefreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+   res.cookie("refreshToken", newRefreshToken, {
+     httpOnly: true,
+     secure: process.env.NODE_ENV === "production",
+     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+     maxAge: 7 * 24 * 60 * 60 * 1000,
+   });
+    res.json({
+      success: true,
+      data: { accessToken: newAccessToken, user: userWithFlag },
     });
-
-    res.json({ success: true, data: { accessToken: newAccessToken, user } });
   } catch (error) {
     console.error("Refresh error:", error);
     res.status(401).json({
@@ -400,12 +404,12 @@ export const verifyEmail = async (req: Request, res: Response): Promise<void> =>
         },
       });
 
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
+     res.cookie("refreshToken", refreshToken, {
+       httpOnly: true,
+       secure: process.env.NODE_ENV === "production",
+       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+       maxAge: 7 * 24 * 60 * 60 * 1000,
+     });
 
       res.json({
         success: true,

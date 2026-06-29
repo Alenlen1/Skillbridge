@@ -21,7 +21,8 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  accessToken: null,
+  accessToken:
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null,
   isLoading: true,
 
   setAuth: (user, token) => {
@@ -39,6 +40,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   refresh: async () => {
+    set({ isLoading: true });
     try {
       const { data } = await api.post("/auth/refresh");
       const { accessToken, user } = data.data;

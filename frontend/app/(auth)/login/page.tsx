@@ -18,6 +18,7 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,29 +27,10 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    // Show error if GitHub OAuth failed
     if (searchParams.get("github") === "error") {
       setError("GitHub login failed. Please try again.");
     }
-
-    const clearAuthSession = () => {
-      localStorage.removeItem("accessToken");
-      try {
-        setAuth(null as any, null as any);
-      } catch {
-        setAuth({ id: "", email: "", username: "" } as any, "");
-      }
-    };
-
-    clearAuthSession();
-
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) clearAuthSession();
-    };
-
-    window.addEventListener("pageshow", handlePageShow);
-    return () => window.removeEventListener("pageshow", handlePageShow);
-  }, [setAuth, searchParams]);
+  }, [searchParams]);
 
   const {
     register,
@@ -156,7 +138,6 @@ function LoginForm() {
                 placeholder="Min. 8 characters"
                 className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
-
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
