@@ -169,7 +169,7 @@ export default function TermsPage() {
               </h2>
               <p>
                 If you have any questions about these Terms, please contact us
-                at support@skillbridge.app.
+                at skillbridge.support.team@gmail.com
               </p>
             </section>
           </div>

@@ -163,7 +163,7 @@ export default function PrivacyPage() {
               </h2>
               <p>
                 If you have any questions about this Privacy Policy, please
-                contact us at support@skillbridge.app.
+                contact us at skillbridge.support.team@gmail.com
               </p>
             </section>
           </div>

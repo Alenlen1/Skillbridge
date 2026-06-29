@@ -146,7 +146,7 @@ const faqs = [
   },
   {
     question: "Still have questions?",
-    answer: "Contact us at",
+    answer: "Contact us at skillbridge.support.team@gmail.com",
   },
 ];
 
