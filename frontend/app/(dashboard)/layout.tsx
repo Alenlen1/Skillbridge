@@ -69,14 +69,14 @@ export default function DashboardLayout({
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
-    if (!accessToken) {
-      refresh().then(() => {
-        if (!useAuthStore.getState().accessToken) {
-          router.push("/login");
-        }
-      });
-    }
+    refresh();
   }, []);
+
+  useEffect(() => {
+    if (!isLoading && !accessToken) {
+      router.push("/login");
+    }
+  }, [isLoading, accessToken]);
 
   // Close the mobile drawer whenever the route changes
   useEffect(() => {
