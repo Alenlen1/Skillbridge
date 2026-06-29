@@ -55,7 +55,7 @@ const AI_TOOLS: Tool[] = [
       "Generate a tailored, professional cover letter based on your resume and a job description in seconds.",
     icon: <FaEnvelopeOpenText size={20} />,
     href: "/ai-assistant/cover-letter",
-    available: false,
+    available: true,
   },
   {
     id: "career-roadmap",
@@ -64,7 +64,7 @@ const AI_TOOLS: Tool[] = [
       "Get a personalized step-by-step roadmap from your current position to your target role with milestones and timelines.",
     icon: <FaRoad size={20} />,
     href: "/ai-assistant/roadmap",
-    available: false,
+    available: true,
   },
 ];
 

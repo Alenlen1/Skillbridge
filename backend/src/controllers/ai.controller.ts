@@ -15,6 +15,11 @@ import {
   SkillGapResult,
 } from "../prompts/skillGap.prompt";
 import {
+  buildCoverLetterPrompt,
+  CoverLetterResult,
+} from "../prompts/coverLetter.prompt";
+import { buildRoadmapPrompt, RoadmapResult } from "../prompts/roadmap.prompt";
+import {
   extractTextFromBuffer,
   SUPPORTED_MIME_TYPES,
 } from "../services/resume-parser.service";
@@ -32,29 +37,32 @@ export const reviewResume = async (
     const file = req.file;
 
     if (!file) {
-      res.status(400).json({
-        success: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message:
-            "A resume file is required. Please upload a PDF or DOCX file.",
-        },
-      });
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message:
+              "A resume file is required. Please upload a PDF or DOCX file.",
+          },
+        });
       return;
     }
-
     if (
       !SUPPORTED_MIME_TYPES.includes(
         file.mimetype as (typeof SUPPORTED_MIME_TYPES)[number],
       )
     ) {
-      res.status(400).json({
-        success: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message: "Invalid file type. Please upload a PDF or DOCX file.",
-        },
-      });
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Invalid file type. Please upload a PDF or DOCX file.",
+          },
+        });
       return;
     }
 
@@ -62,66 +70,71 @@ export const reviewResume = async (
       template || "ats"
     ).toLowerCase() as ValidTemplate;
     if (!VALID_TEMPLATES.includes(normalizedTemplate)) {
-      res.status(400).json({
-        success: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message: `Invalid template. Must be one of: ${VALID_TEMPLATES.join(", ")}`,
-        },
-      });
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: `Invalid template. Must be one of: ${VALID_TEMPLATES.join(", ")}`,
+          },
+        });
       return;
     }
 
     const resumeText = await extractTextFromBuffer(file.buffer, file.mimetype);
-
     if (resumeText.length < 100) {
-      res.status(400).json({
-        success: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message:
-            "The extracted resume content is too short. Make sure your file contains readable text.",
-        },
-      });
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message:
+              "The extracted resume content is too short. Make sure your file contains readable text.",
+          },
+        });
       return;
     }
 
     const templateLabel =
       normalizedTemplate.charAt(0).toUpperCase() + normalizedTemplate.slice(1);
-
     const prompt = buildResumePrompt({ template: templateLabel, resumeText });
     const result = await generateStructuredResponse<ResumeReviewResult>(prompt);
-
     res.json({ success: true, data: result });
   } catch (error) {
     console.error("Resume review error:", error);
-
     if (error instanceof SyntaxError) {
-      res.status(502).json({
+      res
+        .status(502)
+        .json({
+          success: false,
+          error: {
+            code: "AI_PARSE_ERROR",
+            message:
+              "The AI returned an unexpected response. Please try again.",
+          },
+        });
+      return;
+    }
+    if (error instanceof Error) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: { code: "PARSE_ERROR", message: error.message },
+        });
+      return;
+    }
+    res
+      .status(500)
+      .json({
         success: false,
         error: {
-          code: "AI_PARSE_ERROR",
-          message: "The AI returned an unexpected response. Please try again.",
+          code: "SERVER_ERROR",
+          message: "Something went wrong while reviewing your resume",
         },
       });
-      return;
-    }
-
-    if (error instanceof Error) {
-      res.status(400).json({
-        success: false,
-        error: { code: "PARSE_ERROR", message: error.message },
-      });
-      return;
-    }
-
-    res.status(500).json({
-      success: false,
-      error: {
-        code: "SERVER_ERROR",
-        message: "Something went wrong while reviewing your resume",
-      },
-    });
   }
 };
 
@@ -132,12 +145,10 @@ export const reviewPortfolio = async (
 ): Promise<void> => {
   try {
     const userId = req.user!.id;
-
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { name: true },
     });
-
     const portfolio = await prisma.portfolio.findUnique({
       where: { userId },
       include: {
@@ -150,13 +161,15 @@ export const reviewPortfolio = async (
     });
 
     if (!portfolio) {
-      res.status(404).json({
-        success: false,
-        error: {
-          code: "NOT_FOUND",
-          message: "Portfolio not found. Please set up your portfolio first.",
-        },
-      });
+      res
+        .status(404)
+        .json({
+          success: false,
+          error: {
+            code: "NOT_FOUND",
+            message: "Portfolio not found. Please set up your portfolio first.",
+          },
+        });
       return;
     }
 
@@ -165,16 +178,17 @@ export const reviewPortfolio = async (
       portfolio.projects.length > 0 ||
       portfolio.experience.length > 0 ||
       portfolio.about;
-
     if (!hasMinimalContent) {
-      res.status(400).json({
-        success: false,
-        error: {
-          code: "INSUFFICIENT_CONTENT",
-          message:
-            "Your portfolio doesn't have enough content to review yet. Add some skills, projects, or experience first.",
-        },
-      });
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "INSUFFICIENT_CONTENT",
+            message:
+              "Your portfolio doesn't have enough content to review yet. Add some skills, projects, or experience first.",
+          },
+        });
       return;
     }
 
@@ -193,29 +207,31 @@ export const reviewPortfolio = async (
 
     const result =
       await generateStructuredResponse<PortfolioReviewResult>(prompt);
-
     res.json({ success: true, data: result });
   } catch (error) {
     console.error("Portfolio review error:", error);
-
     if (error instanceof SyntaxError) {
-      res.status(502).json({
-        success: false,
-        error: {
-          code: "AI_PARSE_ERROR",
-          message: "The AI returned an unexpected response. Please try again.",
-        },
-      });
+      res
+        .status(502)
+        .json({
+          success: false,
+          error: {
+            code: "AI_PARSE_ERROR",
+            message:
+              "The AI returned an unexpected response. Please try again.",
+          },
+        });
       return;
     }
-
-    res.status(500).json({
-      success: false,
-      error: {
-        code: "SERVER_ERROR",
-        message: "Something went wrong while reviewing your portfolio",
-      },
-    });
+    res
+      .status(500)
+      .json({
+        success: false,
+        error: {
+          code: "SERVER_ERROR",
+          message: "Something went wrong while reviewing your portfolio",
+        },
+      });
   }
 };
 
@@ -235,24 +251,284 @@ export const analyzeSkillGap = async (
       typeof targetRole !== "string" ||
       targetRole.trim().length === 0
     ) {
-      res.status(400).json({
-        success: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message: "Target role is required.",
-        },
-      });
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Target role is required.",
+          },
+        });
+      return;
+    }
+    if (targetRole.trim().length > 100) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Target role must be under 100 characters.",
+          },
+        });
       return;
     }
 
-    if (targetRole.trim().length > 100) {
-      res.status(400).json({
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+      include: { skills: true },
+    });
+    const currentSkills = portfolio?.skills ?? [];
+    const prompt = buildSkillGapPrompt({
+      targetRole: targetRole.trim(),
+      jobDescription: jobDescription?.trim() || null,
+      currentSkills,
+    });
+    const result = await generateStructuredResponse<SkillGapResult>(prompt);
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error("Skill gap analysis error:", error);
+    if (error instanceof SyntaxError) {
+      res
+        .status(502)
+        .json({
+          success: false,
+          error: {
+            code: "AI_PARSE_ERROR",
+            message:
+              "The AI returned an unexpected response. Please try again.",
+          },
+        });
+      return;
+    }
+    res
+      .status(500)
+      .json({
         success: false,
         error: {
-          code: "VALIDATION_ERROR",
-          message: "Target role must be under 100 characters.",
+          code: "SERVER_ERROR",
+          message: "Something went wrong during skill gap analysis",
         },
       });
+  }
+};
+
+// POST /api/v1/ai/cover-letter
+export const generateCoverLetter = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { companyName, jobDescription } = req.body as {
+      companyName?: string;
+      jobDescription?: string;
+    };
+    const file = req.file;
+
+    if (
+      !companyName ||
+      typeof companyName !== "string" ||
+      companyName.trim().length === 0
+    ) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Company name is required.",
+          },
+        });
+      return;
+    }
+    if (
+      !jobDescription ||
+      typeof jobDescription !== "string" ||
+      jobDescription.trim().length < 50
+    ) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message:
+              "Job description is required and must be at least 50 characters.",
+          },
+        });
+      return;
+    }
+
+    const userId = req.user!.id;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true },
+    });
+
+    let resumeText: string | null = null;
+    let portfolioSummary: string | null = null;
+
+    if (file) {
+      if (
+        !SUPPORTED_MIME_TYPES.includes(
+          file.mimetype as (typeof SUPPORTED_MIME_TYPES)[number],
+        )
+      ) {
+        res
+          .status(400)
+          .json({
+            success: false,
+            error: {
+              code: "VALIDATION_ERROR",
+              message: "Invalid file type. Please upload a PDF or DOCX file.",
+            },
+          });
+        return;
+      }
+      resumeText = await extractTextFromBuffer(file.buffer, file.mimetype);
+    } else {
+      const portfolio = await prisma.portfolio.findUnique({
+        where: { userId },
+        include: {
+          skills: true,
+          experience: true,
+          education: true,
+          projects: true,
+        },
+      });
+
+      if (portfolio) {
+        const skillsText = portfolio.skills.map((s) => s.name).join(", ");
+        const experienceText = portfolio.experience
+          .map(
+            (e) =>
+              `${e.role} at ${e.company}${e.description ? `: ${e.description}` : ""}`,
+          )
+          .join("\n");
+        const projectsText = portfolio.projects
+          .map(
+            (p) =>
+              `${p.title}: ${p.description ?? ""} (${p.techStack.join(", ")})`,
+          )
+          .join("\n");
+        const educationText = portfolio.education
+          .map((e) => `${e.degree ?? ""} ${e.field ?? ""} at ${e.school}`)
+          .join("\n");
+
+        portfolioSummary = [
+          portfolio.headline ? `Headline: ${portfolio.headline}` : "",
+          portfolio.about ? `About: ${portfolio.about}` : "",
+          skillsText ? `Skills: ${skillsText}` : "",
+          experienceText ? `Experience:\n${experienceText}` : "",
+          projectsText ? `Projects:\n${projectsText}` : "",
+          educationText ? `Education:\n${educationText}` : "",
+        ]
+          .filter(Boolean)
+          .join("\n\n");
+      }
+    }
+
+    const prompt = buildCoverLetterPrompt({
+      companyName: companyName.trim(),
+      jobDescription: jobDescription.trim(),
+      candidateName: user?.name ?? null,
+      resumeText,
+      portfolioSummary,
+    });
+
+    const result = await generateStructuredResponse<CoverLetterResult>(prompt);
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error("Cover letter generation error:", error);
+    if (error instanceof SyntaxError) {
+      res
+        .status(502)
+        .json({
+          success: false,
+          error: {
+            code: "AI_PARSE_ERROR",
+            message:
+              "The AI returned an unexpected response. Please try again.",
+          },
+        });
+      return;
+    }
+    if (error instanceof Error) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: { code: "PARSE_ERROR", message: error.message },
+        });
+      return;
+    }
+    res
+      .status(500)
+      .json({
+        success: false,
+        error: {
+          code: "SERVER_ERROR",
+          message: "Something went wrong while generating your cover letter",
+        },
+      });
+  }
+};
+
+// POST /api/v1/ai/roadmap
+export const generateRoadmap = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { currentRole, targetRole, yearsOfExperience } = req.body as {
+      currentRole?: string;
+      targetRole?: string;
+      yearsOfExperience?: string;
+    };
+
+    if (
+      !currentRole ||
+      typeof currentRole !== "string" ||
+      currentRole.trim().length === 0
+    ) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Current role is required.",
+          },
+        });
+      return;
+    }
+    if (
+      !targetRole ||
+      typeof targetRole !== "string" ||
+      targetRole.trim().length === 0
+    ) {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Target role is required.",
+          },
+        });
+      return;
+    }
+    if (!yearsOfExperience || typeof yearsOfExperience !== "string") {
+      res
+        .status(400)
+        .json({
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Years of experience is required.",
+          },
+        });
       return;
     }
 
@@ -263,35 +539,38 @@ export const analyzeSkillGap = async (
 
     const currentSkills = portfolio?.skills ?? [];
 
-    const prompt = buildSkillGapPrompt({
+    const prompt = buildRoadmapPrompt({
+      currentRole: currentRole.trim(),
       targetRole: targetRole.trim(),
-      jobDescription: jobDescription?.trim() || null,
+      yearsOfExperience,
       currentSkills,
     });
 
-    const result = await generateStructuredResponse<SkillGapResult>(prompt);
-
+    const result = await generateStructuredResponse<RoadmapResult>(prompt);
     res.json({ success: true, data: result });
   } catch (error) {
-    console.error("Skill gap analysis error:", error);
-
+    console.error("Roadmap generation error:", error);
     if (error instanceof SyntaxError) {
-      res.status(502).json({
-        success: false,
-        error: {
-          code: "AI_PARSE_ERROR",
-          message: "The AI returned an unexpected response. Please try again.",
-        },
-      });
+      res
+        .status(502)
+        .json({
+          success: false,
+          error: {
+            code: "AI_PARSE_ERROR",
+            message:
+              "The AI returned an unexpected response. Please try again.",
+          },
+        });
       return;
     }
-
-    res.status(500).json({
-      success: false,
-      error: {
-        code: "SERVER_ERROR",
-        message: "Something went wrong during skill gap analysis",
-      },
-    });
+    res
+      .status(500)
+      .json({
+        success: false,
+        error: {
+          code: "SERVER_ERROR",
+          message: "Something went wrong while generating your roadmap",
+        },
+      });
   }
 };
