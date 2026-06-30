@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import {
   IconBriefcase,
   IconCertificate,
@@ -81,18 +81,9 @@ const tabs: Tab[] = [
 
 export default function ProductPreview() {
   const [active, setActive] = useState<TabId>("portfolio");
-  const [isPaused, setIsPaused] = useState(false);
 
   const activeIndex = tabs.findIndex((tab) => tab.id === active);
 
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      const next = (activeIndex + 1) % tabs.length;
-      setActive(tabs[next].id);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [activeIndex, isPaused]);
 
   const currentTab = tabs[activeIndex];
   const ActivePanel = currentTab.component;
@@ -100,7 +91,7 @@ export default function ProductPreview() {
   const goTo = (index: number) => {
     const clamped = Math.max(0, Math.min(tabs.length - 1, index));
     setActive(tabs[clamped].id);
-    setIsPaused(true);
+  
   };
 
   const handleDragEnd = (

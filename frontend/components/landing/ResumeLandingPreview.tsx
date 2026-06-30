@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect,useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   FaCheckCircle,
@@ -151,6 +151,32 @@ const demoResume: ResumeData = {
 
 export default function ResumeLandingPreview() {
   const [template, setTemplate] = useState<Template>("ats");
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [cardHeight, setCardHeight] = useState(0);
+
+  const CARD_WIDTH = 850;
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const updateScale = () => {
+      const available = wrapper.clientWidth;
+      const next = Math.min(1, available / CARD_WIDTH);
+      setScale(next);
+      if (cardRef.current) {
+        setCardHeight(cardRef.current.scrollHeight);
+      }
+    };
+
+    updateScale();
+
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(wrapper);
+    return () => observer.disconnect();
+  }, [template]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -183,32 +209,44 @@ export default function ResumeLandingPreview() {
       {/* Same card treatment as the real ResumePage preview:
           gradient dark card, generous padding, max-w-[850px] inner
           card with the same border/shadow as the real page. */}
-      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 to-black p-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={template}
-            initial={{ opacity: 0, scale: 0.98, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: -10 }}
-            transition={{ duration: 0.5 }}
-            className="
-              mx-auto
-              max-w-[850px]
-              overflow-hidden
-              rounded-2xl
-              border
-              border-slate-200
-              bg-white
-              shadow-[0_45px_120px_rgba(0,0,0,.45)]
-            "
-          >
-            {template === "ats" && <ATSPreview data={demoResume} />}
+      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 to-black p-4 sm:p-10">
+        <div
+          ref={wrapperRef}
+          className="mx-auto overflow-hidden"
+          style={{ height: cardHeight ? cardHeight * scale : undefined }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={template}
+              initial={{ opacity: 0, scale: scale * 0.98, y: 10 }}
+              animate={{ opacity: 1, scale, y: 0 }}
+              exit={{ opacity: 0, scale: scale * 0.98, y: -10 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                width: CARD_WIDTH,
+                transformOrigin: "top left",
+              }}
+              className="
+                overflow-hidden
+                rounded-2xl
+                border
+                border-slate-200
+                bg-white
+                shadow-[0_45px_120px_rgba(0,0,0,.45)]
+              "
+            >
+              <div ref={cardRef}>
+                {template === "ats" && <ATSPreview data={demoResume} />}
 
-            {template === "student" && <StudentPreview data={demoResume} />}
+                {template === "student" && <StudentPreview data={demoResume} />}
 
-            {template === "developer" && <DeveloperPreview data={demoResume} />}
-          </motion.div>
-        </AnimatePresence>
+                {template === "developer" && (
+                  <DeveloperPreview data={demoResume} />
+                )}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         <div className="mt-8 flex justify-center gap-3">
           {TEMPLATES.map((t) => (

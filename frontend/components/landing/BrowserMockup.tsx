@@ -58,7 +58,8 @@ export default function BrowserMockup({
           <motion.div
             className="touch-pan-y cursor-grab overflow-hidden rounded-xl bg-[#0d0d18] active:cursor-grabbing"
             drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
+            dragConstraints={{ left: -120, right: 120 }}
+            dragSnapToOrigin
             dragElastic={0.15}
             onDragEnd={handleDragEnd}
           >
