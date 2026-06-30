@@ -98,8 +98,8 @@ export default function ProductPreview() {
    _: unknown,
    info: { offset: { x: number }; velocity: { x: number } },
  ) => {
-   const swipedLeft = info.offset.x < -50 || info.velocity.x < -300;
-   const swipedRight = info.offset.x > 50 || info.velocity.x > 300;
+  const swipedLeft = info.offset.x < -30 || info.velocity.x < -150;
+  const swipedRight = info.offset.x > 30 || info.velocity.x > 150;
 
    if (swipedLeft) goTo(activeIndex + 1);
    else if (swipedRight) goTo(activeIndex - 1);
