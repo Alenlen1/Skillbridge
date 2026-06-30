@@ -364,7 +364,7 @@ export default function LandingPage() {
                 </Link>
               </div>
 
-              <div className="rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 via-[#111827] to-[#0a0a0f] p-6">
+              <div className="rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/[0.06] via-[#0a0a0f] to-black p-6">
                 <div className="flex items-start gap-5">
                   <div className="flex flex-col items-center">
                     <div className="flex h-24 w-24 items-center justify-center rounded-full border-[6px] border-indigo-500">
@@ -410,7 +410,7 @@ export default function LandingPage() {
                 <div className="my-6 h-px bg-white/10" />
 
                 <div className="space-y-3">
-                  <div className="flex items-start gap-3 rounded-xl border border-green-500/20 bg-green-500/[0.04] p-4">
+                  <div className="flex items-start gap-3 rounded-xl border border-green-500/20 bg-green-500/[0.02] p-4">
                     <FaCheckCircle className="mt-0.5 text-green-400" />
                     <div>
                       <p className="font-medium text-green-400">
@@ -423,7 +423,7 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/[0.04] p-4">
+                  <div className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/[0.02] p-4">
                     <FaExclamationTriangle className="mt-0.5 text-red-400" />
                     <div>
                       <p className="font-medium text-red-400">
@@ -435,7 +435,7 @@ export default function LandingPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-4">
+                  <div className="flex items-start gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.02] p-4">
                     <FaLightbulb className="mt-0.5 text-indigo-300" />
                     <div>
                       <p className="font-medium text-indigo-300">
@@ -594,40 +594,6 @@ export default function LandingPage() {
               <p className="mt-2 text-sm text-slate-400">
                 No subscriptions. No credit card required.
               </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Founder note */}
-        <section className="scroll-mt-20 border-t border-white/[0.04] px-6 py-32">
-          <div className="mx-auto max-w-2xl">
-            <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 sm:p-10">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-indigo-500/[0.08] blur-[80px]"
-              />
-              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-indigo-400">
-                Why I built this
-              </p>
-              <p className="mb-6 text-lg leading-relaxed text-slate-300">
-                As a student, I wanted a better way to showcase my projects,
-                skills, certificates, and achievements in one place. SkillBridge
-                was created to help students present their work professionally
-                and turn their skills into opportunities.
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-xs font-semibold text-white">
-                  AA
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-white">
-                    Alen Amarante
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    Creator of SkillBridge · IT Student
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </section>

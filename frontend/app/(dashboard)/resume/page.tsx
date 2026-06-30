@@ -8,9 +8,8 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
-import { HiOutlineDownload, HiOutlineEye } from "react-icons/hi";
+import { HiOutlineEye } from "react-icons/hi";
 
-import { FiZoomIn, FiZoomOut } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
@@ -28,21 +27,21 @@ const TEMPLATES = [
     name: "ATS Professional",
     description: "Clean black & white, optimized for ATS scanners",
     best: "Job applications",
-    icon: <FaFilePdf className="text-3xl text-indigo-400" />,
+    icon: <FaFilePdf className="text-lg text-indigo-400" />,
   },
   {
     id: "student" as Template,
     name: "Student",
     description: "Modern design for internships and fresh graduates",
     best: "Students",
-    icon: <FaUserGraduate className="text-3xl text-indigo-400" />,
+    icon: <FaUserGraduate className="text-lg text-indigo-400" />,
   },
   {
     id: "developer" as Template,
     name: "Developer",
     description: "Two-column layout focused on technical skills",
     best: "Software Engineers",
-    icon: <FaLaptopCode className="text-3xl text-indigo-400" />,
+    icon: <FaLaptopCode className="text-lg text-indigo-400" />,
   },
 ];
 
@@ -164,29 +163,31 @@ export default function ResumePage() {
                 <button
                   key={t.id}
                   onClick={() => setSelectedTemplate(t.id)}
-                  className={`relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                  className={`relative flex items-start gap-3 rounded-xl border p-4 text-left transition-all duration-200 ${
                     selectedTemplate === t.id
-                      ? "border-indigo-500 bg-indigo-500/10 shadow-lg shadow-indigo-500/10"
+                      ? "border-indigo-500 bg-indigo-500/10"
                       : "border-white/[0.06] bg-white/[0.02] hover:border-white/20"
                   }`}
                 >
-                  {selectedTemplate === t.id && (
-                    <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-indigo-500 px-3 py-1 text-xs font-medium text-white">
-                      <FaCheckCircle size={12} />
-                      Selected
-                    </div>
-                  )}
-
-                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-indigo-500/10">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-500/10">
                     {t.icon}
                   </div>
 
-                  <h3 className="text-lg font-semibold text-white">{t.name}</h3>
-
-                  <p className="mt-2 text-sm text-slate-400">{t.description}</p>
-
-                  <div className="mt-5 text-xs text-indigo-300">
-                    Best for: {t.best}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-white">
+                        {t.name}
+                      </h3>
+                      {selectedTemplate === t.id && (
+                        <FaCheckCircle
+                          size={14}
+                          className="flex-shrink-0 text-indigo-400"
+                        />
+                      )}
+                    </div>
+                    <p className="mt-1 text-xs text-slate-400">
+                      {t.description}
+                    </p>
                   </div>
                 </button>
               ))}

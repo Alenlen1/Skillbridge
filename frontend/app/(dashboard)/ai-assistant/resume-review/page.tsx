@@ -40,16 +40,16 @@ const TEMPLATES: {
     icon: <FaFilePdf size={18} />,
   },
   {
-    id: "developer",
-    name: "Developer",
-    description: "Technical layout focused on skills and projects",
-    icon: <FaLaptopCode size={18} />,
-  },
-  {
     id: "student",
     name: "Student",
     description: "Academic-first layout for new graduates",
     icon: <FaUserGraduate size={18} />,
+  },
+  {
+    id: "developer",
+    name: "Developer",
+    description: "Technical layout focused on skills and projects",
+    icon: <FaLaptopCode size={18} />,
   },
 ];
 
