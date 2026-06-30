@@ -94,14 +94,16 @@ export default function ProductPreview() {
   
   };
 
-  const handleDragEnd = (
-    _: unknown,
-    info: { offset: { x: number }; velocity: { x: number } },
-  ) => {
-    if (info.offset.x < -50) goTo(activeIndex + 1);
-    else if (info.offset.x > 50) goTo(activeIndex - 1);
-  };
+ const handleDragEnd = (
+   _: unknown,
+   info: { offset: { x: number }; velocity: { x: number } },
+ ) => {
+   const swipedLeft = info.offset.x < -50 || info.velocity.x < -300;
+   const swipedRight = info.offset.x > 50 || info.velocity.x > 300;
 
+   if (swipedLeft) goTo(activeIndex + 1);
+   else if (swipedRight) goTo(activeIndex - 1);
+ };
   return (
     <div className="relative mt-20 w-full max-w-5xl">
       {/* Active tab label */}
