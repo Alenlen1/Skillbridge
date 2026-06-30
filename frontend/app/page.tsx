@@ -137,7 +137,7 @@ const faqs = [
   {
     question: "Can I download my resume as a PDF?",
     answer:
-      "Yes. SkillBridge generates ATS-friendly PDF resumes that you can download and share.",
+      "Yes. SkillBridge generates 3 resume styles PDF resumes that you can download and share.",
   },
   {
     question: "Who is SkillBridge for?",
