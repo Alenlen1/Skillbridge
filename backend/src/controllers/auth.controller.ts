@@ -22,7 +22,11 @@ const generateRefreshToken = (user: {
   email: string;
   username: string;
 }) => {
-  return jwt.sign(user, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+  return jwt.sign(
+    { ...user, jti: crypto.randomUUID() },
+    process.env.JWT_REFRESH_SECRET!,
+    { expiresIn: "7d" },
+  );
 };
 
 // POST /api/v1/auth/register
@@ -259,8 +263,7 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    await prisma.refreshToken.delete({ where: { token } });
-
+    await prisma.refreshToken.deleteMany({ where: { token } });
     const { password, ...user } = rawUser;
     const userWithFlag = { ...user, hasPassword: !!password };
 
