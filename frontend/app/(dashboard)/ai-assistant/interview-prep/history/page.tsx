@@ -17,7 +17,7 @@ import api from "@/lib/api";
 interface SessionSummary {
   id: string;
   targetRole: string;
-  status: "in_progress" | "completed";
+  status: "in_progress" | "completed" | "abandoned";
   overallScore: number | null;
   createdAt: string;
   completedAt: string | null;
@@ -36,6 +36,12 @@ const scoreColor = (score: number | null) => {
   if (score >= 80) return "text-emerald-400";
   if (score >= 60) return "text-yellow-400";
   return "text-red-400";
+};
+
+const STALE_DAYS = 3;
+const isStale = (createdAt: string) => {
+  const ageMs = Date.now() - new Date(createdAt).getTime();
+  return ageMs > STALE_DAYS * 24 * 60 * 60 * 1000;
 };
 
 export default function InterviewHistoryPage() {
@@ -203,6 +209,18 @@ export default function InterviewHistoryPage() {
                       <span className="flex items-center gap-1 rounded-full border border-yellow-500/20 bg-yellow-500/10 px-2 py-0.5 text-[10px] font-medium text-yellow-400">
                         <FaCircle size={5} />
                         In Progress
+                      </span>
+                    )}
+                    {session.status === "in_progress" &&
+                      isStale(session.createdAt) && (
+                        <span className="rounded-full border border-slate-500/20 bg-slate-500/10 px-2 py-0.5 text-[10px] font-medium text-slate-400">
+                          Inactive
+                        </span>
+                      )}
+                    {session.status === "abandoned" && (
+                      <span className="flex items-center gap-1 rounded-full border border-slate-500/20 bg-slate-500/10 px-2 py-0.5 text-[10px] font-medium text-slate-500">
+                        <FaCircle size={5} />
+                        Abandoned
                       </span>
                     )}
                   </div>

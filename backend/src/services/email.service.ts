@@ -78,3 +78,26 @@ export async function sendPasswordResetEmail(
 
   await sendEmail(to, "Reset your SkillBridge password", html);
 }
+
+export async function sendInterviewReminderEmail(to: string, name: string) {
+  const safeName = sanitizeForEmail(name);
+  const practiceUrl = `${FRONTEND_URL}/ai-assistant/interview-prep`;
+
+  const html = `
+    <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px;">
+      <img src="${FRONTEND_URL}/logo.png" alt="SkillBridge" style="height: 36px; width: auto; margin-bottom: 24px;" />
+      <h2 style="color: #0a0a0f; margin-bottom: 8px;">Keep your interview skills sharp</h2>
+      <p style="color: #555; line-height: 1.6;">
+        Hi ${safeName}, it's been a little while since your last mock interview practice on SkillBridge. Regular practice is one of the best ways to walk into a real interview with confidence.
+      </p>
+      <a href="${practiceUrl}" style="display: inline-block; background: #6366f1; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 500; margin: 16px 0;">
+        Practice an interview
+      </a>
+      <p style="color: #888; font-size: 13px; margin-top: 24px;">
+        You're receiving this because you have an account on SkillBridge. We'll only send this reminder occasionally.
+      </p>
+    </div>
+  `;
+
+  await sendEmail(to, "Time for a quick interview practice?", html);
+}

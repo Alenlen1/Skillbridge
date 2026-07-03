@@ -1,0 +1,22 @@
+name: Daily Interview Tasks
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  daily-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up stale interview sessions
+        run: |
+          curl -s -o /dev/null -w "Cleanup status: %{http_code}\n" \
+            -X POST "https://skillbridge-tojl.onrender.com/api/v1/cron/cleanup-stale-sessions" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"
+
+      - name: Send interview practice reminders
+        run: |
+          curl -s -o /dev/null -w "Reminders status: %{http_code}\n" \
+            -X POST "https://skillbridge-tojl.onrender.com/api/v1/cron/interview-reminders" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"

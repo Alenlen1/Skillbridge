@@ -27,6 +27,7 @@ model User {
   refreshTokens RefreshToken[]
   verificationTokens VerificationToken[]
   interviewSessions InterviewSession[]
+  lastInterviewReminderAt DateTime?
 }
 model VerificationToken {
   id        String   @id @default(cuid())
