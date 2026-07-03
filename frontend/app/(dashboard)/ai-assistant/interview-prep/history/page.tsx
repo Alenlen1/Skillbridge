@@ -43,6 +43,9 @@ export default function InterviewHistoryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<SessionSummary | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -62,16 +65,18 @@ export default function InterviewHistoryPage() {
     fetchHistory();
   }, []);
 
-  const handleDelete = async (e: React.MouseEvent, sessionId: string) => {
+  const handleDeleteClick = (e: React.MouseEvent, session: SessionSummary) => {
     e.preventDefault();
     e.stopPropagation();
+    setPendingDelete(session);
+  };
 
-    const confirmed = window.confirm(
-      "Delete this interview session? This can't be undone.",
-    );
-    if (!confirmed) return;
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    const sessionId = pendingDelete.id;
 
     setDeletingId(sessionId);
+    setPendingDelete(null);
     try {
       const { data } = await api.delete(`/interview/${sessionId}`);
       if (data.success) {
@@ -217,7 +222,7 @@ export default function InterviewHistoryPage() {
                   </div>
                 )}
                 <button
-                  onClick={(e) => handleDelete(e, session.id)}
+                  onClick={(e) => handleDeleteClick(e, session)}
                   disabled={deletingId === session.id}
                   className="flex-shrink-0 rounded-lg p-2 text-slate-600 transition-colors hover:bg-red-500/10 hover:text-red-400 disabled:opacity-50"
                   aria-label="Delete session"
@@ -230,6 +235,48 @@ export default function InterviewHistoryPage() {
                 </button>
               </Link>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Delete confirmation modal */}
+      {pendingDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+          onClick={() => setPendingDelete(null)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm rounded-2xl border border-white/[0.08] bg-[#0d0d14] p-6 shadow-2xl"
+          >
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 text-red-400">
+              <FaTrash size={18} />
+            </div>
+            <h3 className="mb-2 text-center text-base font-semibold text-white">
+              Delete interview session?
+            </h3>
+            <p className="mb-6 text-center text-xs leading-relaxed text-slate-400">
+              You&apos;re about to delete your{" "}
+              <span className="font-medium text-slate-300">
+                {pendingDelete.targetRole}
+              </span>{" "}
+              session and all its answers and feedback. This can&apos;t be
+              undone.
+            </p>
+            <div className="flex gap-2.5">
+              <button
+                onClick={() => setPendingDelete(null)}
+                className="flex-1 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-300 transition-colors hover:border-white/[0.14] hover:text-white"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 rounded-xl bg-red-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}
