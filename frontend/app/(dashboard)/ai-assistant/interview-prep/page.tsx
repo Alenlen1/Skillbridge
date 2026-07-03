@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   FaChevronLeft,
@@ -10,6 +11,7 @@ import {
   FaUserTie,
   FaSitemap,
   FaLightbulb,
+  FaMicrophone,
 } from "react-icons/fa";
 import { IconSparkles } from "@tabler/icons-react";
 import api from "@/lib/api";
@@ -49,9 +51,11 @@ const TYPE_STYLES = {
 };
 
 export default function InterviewPrepPage() {
+  const router = useRouter();
   const [targetRole, setTargetRole] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [starting, setStarting] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<InterviewPrepResult | null>(null);
   const [expanded, setExpanded] = useState<number | null>(null);
@@ -97,6 +101,35 @@ export default function InterviewPrepPage() {
     setTargetRole("");
     setJobDescription("");
     setExpanded(null);
+  };
+
+  const handlePractice = async () => {
+    if (!result) return;
+    setError("");
+    setStarting(true);
+    try {
+      const { data } = await api.post("/interview/start", {
+        targetRole: result.targetRole,
+        jobDescription: jobDescription.trim() || undefined,
+        questions: result.questions,
+      });
+
+      if (data.success) {
+        router.push(`/ai-assistant/interview-prep/practice/${data.data.id}`);
+      } else {
+        setError(
+          data.error?.message || "Could not start the practice session.",
+        );
+      }
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message ||
+        "Failed to start the practice session. Please try again.";
+      setError(message);
+    } finally {
+      setStarting(false);
+    }
   };
 
   const technicalCount =
@@ -320,6 +353,35 @@ export default function InterviewPrepPage() {
               </ul>
             </div>
           )}
+
+          {/* Error */}
+          {error && (
+            <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
+              <FaTimesCircle
+                className="mt-0.5 flex-shrink-0 text-red-400"
+                size={14}
+              />
+              <p className="text-xs text-red-300">{error}</p>
+            </div>
+          )}
+
+          <button
+            onClick={handlePractice}
+            disabled={starting}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {starting ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                Starting session...
+              </>
+            ) : (
+              <>
+                <FaMicrophone size={13} />
+                Practice This Interview
+              </>
+            )}
+          </button>
 
           {/* Actions */}
           <div className="flex flex-col gap-2 sm:flex-row">
