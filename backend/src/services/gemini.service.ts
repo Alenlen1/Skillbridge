@@ -26,10 +26,71 @@ export const generateStructuredResponse = async <T>(
     throw new Error("Gemini returned an empty response");
   }
 
-  const cleaned = text
+  let cleaned = text
     .trim()
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/\s*```$/, "");
 
-  return JSON.parse(cleaned) as T;
+  // Gemini sometimes appends stray text after the JSON object/array even
+  // with responseMimeType set. Extract just the outermost JSON structure
+  // so trailing content doesn't break JSON.parse.
+  const firstBrace = cleaned.indexOf("{");
+  const firstBracket = cleaned.indexOf("[");
+  const start =
+    firstBrace === -1
+      ? firstBracket
+      : firstBracket === -1
+        ? firstBrace
+        : Math.min(firstBrace, firstBracket);
+
+  if (start > 0) {
+    cleaned = cleaned.slice(start);
+  }
+
+  const openChar = cleaned[0];
+  const closeChar = openChar === "[" ? "]" : "}";
+  if (openChar === "{" || openChar === "[") {
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+    let endIndex = -1;
+
+    for (let i = 0; i < cleaned.length; i++) {
+      const char = cleaned[i];
+
+      if (inString) {
+        if (escaped) {
+          escaped = false;
+        } else if (char === "\\") {
+          escaped = true;
+        } else if (char === '"') {
+          inString = false;
+        }
+        continue;
+      }
+
+      if (char === '"') {
+        inString = true;
+      } else if (char === openChar) {
+        depth++;
+      } else if (char === closeChar) {
+        depth--;
+        if (depth === 0) {
+          endIndex = i;
+          break;
+        }
+      }
+    }
+
+    if (endIndex !== -1) {
+      cleaned = cleaned.slice(0, endIndex + 1);
+    }
+  }
+
+  try {
+    return JSON.parse(cleaned) as T;
+  } catch (error) {
+    console.error("Gemini raw response that failed to parse:", text);
+    throw error;
+  }
 };
