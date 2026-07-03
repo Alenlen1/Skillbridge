@@ -26,6 +26,7 @@ model User {
   events        AnalyticsEvent[]
   refreshTokens RefreshToken[]
   verificationTokens VerificationToken[]
+  interviewSessions InterviewSession[]
 }
 model VerificationToken {
   id        String   @id @default(cuid())
@@ -166,4 +167,43 @@ model AnalyticsEvent {
   createdAt DateTime @default(now())
 
   @@index([userId, createdAt])
+}
+
+model InterviewSession {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetRole      String
+  jobDescription  String?
+  resumeText      String?
+  status          String   @default("in_progress") // "in_progress" | "completed"
+  overallScore    Int?
+  overallFeedback String?
+  strengths       String[]
+  improvements    String[]
+  createdAt       DateTime  @default(now())
+  completedAt     DateTime?
+
+  questions       InterviewQuestionAttempt[]
+
+  @@index([userId, createdAt])
+}
+
+model InterviewQuestionAttempt {
+  id           String           @id @default(cuid())
+  sessionId    String
+  session      InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question     String
+  type         String // "technical" | "behavioral" | "situational"
+  tip          String?
+  order        Int
+  userAnswer   String?
+  feedback     String?
+  score        Int?
+  strengths    String[]
+  improvements String[]
+  answeredAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([sessionId, order])
 }
