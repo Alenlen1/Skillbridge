@@ -366,3 +366,39 @@ export const getSessionDetail = async (
     });
   }
 };
+
+// DELETE /api/v1/interview/:sessionId
+export const deleteSession = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const sessionId = req.params.sessionId as string;
+
+    const session = await prisma.interviewSession.findFirst({
+      where: { id: sessionId, userId: req.user!.id },
+    });
+    if (!session) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Interview session not found." },
+      });
+      return;
+    }
+
+    // InterviewQuestionAttempt rows are removed automatically via
+    // onDelete: Cascade defined in the schema.
+    await prisma.interviewSession.delete({ where: { id: session.id } });
+
+    res.json({ success: true, data: { id: session.id } });
+  } catch (error) {
+    console.error("Delete interview session error:", error);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: "SERVER_ERROR",
+        message: "Something went wrong while deleting this session",
+      },
+    });
+  }
+};

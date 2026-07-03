@@ -7,6 +7,7 @@ import {
   completeSession,
   getHistory,
   getSessionDetail,
+  deleteSession,
 } from "../controllers/interview.controller";
 
 const router = Router();
@@ -18,5 +19,6 @@ router.get("/history", getHistory);
 router.get("/:sessionId", getSessionDetail);
 router.post("/:sessionId/questions/:questionId/answer", submitAnswer);
 router.post("/:sessionId/complete", completeSession);
+router.delete("/:sessionId", deleteSession);
 
 export default router;

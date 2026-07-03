@@ -9,6 +9,7 @@ import {
   FaUserTie,
   FaSitemap,
   FaCircle,
+  FaTrash,
 } from "react-icons/fa";
 import { IconSparkles } from "@tabler/icons-react";
 import api from "@/lib/api";
@@ -41,6 +42,7 @@ export default function InterviewHistoryPage() {
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -59,6 +61,30 @@ export default function InterviewHistoryPage() {
     };
     fetchHistory();
   }, []);
+
+  const handleDelete = async (e: React.MouseEvent, sessionId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const confirmed = window.confirm(
+      "Delete this interview session? This can't be undone.",
+    );
+    if (!confirmed) return;
+
+    setDeletingId(sessionId);
+    try {
+      const { data } = await api.delete(`/interview/${sessionId}`);
+      if (data.success) {
+        setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+      } else {
+        setError(data.error?.message || "Could not delete this session.");
+      }
+    } catch {
+      setError("Failed to delete this session. Please try again.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const completedSessions = sessions.filter((s) => s.status === "completed");
   const averageScore =
@@ -190,6 +216,18 @@ export default function InterviewHistoryPage() {
                     <p className="text-[10px] text-slate-600">/ 100</p>
                   </div>
                 )}
+                <button
+                  onClick={(e) => handleDelete(e, session.id)}
+                  disabled={deletingId === session.id}
+                  className="flex-shrink-0 rounded-lg p-2 text-slate-600 transition-colors hover:bg-red-500/10 hover:text-red-400 disabled:opacity-50"
+                  aria-label="Delete session"
+                >
+                  {deletingId === session.id ? (
+                    <span className="block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/20 border-t-red-400" />
+                  ) : (
+                    <FaTrash size={12} />
+                  )}
+                </button>
               </Link>
             ))}
           </div>
