@@ -1,596 +1,404 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   FaChevronLeft,
   FaTimesCircle,
-  FaMicrophone,
-  FaMicrophoneSlash,
-  FaVolumeUp,
-  FaKeyboard,
-  FaCheckCircle,
+  FaComments,
   FaCode,
   FaUserTie,
   FaSitemap,
+  FaLightbulb,
+  FaMicrophone,
 } from "react-icons/fa";
 import { IconSparkles } from "@tabler/icons-react";
 import api from "@/lib/api";
 
-interface QuestionAttempt {
-  id: string;
+interface InterviewQuestion {
   question: string;
   type: "technical" | "behavioral" | "situational";
-  tip: string | null;
-  order: number;
-  userAnswer: string | null;
-  feedback: string | null;
-  score: number | null;
-  strengths: string[];
-  improvements: string[];
+  tip: string;
 }
 
-interface Session {
-  id: string;
+interface InterviewPrepResult {
   targetRole: string;
-  status: "in_progress" | "completed";
-  overallScore: number | null;
-  overallFeedback: string | null;
-  strengths: string[];
-  improvements: string[];
-  questions: QuestionAttempt[];
+  summary: string;
+  questions: InterviewQuestion[];
+  generalTips: string[];
 }
 
-const TYPE_ICON: Record<string, React.ReactNode> = {
-  technical: <FaCode size={10} />,
-  behavioral: <FaUserTie size={10} />,
-  situational: <FaSitemap size={10} />,
+const TYPE_STYLES = {
+  technical: {
+    label: "Technical",
+    icon: <FaCode size={10} />,
+    badge: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+    dot: "bg-indigo-400",
+  },
+  behavioral: {
+    label: "Behavioral",
+    icon: <FaUserTie size={10} />,
+    badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    dot: "bg-emerald-400",
+  },
+  situational: {
+    label: "Situational",
+    icon: <FaSitemap size={10} />,
+    badge: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+    dot: "bg-yellow-400",
+  },
 };
 
-export default function InterviewPracticePage() {
-  const params = useParams();
+export default function InterviewPrepPage() {
   const router = useRouter();
-  const sessionId = params.sessionId as string;
-
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [targetRole, setTargetRole] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [starting, setStarting] = useState(false);
   const [error, setError] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answerText, setAnswerText] = useState("");
-  const [inputMode, setInputMode] = useState<"voice" | "type">("voice");
-  const [isRecording, setIsRecording] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [completing, setCompleting] = useState(false);
-  const [speechSupported, setSpeechSupported] = useState(true);
+  const [result, setResult] = useState<InterviewPrepResult | null>(null);
+  const [expanded, setExpanded] = useState<number | null>(null);
 
-  const recognitionRef = useRef<any>(null);
-
-  useEffect(() => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setSpeechSupported(false);
-      setInputMode("type");
+  const handleSubmit = async () => {
+    if (!targetRole.trim()) {
+      setError("Please enter a target role.");
       return;
     }
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = "en-US";
-
-    recognition.onresult = (event: any) => {
-      let transcript = "";
-      for (let i = 0; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
-      }
-      setAnswerText(transcript);
-    };
-
-    recognition.onerror = () => setIsRecording(false);
-    recognition.onend = () => setIsRecording(false);
-
-    recognitionRef.current = recognition;
-
-    return () => {
-      recognition.stop();
-    };
-  }, []);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const { data } = await api.get(`/interview/${sessionId}`);
-        if (data.success) {
-          setSession(data.data);
-          const firstUnanswered = data.data.questions.findIndex(
-            (q: QuestionAttempt) => !q.userAnswer,
-          );
-          setCurrentIndex(firstUnanswered === -1 ? 0 : firstUnanswered);
-        } else {
-          setError(data.error?.message || "Could not load this session.");
-        }
-      } catch {
-        setError("Failed to load this interview session.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSession();
-  }, [sessionId]);
-
-  const currentQuestion = session?.questions[currentIndex];
-
-  const speakQuestion = useCallback((text: string) => {
-    if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.95;
-    window.speechSynthesis.speak(utterance);
-  }, []);
-
-  useEffect(() => {
-    if (currentQuestion && !currentQuestion.userAnswer) {
-      speakQuestion(currentQuestion.question);
-    }
-    setAnswerText("");
-    return () => {
-      window.speechSynthesis?.cancel();
-    };
-  }, [currentIndex, currentQuestion, speakQuestion]);
-
-  const toggleRecording = () => {
-    if (!recognitionRef.current) return;
-    if (isRecording) {
-      recognitionRef.current.stop();
-      setIsRecording(false);
-    } else {
-      setAnswerText("");
-      recognitionRef.current.start();
-      setIsRecording(true);
-    }
-  };
-
-  const handleSubmitAnswer = async () => {
-    if (!session || !currentQuestion || !answerText.trim()) return;
-    setSubmitting(true);
     setError("");
-    if (isRecording) {
-      recognitionRef.current?.stop();
-      setIsRecording(false);
-    }
+    setLoading(true);
+    setResult(null);
+    setExpanded(null);
 
     try {
-      const { data } = await api.post(
-        `/interview/${session.id}/questions/${currentQuestion.id}/answer`,
-        { answer: answerText.trim() },
-      );
+      const { data } = await api.post("/ai/interview-prep", {
+        targetRole: targetRole.trim(),
+        jobDescription: jobDescription.trim() || undefined,
+      });
 
       if (data.success) {
-        setSession((prev) => {
-          if (!prev) return prev;
-          const updatedQuestions = prev.questions.map((q) =>
-            q.id === currentQuestion.id ? data.data : q,
-          );
-          return { ...prev, questions: updatedQuestions };
-        });
+        setResult(data.data);
       } else {
-        setError(data.error?.message || "Could not submit your answer.");
+        setError(
+          data.error?.message || "Something went wrong. Please try again.",
+        );
       }
-    } catch {
-      setError("Failed to submit your answer. Please try again.");
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message ||
+        "Failed to connect to the AI service. Please try again.";
+      setError(message);
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
-  const handleNext = () => {
-    if (!session) return;
-    if (currentIndex < session.questions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const handleComplete = async () => {
-    if (!session) return;
-    setCompleting(true);
+  const handleReset = () => {
+    setResult(null);
     setError("");
+    setTargetRole("");
+    setJobDescription("");
+    setExpanded(null);
+  };
+
+  const handlePractice = async () => {
+    if (!result) return;
+    setError("");
+    setStarting(true);
     try {
-      const { data } = await api.post(`/interview/${session.id}/complete`);
+      const { data } = await api.post("/interview/start", {
+        targetRole: result.targetRole,
+        jobDescription: jobDescription.trim() || undefined,
+        questions: result.questions,
+      });
+
       if (data.success) {
-        setSession(data.data);
+        router.push(`/ai-assistant/interview-prep/practice/${data.data.id}`);
       } else {
-        setError(data.error?.message || "Could not complete this session.");
+        setError(
+          data.error?.message || "Could not start the practice session.",
+        );
       }
-    } catch {
-      setError("Failed to complete this session. Please try again.");
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message ||
+        "Failed to start the practice session. Please try again.";
+      setError(message);
     } finally {
-      setCompleting(false);
+      setStarting(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-indigo-400" />
-      </div>
-    );
-  }
+  const technicalCount =
+    result?.questions.filter((q) => q.type === "technical").length ?? 0;
+  const behavioralCount =
+    result?.questions.filter((q) => q.type === "behavioral").length ?? 0;
+  const situationalCount =
+    result?.questions.filter((q) => q.type === "situational").length ?? 0;
 
-  if (error && !session) {
-    return (
-      <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
-        <FaTimesCircle
-          className="mt-0.5 flex-shrink-0 text-red-400"
-          size={14}
-        />
-        <p className="text-xs text-red-300">{error}</p>
-      </div>
-    );
-  }
-
-  if (!session) return null;
-
-  const allAnswered = session.questions.every((q) => q.userAnswer);
-  const isLastQuestion = currentIndex === session.questions.length - 1;
-
-  // Completed session summary view
-  if (session.status === "completed") {
-    return (
-      <div>
-        <div className="mb-7">
-          <Link
-            href="/ai-assistant/interview-prep"
-            className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
-          >
-            <FaChevronLeft size={10} />
-            Interview Prep
-          </Link>
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400">
-              <FaCheckCircle size={16} />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold text-white">
-                Session Complete
-              </h1>
-              <p className="text-xs text-slate-500">{session.targetRole}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-5">
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5 text-center">
-            <p className="mb-1 text-xs uppercase tracking-wide text-slate-500">
-              Overall Score
-            </p>
-            <p className="text-4xl font-bold text-emerald-400">
-              {session.overallScore}
-              <span className="text-lg text-slate-500">/100</span>
-            </p>
-            <p className="mt-3 text-xs leading-relaxed text-slate-400">
-              {session.overallFeedback}
-            </p>
-          </div>
-
-          {session.strengths.length > 0 && (
-            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.05] p-5">
-              <h3 className="mb-3 text-sm font-semibold text-emerald-400">
-                Strengths
-              </h3>
-              <ul className="space-y-2">
-                {session.strengths.map((s, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-400" />
-                    <span className="text-xs leading-relaxed text-slate-300">
-                      {s}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {session.improvements.length > 0 && (
-            <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/[0.05] p-5">
-              <h3 className="mb-3 text-sm font-semibold text-yellow-400">
-                Areas to Improve
-              </h3>
-              <ul className="space-y-2">
-                {session.improvements.map((s, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-yellow-400" />
-                    <span className="text-xs leading-relaxed text-slate-300">
-                      {s}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-white">
-              Question Breakdown
-            </h3>
-            {session.questions.map((q, i) => (
-              <div
-                key={q.id}
-                className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4"
-              >
-                <div className="mb-2 flex items-start justify-between gap-3">
-                  <p className="text-xs font-medium text-white">
-                    {i + 1}. {q.question}
-                  </p>
-                  {q.score !== null && (
-                    <span className="flex-shrink-0 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-400">
-                      {q.score}/100
-                    </span>
-                  )}
-                </div>
-                {q.feedback && (
-                  <p className="text-xs leading-relaxed text-slate-400">
-                    {q.feedback}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Link
-              href="/ai-assistant/interview-prep"
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
-            >
-              Back to Interview Prep
-            </Link>
-            <Link
-              href="/ai-assistant/interview-prep/history"
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-500/10 py-2.5 text-sm font-medium text-indigo-400 transition-colors hover:bg-indigo-500/20"
-            >
-              <IconSparkles size={14} stroke={1.5} />
-              View Interview History
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Active session view
   return (
     <div>
+      {/* Header */}
       <div className="mb-7">
         <Link
-          href="/ai-assistant/interview-prep"
+          href="/ai-assistant"
           className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
         >
           <FaChevronLeft size={10} />
-          Interview Prep
+          AI Assistant
         </Link>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-semibold text-white">
-              Mock Interview — {session.targetRole}
-            </h1>
-            <p className="text-xs text-slate-500">
-              Question {currentIndex + 1} of {session.questions.length}
-            </p>
+
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-400">
+            <IconSparkles size={18} stroke={1.5} />
           </div>
-          <div className="flex h-1.5 w-24 overflow-hidden rounded-full bg-white/[0.06]">
-            <div
-              className="h-full bg-indigo-500 transition-all"
-              style={{
-                width: `${((currentIndex + 1) / session.questions.length) * 100}%`,
-              }}
-            />
+          <div>
+            <h1 className="text-xl font-semibold text-white">Interview Prep</h1>
+            <p className="text-xs text-slate-500">
+              Get role-specific interview questions with expert tips tailored to
+              your skills
+            </p>
           </div>
         </div>
       </div>
 
-      {currentQuestion && (
+      {!result && (
         <div className="space-y-5">
-          {/* Question card */}
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="flex items-center gap-1 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-400">
-                {TYPE_ICON[currentQuestion.type]}
-                {currentQuestion.type.charAt(0).toUpperCase() +
-                  currentQuestion.type.slice(1)}
-              </span>
-              <button
-                onClick={() => speakQuestion(currentQuestion.question)}
-                className="flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-indigo-400"
-              >
-                <FaVolumeUp size={11} />
-                Replay
-              </button>
-            </div>
-            <p className="text-base font-medium leading-relaxed text-white">
-              {currentQuestion.question}
-            </p>
+          {/* Target role */}
+          <div>
+            <label className="mb-2 block text-xs font-medium text-slate-400">
+              Target Role <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={targetRole}
+              onChange={(e) => setTargetRole(e.target.value)}
+              placeholder="e.g. Frontend Developer, Full Stack Engineer, DevOps Engineer"
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+            />
           </div>
 
-          {/* Already answered -> show feedback */}
-          {currentQuestion.userAnswer ? (
-            <div className="space-y-4">
-              <div className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4">
-                <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-                  Your Answer
-                </p>
-                <p className="text-xs leading-relaxed text-slate-300">
-                  {currentQuestion.userAnswer}
-                </p>
-              </div>
+          {/* Job description */}
+          <div>
+            <label className="mb-2 block text-xs font-medium text-slate-400">
+              Job Description{" "}
+              <span className="text-slate-600">(optional but recommended)</span>
+            </label>
+            <p className="mb-3 text-xs text-slate-600">
+              Paste a real job posting to get questions tailored to that
+              specific role.
+            </p>
+            <textarea
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+              placeholder="Paste the job description here..."
+              rows={7}
+              className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+            />
+          </div>
 
-              <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-4">
-                <div className="mb-2 flex items-center justify-between">
-                  <p className="text-xs font-semibold text-indigo-400">
-                    AI Feedback
-                  </p>
-                  {currentQuestion.score !== null && (
-                    <span className="rounded-full bg-indigo-500/15 px-2 py-0.5 text-[10px] font-medium text-indigo-400">
-                      {currentQuestion.score}/100
-                    </span>
-                  )}
-                </div>
-                <p className="mb-3 text-xs leading-relaxed text-slate-300">
-                  {currentQuestion.feedback}
-                </p>
-                {currentQuestion.strengths.length > 0 && (
-                  <div className="mb-2">
-                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
-                      Strengths
-                    </p>
-                    <ul className="space-y-1">
-                      {currentQuestion.strengths.map((s, i) => (
-                        <li key={i} className="text-xs text-slate-400">
-                          • {s}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {currentQuestion.improvements.length > 0 && (
-                  <div>
-                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-yellow-400">
-                      Improve
-                    </p>
-                    <ul className="space-y-1">
-                      {currentQuestion.improvements.map((s, i) => (
-                        <li key={i} className="text-xs text-slate-400">
-                          • {s}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
+          <p className="text-xs text-slate-600">
+            Your saved skills will be pulled automatically to personalize the
+            questions.
+          </p>
 
-              {isLastQuestion ? (
-                allAnswered && (
-                  <button
-                    onClick={handleComplete}
-                    disabled={completing}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {completing ? (
-                      <>
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-                        Finishing up...
-                      </>
-                    ) : (
-                      <>
-                        <FaCheckCircle size={13} />
-                        Finish & See Results
-                      </>
-                    )}
-                  </button>
-                )
-              ) : (
-                <button
-                  onClick={handleNext}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-600"
-                >
-                  Next Question
-                </button>
-              )}
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {/* Input mode toggle */}
-              {speechSupported && (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setInputMode("voice")}
-                    className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-medium transition-colors ${
-                      inputMode === "voice"
-                        ? "bg-indigo-500/15 text-indigo-400"
-                        : "text-slate-500 hover:text-slate-300"
-                    }`}
-                  >
-                    <FaMicrophone size={11} />
-                    Voice
-                  </button>
-                  <button
-                    onClick={() => setInputMode("type")}
-                    className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-medium transition-colors ${
-                      inputMode === "type"
-                        ? "bg-indigo-500/15 text-indigo-400"
-                        : "text-slate-500 hover:text-slate-300"
-                    }`}
-                  >
-                    <FaKeyboard size={11} />
-                    Type
-                  </button>
-                </div>
-              )}
-
-              {inputMode === "voice" && speechSupported ? (
-                <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5 text-center">
-                  <button
-                    onClick={toggleRecording}
-                    className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-colors ${
-                      isRecording
-                        ? "bg-red-500 animate-pulse"
-                        : "bg-indigo-500 hover:bg-indigo-600"
-                    }`}
-                  >
-                    {isRecording ? (
-                      <FaMicrophoneSlash className="text-white" size={20} />
-                    ) : (
-                      <FaMicrophone className="text-white" size={20} />
-                    )}
-                  </button>
-                  <p className="mb-3 text-xs text-slate-500">
-                    {isRecording
-                      ? "Listening... tap to stop"
-                      : "Tap to start answering"}
-                  </p>
-                  {answerText && (
-                    <p className="rounded-lg bg-white/[0.03] p-3 text-left text-xs leading-relaxed text-slate-300">
-                      {answerText}
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <textarea
-                  value={answerText}
-                  onChange={(e) => setAnswerText(e.target.value)}
-                  placeholder="Type your answer here..."
-                  rows={6}
-                  className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
-                />
-              )}
-
-              {error && (
-                <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
-                  <FaTimesCircle
-                    className="mt-0.5 flex-shrink-0 text-red-400"
-                    size={14}
-                  />
-                  <p className="text-xs text-red-300">{error}</p>
-                </div>
-              )}
-
-              <button
-                onClick={handleSubmitAnswer}
-                disabled={submitting || !answerText.trim()}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {submitting ? (
-                  <>
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-                    Getting feedback...
-                  </>
-                ) : (
-                  "Submit Answer"
-                )}
-              </button>
+          {/* Error */}
+          {error && (
+            <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
+              <FaTimesCircle
+                className="mt-0.5 flex-shrink-0 text-red-400"
+                size={14}
+              />
+              <p className="text-xs text-red-300">{error}</p>
             </div>
           )}
+
+          <button
+            onClick={handleSubmit}
+            disabled={loading || !targetRole.trim()}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                Generating questions...
+              </>
+            ) : (
+              <>
+                <IconSparkles size={16} stroke={1.5} />
+                Generate Interview Questions
+              </>
+            )}
+          </button>
+        </div>
+      )}
+
+      {result && (
+        <div className="space-y-5">
+          {/* Summary card */}
+          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
+            <div className="mb-3 flex items-center gap-2 text-indigo-400">
+              <FaComments size={14} />
+              <h2 className="text-sm font-semibold text-white">
+                Interview Prep for{" "}
+                <span className="text-indigo-400">{result.targetRole}</span>
+              </h2>
+            </div>
+            <p className="mb-4 text-xs leading-relaxed text-slate-400">
+              {result.summary}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-400">
+                {technicalCount} Technical
+              </span>
+              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-400">
+                {behavioralCount} Behavioral
+              </span>
+              <span className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-3 py-1 text-xs text-yellow-400">
+                {situationalCount} Situational
+              </span>
+            </div>
+          </div>
+
+          {/* Questions */}
+          <div className="space-y-2">
+            {result.questions.map((q, index) => {
+              const style = TYPE_STYLES[q.type];
+              const isOpen = expanded === index;
+
+              return (
+                <div
+                  key={index}
+                  className="rounded-xl border border-white/[0.07] bg-white/[0.02] overflow-hidden"
+                >
+                  <button
+                    onClick={() => setExpanded(isOpen ? null : index)}
+                    className="flex w-full items-start gap-3 px-4 py-4 text-left"
+                  >
+                    <span className="mt-0.5 flex-shrink-0 text-xs font-bold text-slate-600">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-white">
+                        {q.question}
+                      </p>
+                    </div>
+                    <div className="flex flex-shrink-0 items-center gap-2">
+                      <span
+                        className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${style.badge}`}
+                      >
+                        {style.icon}
+                        {style.label}
+                      </span>
+                      <svg
+                        className={`h-3.5 w-3.5 flex-shrink-0 text-slate-600 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+
+                  {isOpen && (
+                    <div className="border-t border-white/[0.06] px-4 py-4">
+                      <div className="flex items-start gap-2.5">
+                        <FaLightbulb
+                          className="mt-0.5 flex-shrink-0 text-indigo-400"
+                          size={12}
+                        />
+                        <div>
+                          <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                            How to answer
+                          </p>
+                          <p className="text-xs leading-relaxed text-slate-300">
+                            {q.tip}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* General tips */}
+          {result.generalTips.length > 0 && (
+            <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-5">
+              <div className="mb-4 flex items-center gap-2 text-indigo-400">
+                <FaLightbulb size={13} />
+                <h3 className="text-sm font-semibold text-white">
+                  General Interview Tips
+                </h3>
+              </div>
+              <ul className="space-y-2.5">
+                {result.generalTips.map((tip, i) => (
+                  <li key={i} className="flex items-start gap-2.5">
+                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400" />
+                    <span className="text-xs leading-relaxed text-slate-300">
+                      {tip}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
+              <FaTimesCircle
+                className="mt-0.5 flex-shrink-0 text-red-400"
+                size={14}
+              />
+              <p className="text-xs text-red-300">{error}</p>
+            </div>
+          )}
+
+          <button
+            onClick={handlePractice}
+            disabled={starting}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {starting ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                Starting session...
+              </>
+            ) : (
+              <>
+                <FaMicrophone size={13} />
+                Practice This Interview
+              </>
+            )}
+          </button>
+
+          {/* Actions */}
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <button
+              onClick={handleReset}
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
+            >
+              Prep for Another Role
+            </button>
+            <Link
+              href="/ai-assistant/skill-gap"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-500/10 py-2.5 text-sm font-medium text-indigo-400 transition-colors hover:bg-indigo-500/20"
+            >
+              <IconSparkles size={14} stroke={1.5} />
+              Run Skill Gap Analysis
+            </Link>
+          </div>
         </div>
       )}
     </div>
