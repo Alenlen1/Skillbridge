@@ -2,14 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { IconCheck, IconAlertTriangle } from "@tabler/icons-react";
+import {
+  IconCheck,
+  IconAlertTriangle,
+  IconSun,
+  IconMoon,
+} from "@tabler/icons-react";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
+import { useTheme } from "@/lib/theme-provider";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function SettingsPage() {
   const router = useRouter();
   const { user, setAuth, logout } = useAuthStore();
+  const { theme, setTheme } = useTheme();
   const isOAuthUser = !(user?.hasPassword ?? true);
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
@@ -221,6 +228,52 @@ export default function SettingsPage() {
           Manage your account and portfolio preferences
         </p>
       </div>
+
+      {/* Appearance section */}
+      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-white">Appearance</h2>
+        <p className="mb-5 text-sm text-slate-500">
+          Choose how SkillBridge looks on your device
+        </p>
+
+        <div className="flex gap-3">
+          <button
+            onClick={() => setTheme("light")}
+            className={`flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-colors ${
+              theme === "light"
+                ? "border-indigo-500 bg-indigo-500/10"
+                : "border-white/10 bg-white/[0.03] hover:border-white/20"
+            }`}
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow-400/15 text-yellow-400">
+              <IconSun size={18} stroke={1.75} />
+            </div>
+            <span
+              className={`text-sm font-medium ${theme === "light" ? "text-white" : "text-slate-400"}`}
+            >
+              Light
+            </span>
+          </button>
+
+          <button
+            onClick={() => setTheme("dark")}
+            className={`flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-colors ${
+              theme === "dark"
+                ? "border-indigo-500 bg-indigo-500/10"
+                : "border-white/10 bg-white/[0.03] hover:border-white/20"
+            }`}
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-500/15 text-indigo-400">
+              <IconMoon size={18} stroke={1.75} />
+            </div>
+            <span
+              className={`text-sm font-medium ${theme === "dark" ? "text-white" : "text-slate-400"}`}
+            >
+              Dark
+            </span>
+          </button>
+        </div>
+      </section>
 
       {/* Profile section */}
       <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
