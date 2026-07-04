@@ -36,7 +36,7 @@ export default function CertificatesPreview() {
     <motion.div {...fade} className="p-6">
       <div className="mb-5 flex items-start justify-between">
         <div>
-          <h3 className="text-base font-bold text-white">Certificates</h3>
+          <h3 className="text-base font-bold text-slate-900 dark:text-white">Certificates</h3>
           <p className="text-xs text-slate-500">
             Upload and showcase your certifications
           </p>
@@ -51,10 +51,10 @@ export default function CertificatesPreview() {
         {certs.map((cert) => (
           <div
             key={cert.name}
-            className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 transition-colors hover:border-indigo-500/20 hover:bg-white/[0.04]"
+            className="rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-4 transition-colors hover:border-indigo-500/20 hover:bg-slate-100 dark:bg-white/[0.04]"
           >
             <div className="mb-2 flex items-start justify-between gap-2">
-              <span className="rounded-full border border-white/[0.06] bg-white/[0.04] px-2 py-0.5 text-[10px] text-slate-500">
+              <span className="rounded-full border border-slate-200 dark:border-white/[0.06] bg-slate-100 dark:bg-white/[0.04] px-2 py-0.5 text-[10px] text-slate-500">
                 {cert.category}
               </span>
               {cert.verified && (
@@ -64,7 +64,7 @@ export default function CertificatesPreview() {
                 </div>
               )}
             </div>
-            <p className="text-sm font-medium text-white">{cert.name}</p>
+            <p className="text-sm font-medium text-slate-900 dark:text-white">{cert.name}</p>
             <p className="mt-0.5 text-xs text-slate-500">{cert.issuer}</p>
           </div>
         ))}

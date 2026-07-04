@@ -2,12 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  IconCheck,
-  IconAlertTriangle,
-  IconSun,
-  IconMoon,
-} from "@tabler/icons-react";
+import { IconCheck, IconAlertTriangle, IconSun, IconMoon } from "@tabler/icons-react";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
 import { useTheme } from "@/lib/theme-provider";
@@ -223,15 +218,15 @@ export default function SettingsPage() {
   return (
     <div className="max-w-2xl space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Settings</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Settings</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Manage your account and portfolio preferences
         </p>
       </div>
 
       {/* Appearance section */}
-      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-white">Appearance</h2>
+      <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Appearance</h2>
         <p className="mb-5 text-sm text-slate-500">
           Choose how SkillBridge looks on your device
         </p>
@@ -242,14 +237,14 @@ export default function SettingsPage() {
             className={`flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-colors ${
               theme === "light"
                 ? "border-indigo-500 bg-indigo-500/10"
-                : "border-white/10 bg-white/[0.03] hover:border-white/20"
+                : "border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] hover:border-slate-300 dark:border-white/20"
             }`}
           >
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow-400/15 text-yellow-400">
               <IconSun size={18} stroke={1.75} />
             </div>
             <span
-              className={`text-sm font-medium ${theme === "light" ? "text-white" : "text-slate-400"}`}
+              className={`text-sm font-medium ${theme === "light" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
             >
               Light
             </span>
@@ -260,14 +255,14 @@ export default function SettingsPage() {
             className={`flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-colors ${
               theme === "dark"
                 ? "border-indigo-500 bg-indigo-500/10"
-                : "border-white/10 bg-white/[0.03] hover:border-white/20"
+                : "border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] hover:border-slate-300 dark:border-white/20"
             }`}
           >
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-500/15 text-indigo-400">
               <IconMoon size={18} stroke={1.75} />
             </div>
             <span
-              className={`text-sm font-medium ${theme === "dark" ? "text-white" : "text-slate-400"}`}
+              className={`text-sm font-medium ${theme === "dark" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
             >
               Dark
             </span>
@@ -276,20 +271,20 @@ export default function SettingsPage() {
       </section>
 
       {/* Profile section */}
-      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-white">Profile</h2>
+      <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Profile</h2>
         <p className="mb-5 text-sm text-slate-500">Update your display name</p>
 
         <div className="space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
+            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Full name
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
           </div>
 
@@ -318,8 +313,8 @@ export default function SettingsPage() {
       </section>
 
       {/* Username section */}
-      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-white">Username</h2>
+      <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Username</h2>
         <p className="mb-5 text-sm text-slate-500">
           This changes your public portfolio URL — share the new link after
           saving
@@ -327,10 +322,10 @@ export default function SettingsPage() {
 
         <div className="space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
+            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Username
             </label>
-            <div className="flex items-center rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 transition focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+            <div className="flex items-center rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 transition focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
               <span className="select-none text-sm text-slate-500">
                 {baseUrl}/
               </span>
@@ -338,7 +333,7 @@ export default function SettingsPage() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="flex-1 bg-transparent text-sm text-white outline-none"
+                className="flex-1 bg-transparent text-sm text-slate-900 dark:text-white outline-none"
               />
             </div>
             {username !== savedUsername && (
@@ -350,7 +345,7 @@ export default function SettingsPage() {
               Public Portfolio URL
             </p>
 
-            <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
+            <div className="rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] px-3 py-2">
               <a
                 href={`${baseUrl}/${savedUsername}`}
                 target="_blank"
@@ -390,8 +385,8 @@ export default function SettingsPage() {
       </section>
 
       {/* Visibility section */}
-      <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-white">
+      <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
+        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
           Portfolio visibility
         </h2>
         <p className="mb-5 text-sm text-slate-500">
@@ -399,11 +394,11 @@ export default function SettingsPage() {
         </p>
 
         {visibilityLoading ? (
-          <div className="h-9 w-32 animate-pulse rounded-lg bg-white/[0.05]" />
+          <div className="h-9 w-32 animate-pulse rounded-lg bg-slate-100 dark:bg-white/[0.05]" />
         ) : (
-          <div className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3">
+          <div className="flex items-center justify-between rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] px-4 py-3">
             <div>
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-slate-900 dark:text-white">
                 {isPublic ? "Public" : "Private"}
               </p>
               <p className="text-xs text-slate-500">
@@ -431,16 +426,16 @@ export default function SettingsPage() {
 
       {/* Password section — hidden for GitHub/OAuth users */}
       {isOAuthUser ? (
-        <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-          <h2 className="mb-1 text-sm font-semibold text-white">Password</h2>
+        <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
+          <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Password</h2>
           <p className="text-sm text-slate-500">
             You signed in with GitHub — your login is managed by GitHub, not a
             password.
           </p>
         </section>
       ) : (
-        <section className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-          <h2 className="mb-1 text-sm font-semibold text-white">Password</h2>
+        <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
+          <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Password</h2>
           <p className="mb-5 text-sm text-slate-500">
             Change your account password. You&apos;ll need to log in again
             afterward.
@@ -448,7 +443,7 @@ export default function SettingsPage() {
 
           <div className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Current password
               </label>
               <div className="relative">
@@ -456,7 +451,7 @@ export default function SettingsPage() {
                   type={showCurrentPassword ? "text" : "password"}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
                 <button
                   type="button"
@@ -472,7 +467,7 @@ export default function SettingsPage() {
               </div>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 New password
               </label>
               <div className="relative">
@@ -481,7 +476,7 @@ export default function SettingsPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Min. 8 characters"
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
                 <button
                   type="button"
@@ -503,7 +498,7 @@ export default function SettingsPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
                 <button
                   type="button"
@@ -559,7 +554,7 @@ export default function SettingsPage() {
             {/* Password field — hidden for OAuth users */}
             {!isOAuthUser && (
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-300">
+                <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                   Enter your password to confirm
                 </label>
                 <div className="relative">
@@ -567,7 +562,7 @@ export default function SettingsPage() {
                     type={showDeletePassword ? "text" : "password"}
                     value={deletePassword}
                     onChange={(e) => setDeletePassword(e.target.value)}
-                    className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-white outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                    className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 pr-12 text-sm text-slate-900 dark:text-white outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
                   />
                   <button
                     type="button"
@@ -584,7 +579,7 @@ export default function SettingsPage() {
               </div>
             )}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Type your email{" "}
                 <span className="font-mono text-red-400">{user?.email}</span> to
                 confirm
@@ -594,7 +589,7 @@ export default function SettingsPage() {
                 value={deleteConfirmText}
                 onChange={(e) => setDeleteConfirmText(e.target.value)}
                 placeholder={user?.email}
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-700 outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-700 outline-none transition focus:border-red-500 focus:ring-1 focus:ring-red-500"
               />
             </div>
 
@@ -620,7 +615,7 @@ export default function SettingsPage() {
                   setDeleteError("");
                 }}
                 disabled={deleting}
-                className="rounded-lg border border-white/10 px-4 py-2 text-sm text-slate-400 transition hover:text-white disabled:opacity-50"
+                className="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white disabled:opacity-50"
               >
                 Cancel
               </button>

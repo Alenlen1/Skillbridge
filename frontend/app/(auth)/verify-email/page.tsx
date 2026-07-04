@@ -52,8 +52,8 @@ function VerifyEmailContent() {
   if (status === "verifying") {
     return (
       <div className="flex flex-col items-center py-8">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
-        <p className="mt-4 text-sm text-slate-400">Verifying your email...</p>
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
+        <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">Verifying your email...</p>
       </div>
     );
   }
@@ -64,8 +64,8 @@ function VerifyEmailContent() {
         <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-green-500/20">
           <IconCheck size={20} stroke={2} className="text-green-400" />
         </div>
-        <p className="text-sm font-medium text-white">Your account is ready!</p>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="text-sm font-medium text-slate-900 dark:text-white">Your account is ready!</p>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Taking you to your dashboard...
         </p>
       </div>
@@ -77,8 +77,8 @@ function VerifyEmailContent() {
       <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-red-500/20">
         <IconX size={20} stroke={2} className="text-red-400" />
       </div>
-      <p className="text-sm font-medium text-white">Verification failed</p>
-      <p className="mt-1 text-sm text-slate-400">{message}</p>
+      <p className="text-sm font-medium text-slate-900 dark:text-white">Verification failed</p>
+      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{message}</p>
       <Link
         href="/register"
         className="mt-4 inline-block text-sm text-indigo-400 hover:text-indigo-300"
@@ -91,7 +91,7 @@ function VerifyEmailContent() {
 
 export default function VerifyEmailPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0f] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-white dark:bg-[#0a0a0f] px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Image
@@ -102,7 +102,7 @@ export default function VerifyEmailPage() {
             className="h-9 w-auto"
             priority
           />
-          <h1 className="text-xl font-semibold text-white">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
             Email Verification
           </h1>
         </div>
@@ -110,7 +110,7 @@ export default function VerifyEmailPage() {
         <Suspense
           fallback={
             <div className="flex justify-center py-8">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
             </div>
           }
         >

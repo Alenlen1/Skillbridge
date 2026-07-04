@@ -46,12 +46,12 @@ export default function PortfolioLandingPreview() {
   return (
     <motion.div {...fade} className="p-6">
       <div className="mb-6 flex items-start gap-4">
-        <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30">
+        <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-sm font-semibold text-slate-900 dark:text-white shadow-lg shadow-indigo-500/30">
           JR
         </div>
         <div>
-          <h3 className="font-semibold text-white">Jordan Reyes</h3>
-          <p className="text-sm text-slate-400">
+          <h3 className="font-semibold text-slate-900 dark:text-white">Jordan Reyes</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Sophomore IT Student · Full-Stack Developer
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
@@ -75,7 +75,7 @@ export default function PortfolioLandingPreview() {
       <div className="mb-6 space-y-3">
         {skillGroups.map((group) => (
           <div key={group.category}>
-            <p className="mb-1.5 text-[10px] uppercase tracking-wider text-slate-600">
+            <p className="mb-1.5 text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-600">
               {group.category}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -102,16 +102,16 @@ export default function PortfolioLandingPreview() {
         {projects.map((project) => (
           <div
             key={project.name}
-            className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 transition-colors hover:border-indigo-500/20 hover:bg-white/[0.04]"
+            className="rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-4 transition-colors hover:border-indigo-500/20 hover:bg-slate-100 dark:bg-white/[0.04]"
           >
-            <p className="text-sm font-medium text-white">{project.name}</p>
-            <span className="mt-1.5 inline-block rounded-md border border-white/[0.06] bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-slate-400">
+            <p className="text-sm font-medium text-slate-900 dark:text-white">{project.name}</p>
+            <span className="mt-1.5 inline-block rounded-md border border-slate-200 dark:border-white/[0.06] bg-slate-100 dark:bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-slate-500 dark:text-slate-400">
               {project.tag}
             </span>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               {project.desc}
             </p>
-            <div className="mt-3 flex items-center gap-1 text-slate-600">
+            <div className="mt-3 flex items-center gap-1 text-slate-400 dark:text-slate-600">
               <IconBrandGithub size={12} stroke={1.5} />
               <span className="text-[11px]">GitHub</span>
             </div>

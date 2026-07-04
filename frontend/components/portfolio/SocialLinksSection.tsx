@@ -114,16 +114,16 @@ export default function SocialLinksSection() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
       </div>
     );
   }
 
   return (
-    <div className="mt-10 border-t border-white/[0.06] pt-10">
+    <div className="mt-10 border-t border-slate-200 dark:border-white/[0.06] pt-10">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">Social Links</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Social Links</h2>
           <p className="mt-0.5 text-sm text-slate-500">
             Add your social profiles and links
           </p>
@@ -144,10 +144,10 @@ export default function SocialLinksSection() {
       )}
 
       {adding && (
-        <div className="mb-6 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
+        <div className="mb-6 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Platform
               </label>
               <select
@@ -156,7 +156,7 @@ export default function SocialLinksSection() {
                   setPlatform(e.target.value);
                   setUrl("");
                 }}
-                className="w-full rounded-lg border border-white/10 bg-[#0f0f1a] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f0f1a] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               >
                 {PLATFORMS.map((p) => (
                   <option key={p.value} value={p.value}>
@@ -166,7 +166,7 @@ export default function SocialLinksSection() {
               </select>
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 URL
               </label>
               <input
@@ -176,7 +176,7 @@ export default function SocialLinksSection() {
                 onKeyDown={(e) => e.key === "Enter" && handleAdd()}
                 placeholder={selectedPlatform?.placeholder}
                 autoFocus
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function SocialLinksSection() {
                 setUrl("");
                 setError("");
               }}
-              className="rounded-lg border border-white/10 px-4 py-2 text-sm text-slate-400 transition hover:text-white"
+              className="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               Cancel
             </button>
@@ -203,8 +203,8 @@ export default function SocialLinksSection() {
       )}
 
       {links.length === 0 && !adding ? (
-        <div className="rounded-xl border border-dashed border-white/10 py-10 text-center">
-          <p className="text-sm text-slate-600">
+        <div className="rounded-xl border border-dashed border-slate-200 dark:border-white/10 py-10 text-center">
+          <p className="text-sm text-slate-400 dark:text-slate-600">
             No social links yet — add your first one
           </p>
         </div>
@@ -213,20 +213,20 @@ export default function SocialLinksSection() {
           {links.map((link) => (
             <div
               key={link.id}
-              className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3"
+              className="flex items-center gap-3 rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] px-4 py-3"
             >
               <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/10 text-xs font-bold text-indigo-400">
                 {PLATFORM_ICONS[link.platform] || "🔗"}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-medium text-slate-400">
+                <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
                   {link.platform}
                 </p>
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="truncate text-sm text-white transition hover:text-indigo-400"
+                  className="truncate text-sm text-slate-900 dark:text-white transition hover:text-indigo-400"
                 >
                   {link.url}
                 </a>

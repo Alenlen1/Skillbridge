@@ -194,7 +194,7 @@ export default function ResumeLandingPreview() {
     <div className="p-6">
       <div className="mb-5 flex items-start justify-between">
         <div>
-          <h3 className="text-base font-bold text-white">Resume Builder</h3>
+          <h3 className="text-base font-bold text-slate-900 dark:text-white">Resume Builder</h3>
 
           <p className="text-xs text-slate-500">
             Build professional resumes instantly
@@ -209,7 +209,7 @@ export default function ResumeLandingPreview() {
       {/* Same card treatment as the real ResumePage preview:
           gradient dark card, generous padding, max-w-[850px] inner
           card with the same border/shadow as the real page. */}
-      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 to-black p-4 sm:p-10">
+      <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-gradient-to-br from-zinc-900 to-black p-4 sm:p-10">
         <div
           ref={wrapperRef}
           className="mx-auto overflow-hidden"
@@ -256,7 +256,7 @@ export default function ResumeLandingPreview() {
               className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition ${
                 template === t.id
                   ? "bg-indigo-500 text-white"
-                  : "border border-white/10 text-slate-400 hover:border-indigo-500/30"
+                  : "border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:border-indigo-500/30"
               }`}
             >
               {t.icon}

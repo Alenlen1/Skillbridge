@@ -82,15 +82,15 @@ function ToolCard({ tool }: { tool: Tool }) {
     <div
       className={`group relative flex flex-col gap-4 rounded-xl border p-5 transition-colors ${
         tool.available
-          ? "cursor-pointer border-white/[0.08] bg-white/[0.03] hover:border-indigo-500/40 hover:bg-indigo-500/[0.05]"
-          : "cursor-default border-white/[0.05] bg-white/[0.02]"
+          ? "cursor-pointer border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] hover:border-indigo-500/40 hover:bg-indigo-500/[0.05]"
+          : "cursor-default border-white/[0.05] bg-slate-50 dark:bg-white/[0.02]"
       }`}
     >
       <div
         className={`flex h-10 w-10 items-center justify-center rounded-lg ${
           tool.available
             ? "bg-indigo-500/15 text-indigo-400"
-            : "bg-white/[0.05] text-slate-600"
+            : "bg-slate-100 dark:bg-white/[0.05] text-slate-400 dark:text-slate-600"
         }`}
       >
         {tool.icon}
@@ -100,20 +100,20 @@ function ToolCard({ tool }: { tool: Tool }) {
         <div className="mb-1 flex items-center gap-2">
           <h2
             className={`text-sm font-semibold ${
-              tool.available ? "text-white" : "text-slate-500"
+              tool.available ? "text-slate-900 dark:text-white" : "text-slate-500"
             }`}
           >
             {tool.title}
           </h2>
           {!tool.available && (
-            <span className="rounded-full bg-white/[0.06] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+            <span className="rounded-full bg-slate-100 dark:bg-white/[0.06] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-500">
               Coming Soon
             </span>
           )}
         </div>
         <p
           className={`text-xs leading-relaxed ${
-            tool.available ? "text-slate-400" : "text-slate-600"
+            tool.available ? "text-slate-500 dark:text-slate-400" : "text-slate-400 dark:text-slate-600"
           }`}
         >
           {tool.description}
@@ -153,9 +153,9 @@ export default function AIAssistantPage() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-400">
             <IconRobot size={18} stroke={1.5} />
           </div>
-          <h1 className="text-xl font-semibold text-white">AI Assistant</h1>
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-white">AI Assistant</h1>
         </div>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Leverage AI to accelerate your career. Get instant feedback, generate
           content, and identify opportunities for growth.
         </p>

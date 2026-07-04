@@ -102,7 +102,7 @@ const PRIORITY_STYLES = {
     dot: "bg-yellow-400",
   },
   low: {
-    badge: "bg-slate-500/10 text-slate-400 border-slate-500/20",
+    badge: "bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20",
     dot: "bg-slate-500",
   },
 };
@@ -161,7 +161,7 @@ export default function SkillGapPage() {
       <div className="mb-7">
         <Link
           href="/ai-assistant"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
         >
           <FaChevronLeft size={10} />
           AI Assistant
@@ -172,7 +172,7 @@ export default function SkillGapPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
               Skill Gap Analysis
             </h1>
             <p className="text-xs text-slate-500">
@@ -187,7 +187,7 @@ export default function SkillGapPage() {
         <div className="space-y-5">
           {/* Target role input */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-slate-400">
+            <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Target Role <span className="text-red-400">*</span>
             </label>
             <input
@@ -195,17 +195,17 @@ export default function SkillGapPage() {
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
               placeholder="e.g. Frontend Developer, Full Stack Engineer, DevOps Engineer"
-              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
             />
           </div>
 
           {/* Job description input */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-slate-400">
+            <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Job Description{" "}
-              <span className="text-slate-600">(optional but recommended)</span>
+              <span className="text-slate-400 dark:text-slate-600">(optional but recommended)</span>
             </label>
-            <p className="mb-3 text-xs text-slate-600">
+            <p className="mb-3 text-xs text-slate-400 dark:text-slate-600">
               Paste a real job posting to get a more accurate skill gap based on
               exact requirements.
             </p>
@@ -214,11 +214,11 @@ export default function SkillGapPage() {
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job description here..."
               rows={8}
-              className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
             />
           </div>
 
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-slate-400 dark:text-slate-600">
             Your saved skills from your portfolio will be pulled automatically.
           </p>
 
@@ -240,7 +240,7 @@ export default function SkillGapPage() {
           >
             {loading ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                 Analyzing skill gap...
               </>
             ) : (
@@ -256,21 +256,21 @@ export default function SkillGapPage() {
       {result && (
         <div className="space-y-5">
           {/* Score card */}
-          <div className="flex flex-col items-center gap-5 rounded-xl border border-white/[0.08] bg-white/[0.03] p-6 sm:flex-row sm:items-start">
+          <div className="flex flex-col items-center gap-5 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-6 sm:flex-row sm:items-start">
             <ReadinessRing score={result.score} />
             <div className="flex-1 text-center sm:text-left">
-              <h2 className="mb-1 text-base font-semibold text-white">
+              <h2 className="mb-1 text-base font-semibold text-slate-900 dark:text-white">
                 Readiness for{" "}
                 <span className="text-indigo-400">{result.targetRole}</span>
               </h2>
-              <p className="mb-3 text-xs leading-relaxed text-slate-400">
+              <p className="mb-3 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                 {result.currentSkillsSummary}
               </p>
               <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.existingRelevantSkills.length} relevant skills
                 </span>
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.missingSkills.length} skills to learn
                 </span>
               </div>
@@ -282,7 +282,7 @@ export default function SkillGapPage() {
             <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.05] p-5">
               <div className="mb-4 flex items-center gap-2 text-emerald-400">
                 <FaCheckCircle size={14} />
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
                   Skills You Already Have
                 </h3>
               </div>
@@ -300,10 +300,10 @@ export default function SkillGapPage() {
           )}
 
           {/* Missing skills */}
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
             <div className="mb-4 flex items-center gap-2 text-red-400">
               <FaExclamationCircle size={14} />
-              <h3 className="text-sm font-semibold text-white">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
                 Skills to Learn
               </h3>
             </div>
@@ -313,14 +313,14 @@ export default function SkillGapPage() {
                 return (
                   <div
                     key={skill.name}
-                    className="flex items-start gap-3 rounded-lg border border-white/[0.05] bg-white/[0.02] p-3"
+                    className="flex items-start gap-3 rounded-lg border border-white/[0.05] bg-slate-50 dark:bg-white/[0.02] p-3"
                   >
                     <span
                       className={`mt-0.5 h-1.5 w-1.5 flex-shrink-0 rounded-full ${styles.dot} mt-1.5`}
                     />
                     <div className="flex-1">
                       <div className="mb-1 flex items-center gap-2">
-                        <span className="text-sm font-medium text-white">
+                        <span className="text-sm font-medium text-slate-900 dark:text-white">
                           {skill.name}
                         </span>
                         <span
@@ -344,7 +344,7 @@ export default function SkillGapPage() {
             <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-5">
               <div className="mb-4 flex items-center gap-2 text-indigo-400">
                 <FaLightbulb size={14} />
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
                   Recommended Resources
                 </h3>
               </div>
@@ -356,10 +356,10 @@ export default function SkillGapPage() {
                       size={10}
                     />
                     <div>
-                      <span className="text-xs font-medium text-white">
+                      <span className="text-xs font-medium text-slate-900 dark:text-white">
                         {r.skill}:{" "}
                       </span>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">
                         {r.resource}
                       </span>
                     </div>
@@ -371,16 +371,16 @@ export default function SkillGapPage() {
 
           {/* Suggestions */}
           {result.suggestions.length > 0 && (
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
-              <div className="mb-4 flex items-center gap-2 text-slate-400">
+            <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
+              <div className="mb-4 flex items-center gap-2 text-slate-500 dark:text-slate-400">
                 <FaLightbulb size={14} />
-                <h3 className="text-sm font-semibold text-white">Next Steps</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Next Steps</h3>
               </div>
               <ul className="space-y-2.5">
                 {result.suggestions.map((s, i) => (
                   <li key={i} className="flex items-start gap-2.5">
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-slate-500" />
-                    <span className="text-xs leading-relaxed text-slate-300">
+                    <span className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                       {s}
                     </span>
                   </li>
@@ -393,7 +393,7 @@ export default function SkillGapPage() {
           <div className="flex flex-col gap-2 sm:flex-row">
             <button
               onClick={handleReset}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] py-2.5 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:text-slate-900 dark:hover:text-white"
             >
               Analyze Another Role
             </button>

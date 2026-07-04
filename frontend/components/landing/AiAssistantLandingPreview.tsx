@@ -33,14 +33,14 @@ const suggestions = [
 
 export default function AIAssistantLandingPreview() {
   return (
-    <div className="min-h-full bg-[#0d0d18] p-5">
+    <div className="min-h-full bg-white dark:bg-[#0d0d18] p-5">
       {/* Header */}
       <div className="mb-4 flex items-center gap-2.5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-400">
           <IconRobot size={16} stroke={1.5} />
         </div>
         <div>
-          <p className="text-sm font-semibold text-white">AI Assistant</p>
+          <p className="text-sm font-semibold text-slate-900 dark:text-white">AI Assistant</p>
           <p className="text-[10px] text-slate-500">
             Powered by Gemini 2.5 Flash
           </p>
@@ -52,10 +52,10 @@ export default function AIAssistantLandingPreview() {
         {tools.map((tool) => (
           <div
             key={tool.label}
-            className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-2 py-2"
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] px-2 py-2"
           >
             <span className="text-indigo-400">{tool.icon}</span>
-            <span className="text-[10px] font-medium text-slate-400">
+            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
               {tool.label}
             </span>
           </div>
@@ -63,10 +63,10 @@ export default function AIAssistantLandingPreview() {
       </div>
 
       {/* Resume review result preview */}
-      <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
+      <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.02] p-4">
         {/* Score row */}
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-xs font-semibold text-white">
+          <p className="text-xs font-semibold text-slate-900 dark:text-white">
             Resume Review Result
           </p>
           <div className="flex items-center gap-1.5">
@@ -79,7 +79,7 @@ export default function AIAssistantLandingPreview() {
         </div>
 
         {/* Score bar */}
-        <div className="mb-4 h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+        <div className="mb-4 h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.06]">
           <div
             className="h-full rounded-full bg-emerald-400"
             style={{ width: "84%" }}
@@ -90,13 +90,13 @@ export default function AIAssistantLandingPreview() {
         <div className="mb-3">
           <div className="mb-2 flex items-center gap-1.5 text-emerald-400">
             <FaCheckCircle size={11} />
-            <p className="text-[11px] font-semibold text-white">Strengths</p>
+            <p className="text-[11px] font-semibold text-slate-900 dark:text-white">Strengths</p>
           </div>
           <ul className="space-y-1.5">
             {strengths.map((s) => (
               <li key={s} className="flex items-start gap-2">
                 <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-emerald-400" />
-                <span className="text-[11px] leading-relaxed text-slate-400">
+                <span className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
                   {s}
                 </span>
               </li>
@@ -108,13 +108,13 @@ export default function AIAssistantLandingPreview() {
         <div>
           <div className="mb-2 flex items-center gap-1.5 text-indigo-400">
             <FaLightbulb size={11} />
-            <p className="text-[11px] font-semibold text-white">Suggestions</p>
+            <p className="text-[11px] font-semibold text-slate-900 dark:text-white">Suggestions</p>
           </div>
           <ul className="space-y-1.5">
             {suggestions.map((s) => (
               <li key={s} className="flex items-start gap-2">
                 <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-indigo-400" />
-                <span className="text-[11px] leading-relaxed text-slate-400">
+                <span className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
                   {s}
                 </span>
               </li>
@@ -124,7 +124,7 @@ export default function AIAssistantLandingPreview() {
       </div>
 
       {/* Template badge */}
-      <div className="mt-3 flex items-center justify-between rounded-lg border border-white/[0.05] bg-white/[0.02] px-3 py-2">
+      <div className="mt-3 flex items-center justify-between rounded-lg border border-white/[0.05] bg-slate-50 dark:bg-white/[0.02] px-3 py-2">
         <span className="text-[11px] text-slate-500">Reviewed as</span>
         <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-medium text-indigo-400">
           Developer Template

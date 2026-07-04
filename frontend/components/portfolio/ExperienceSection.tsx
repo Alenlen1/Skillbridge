@@ -140,17 +140,17 @@ export default function ExperienceSection() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
       </div>
     );
   }
 
   return (
-    <div className="mt-10 border-t border-white/[0.06] pt-10">
+    <div className="mt-10 border-t border-slate-200 dark:border-white/[0.06] pt-10">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
             Professional Experience
           </h2>
 
@@ -181,11 +181,11 @@ export default function ExperienceSection() {
 
       {/* Add / Edit Form */}
       {adding && (
-        <div className="mb-6 rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
+        <div className="mb-6 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
           <div className="space-y-4">
             {/* Company */}
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Company <span className="text-red-400">*</span>
               </label>
 
@@ -198,13 +198,13 @@ export default function ExperienceSection() {
                   })
                 }
                 placeholder="e.g. Google"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
             {/* Job Title */}
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Job Title <span className="text-red-400">*</span>
               </label>
 
@@ -217,14 +217,14 @@ export default function ExperienceSection() {
                   })
                 }
                 placeholder="e.g. Software Engineer Intern"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
             {/* Employment Type + Location */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-400">
+                <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                   Employment Type
                 </label>
 
@@ -236,7 +236,7 @@ export default function ExperienceSection() {
                       employmentType: e.target.value,
                     })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-[#11111b] px-3 py-2 text-sm text-white"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#11111b] px-3 py-2 text-sm text-slate-900 dark:text-white"
                 >
                   <option value="">Select</option>
                   <option>Internship</option>
@@ -249,7 +249,7 @@ export default function ExperienceSection() {
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-400">
+                <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                   Location
                 </label>
 
@@ -262,7 +262,7 @@ export default function ExperienceSection() {
                     })
                   }
                   placeholder="e.g. Santa Rosa, Laguna"
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
               </div>
             </div>
@@ -270,7 +270,7 @@ export default function ExperienceSection() {
             {/* Dates */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-400">
+                <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                   Start Date
                 </label>
 
@@ -283,12 +283,12 @@ export default function ExperienceSection() {
                       startDate: e.target.value,
                     })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-400">
+                <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                   End Date
                 </label>
 
@@ -302,7 +302,7 @@ export default function ExperienceSection() {
                       endDate: e.target.value,
                     })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white disabled:opacity-40"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white disabled:opacity-40"
                 />
               </div>
             </div>
@@ -320,14 +320,14 @@ export default function ExperienceSection() {
                 }
               />
 
-              <span className="text-sm text-slate-400">
+              <span className="text-sm text-slate-500 dark:text-slate-400">
                 I currently work here
               </span>
             </div>
 
             {/* Description */}
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Description
               </label>
 
@@ -342,7 +342,7 @@ export default function ExperienceSection() {
                   })
                 }
                 placeholder="Describe your responsibilities and achievements..."
-                className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full resize-none rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
@@ -357,7 +357,7 @@ export default function ExperienceSection() {
 
               <button
                 onClick={resetForm}
-                className="rounded-lg border border-white/10 px-5 py-2 text-sm text-slate-400 transition hover:text-white"
+                className="rounded-lg border border-slate-200 dark:border-white/10 px-5 py-2 text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
               >
                 Cancel
               </button>
@@ -367,12 +367,12 @@ export default function ExperienceSection() {
       )}
 
       {experience.length === 0 && !adding ? (
-        <div className="rounded-xl border border-dashed border-white/10 py-12 text-center">
+        <div className="rounded-xl border border-dashed border-slate-200 dark:border-white/10 py-12 text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/10">
             <HiBriefcase className="text-2xl text-indigo-400" />
           </div>
 
-          <h3 className="text-sm font-medium text-white">
+          <h3 className="text-sm font-medium text-slate-900 dark:text-white">
             No professional experience yet
           </h3>
 
@@ -385,9 +385,9 @@ export default function ExperienceSection() {
           {experience.map((item) => (
             <div
               key={item.id}
-              className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5 transition-all duration-200 hover:border-indigo-500/40
+              className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.03] p-5 transition-all duration-200 hover:border-indigo-500/40
 hover:shadow-lg
-hover:shadow-indigo-500/10 hover:bg-white/[0.04]"
+hover:shadow-indigo-500/10 hover:bg-slate-100 dark:bg-white/[0.04]"
             >
               <div className="flex items-start justify-between gap-4">
                 {/* Left */}
@@ -396,20 +396,20 @@ hover:shadow-indigo-500/10 hover:bg-white/[0.04]"
                   <div className="flex items-center gap-2">
                     <HiBriefcase className="text-lg text-indigo-400" />
 
-                    <h3 className="text-base font-semibold text-white">
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-white">
                       {item.role}
                     </h3>
                   </div>
 
                   {/* Company */}
-                  <div className="mt-2 flex items-center gap-2 text-sm text-slate-300">
+                  <div className="mt-2 flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
                     <HiBuildingOffice2 className="text-slate-500" />
                     <span>{item.company}</span>
                   </div>
 
                   {/* Location */}
                   {item.location && (
-                    <div className="mt-2 flex items-center gap-2 text-sm text-slate-400">
+                    <div className="mt-2 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                       <HiMapPin className="text-slate-500" />
                       <span>{item.location}</span>
                     </div>
@@ -451,7 +451,7 @@ hover:shadow-indigo-500/10 hover:bg-white/[0.04]"
 
                   {/* Description */}
                   {item.description && (
-                    <p className="mt-4 whitespace-pre-line text-sm leading-6 text-slate-400">
+                    <p className="mt-4 whitespace-pre-line text-sm leading-6 text-slate-500 dark:text-slate-400">
                       {item.description}
                     </p>
                   )}

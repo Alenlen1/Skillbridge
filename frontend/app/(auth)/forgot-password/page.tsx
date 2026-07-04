@@ -37,7 +37,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0f] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-white dark:bg-[#0a0a0f] px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Image
@@ -48,17 +48,17 @@ export default function ForgotPasswordPage() {
             className="mb-3 inline-block h-9 w-auto"
             priority
           />
-          <h1 className="text-xl font-semibold text-white">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
             Forgot your password?
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Enter your email and we&apos;ll send you a reset link
           </p>
         </div>
 
         {sent ? (
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 text-center">
-            <p className="text-sm text-slate-300">
+          <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] p-6 text-center">
+            <p className="text-sm text-slate-700 dark:text-slate-300">
               If an account exists with that email, a reset link is on its way.
               Check your inbox (and spam folder).
             </p>
@@ -72,7 +72,7 @@ export default function ForgotPasswordPage() {
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-300">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Email
               </label>
               <input
@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
                 type="email"
                 placeholder="alen@example.com"
                 autoFocus
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
               {errors.email && (
                 <p className="mt-1 text-xs text-red-400">

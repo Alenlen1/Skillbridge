@@ -147,7 +147,7 @@ export default function InterviewPrepPage() {
         <div className="mb-4 flex items-center justify-between">
           <Link
             href="/ai-assistant"
-            className="inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+            className="inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
           >
             <FaChevronLeft size={10} />
             AI Assistant
@@ -166,7 +166,7 @@ export default function InterviewPrepPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">Interview Prep</h1>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Interview Prep</h1>
             <p className="text-xs text-slate-500">
               Get role-specific interview questions with expert tips tailored to
               your skills
@@ -179,7 +179,7 @@ export default function InterviewPrepPage() {
         <div className="space-y-5">
           {/* Target role */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-slate-400">
+            <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Target Role <span className="text-red-400">*</span>
             </label>
             <input
@@ -187,17 +187,17 @@ export default function InterviewPrepPage() {
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
               placeholder="e.g. Frontend Developer, Full Stack Engineer, DevOps Engineer"
-              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
             />
           </div>
 
           {/* Job description */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-slate-400">
+            <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Job Description{" "}
-              <span className="text-slate-600">(optional but recommended)</span>
+              <span className="text-slate-400 dark:text-slate-600">(optional but recommended)</span>
             </label>
-            <p className="mb-3 text-xs text-slate-600">
+            <p className="mb-3 text-xs text-slate-400 dark:text-slate-600">
               Paste a real job posting to get questions tailored to that
               specific role.
             </p>
@@ -206,11 +206,11 @@ export default function InterviewPrepPage() {
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job description here..."
               rows={7}
-              className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
             />
           </div>
 
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-slate-400 dark:text-slate-600">
             Your saved skills will be pulled automatically to personalize the
             questions.
           </p>
@@ -233,7 +233,7 @@ export default function InterviewPrepPage() {
           >
             {loading ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                 Generating questions...
               </>
             ) : (
@@ -249,15 +249,15 @@ export default function InterviewPrepPage() {
       {result && (
         <div className="space-y-5">
           {/* Summary card */}
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
             <div className="mb-3 flex items-center gap-2 text-indigo-400">
               <FaComments size={14} />
-              <h2 className="text-sm font-semibold text-white">
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
                 Interview Prep for{" "}
                 <span className="text-indigo-400">{result.targetRole}</span>
               </h2>
             </div>
-            <p className="mb-4 text-xs leading-relaxed text-slate-400">
+            <p className="mb-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
               {result.summary}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -282,17 +282,17 @@ export default function InterviewPrepPage() {
               return (
                 <div
                   key={index}
-                  className="rounded-xl border border-white/[0.07] bg-white/[0.02] overflow-hidden"
+                  className="rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] overflow-hidden"
                 >
                   <button
                     onClick={() => setExpanded(isOpen ? null : index)}
                     className="flex w-full items-start gap-3 px-4 py-4 text-left"
                   >
-                    <span className="mt-0.5 flex-shrink-0 text-xs font-bold text-slate-600">
+                    <span className="mt-0.5 flex-shrink-0 text-xs font-bold text-slate-400 dark:text-slate-600">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-white">
+                      <p className="text-sm font-medium text-slate-900 dark:text-white">
                         {q.question}
                       </p>
                     </div>
@@ -304,7 +304,7 @@ export default function InterviewPrepPage() {
                         {style.label}
                       </span>
                       <svg
-                        className={`h-3.5 w-3.5 flex-shrink-0 text-slate-600 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                        className={`h-3.5 w-3.5 flex-shrink-0 text-slate-400 dark:text-slate-600 transition-transform ${isOpen ? "rotate-180" : ""}`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -320,7 +320,7 @@ export default function InterviewPrepPage() {
                   </button>
 
                   {isOpen && (
-                    <div className="border-t border-white/[0.06] px-4 py-4">
+                    <div className="border-t border-slate-200 dark:border-white/[0.06] px-4 py-4">
                       <div className="flex items-start gap-2.5">
                         <FaLightbulb
                           className="mt-0.5 flex-shrink-0 text-indigo-400"
@@ -330,7 +330,7 @@ export default function InterviewPrepPage() {
                           <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                             How to answer
                           </p>
-                          <p className="text-xs leading-relaxed text-slate-300">
+                          <p className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                             {q.tip}
                           </p>
                         </div>
@@ -347,7 +347,7 @@ export default function InterviewPrepPage() {
             <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-5">
               <div className="mb-4 flex items-center gap-2 text-indigo-400">
                 <FaLightbulb size={13} />
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
                   General Interview Tips
                 </h3>
               </div>
@@ -355,7 +355,7 @@ export default function InterviewPrepPage() {
                 {result.generalTips.map((tip, i) => (
                   <li key={i} className="flex items-start gap-2.5">
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400" />
-                    <span className="text-xs leading-relaxed text-slate-300">
+                    <span className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                       {tip}
                     </span>
                   </li>
@@ -382,7 +382,7 @@ export default function InterviewPrepPage() {
           >
             {starting ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                 Starting session...
               </>
             ) : (
@@ -397,7 +397,7 @@ export default function InterviewPrepPage() {
           <div className="flex flex-col gap-2 sm:flex-row">
             <button
               onClick={handleReset}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] py-2.5 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:text-slate-900 dark:hover:text-white"
             >
               Prep for Another Role
             </button>

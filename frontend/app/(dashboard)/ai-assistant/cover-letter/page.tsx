@@ -51,7 +51,7 @@ function FileDropzone({
           <FaFileAlt size={18} />
         </div>
         <div className="flex-1 overflow-hidden">
-          <p className="truncate text-sm font-medium text-white">{file.name}</p>
+          <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{file.name}</p>
           <p className="text-xs text-slate-500">{formatSize(file.size)}</p>
         </div>
         <button
@@ -76,17 +76,17 @@ function FileDropzone({
       className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-8 transition-colors ${
         dragging
           ? "border-indigo-500/60 bg-indigo-500/[0.08]"
-          : "border-white/[0.08] hover:border-indigo-500/40 hover:bg-indigo-500/[0.04]"
+          : "border-slate-200 dark:border-white/[0.08] hover:border-indigo-500/40 hover:bg-indigo-500/[0.04]"
       }`}
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.04] text-slate-500">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-white/[0.04] text-slate-500">
         <FaUpload size={16} />
       </div>
       <div className="text-center">
-        <p className="text-sm font-medium text-slate-300">
+        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
           Drop your resume or <span className="text-indigo-400">browse</span>
         </p>
-        <p className="mt-1 text-xs text-slate-600">
+        <p className="mt-1 text-xs text-slate-400 dark:text-slate-600">
           PDF or DOCX — optional, falls back to your portfolio
         </p>
       </div>
@@ -177,7 +177,7 @@ export default function CoverLetterPage() {
       <div className="mb-7">
         <Link
           href="/ai-assistant"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
         >
           <FaChevronLeft size={10} />
           AI Assistant
@@ -188,7 +188,7 @@ export default function CoverLetterPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
               Cover Letter Generator
             </h1>
             <p className="text-xs text-slate-500">
@@ -203,7 +203,7 @@ export default function CoverLetterPage() {
         <div className="space-y-5">
           {/* Company name */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-slate-400">
+            <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Company Name <span className="text-red-400">*</span>
             </label>
             <input
@@ -211,16 +211,16 @@ export default function CoverLetterPage() {
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               placeholder="e.g. Google, Shopify, Acme Corp"
-              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
             />
           </div>
 
           {/* Job description */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-slate-400">
+            <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Job Description <span className="text-red-400">*</span>
             </label>
-            <p className="mb-3 text-xs text-slate-600">
+            <p className="mb-3 text-xs text-slate-400 dark:text-slate-600">
               Paste the full job posting for the most tailored result.
             </p>
             <textarea
@@ -228,14 +228,14 @@ export default function CoverLetterPage() {
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job description here..."
               rows={8}
-              className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
             />
           </div>
 
           {/* Resume upload */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-slate-400">
-              Resume <span className="text-slate-600">(optional)</span>
+            <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
+              Resume <span className="text-slate-400 dark:text-slate-600">(optional)</span>
             </label>
             <FileDropzone
               file={file}
@@ -243,7 +243,7 @@ export default function CoverLetterPage() {
               onClear={() => setFile(null)}
             />
             {!file && (
-              <p className="mt-2 text-xs text-slate-600">
+              <p className="mt-2 text-xs text-slate-400 dark:text-slate-600">
                 No file? Your portfolio data will be used automatically.
               </p>
             )}
@@ -267,7 +267,7 @@ export default function CoverLetterPage() {
           >
             {loading ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                 Generating cover letter...
               </>
             ) : (
@@ -287,7 +287,7 @@ export default function CoverLetterPage() {
             <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/[0.05] p-5">
               <div className="mb-4 flex items-center gap-2 text-indigo-400">
                 <FaLightbulb size={14} />
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
                   Key Selling Points
                 </h3>
               </div>
@@ -305,15 +305,15 @@ export default function CoverLetterPage() {
           )}
 
           {/* Cover letter */}
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03]">
-            <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
-              <h3 className="text-sm font-semibold text-white">Cover Letter</h3>
+          <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03]">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/[0.06] px-5 py-4">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Cover Letter</h3>
               <button
                 onClick={handleCopy}
                 className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                   copied
                     ? "bg-emerald-500/15 text-emerald-400"
-                    : "bg-white/[0.05] text-slate-400 hover:bg-white/[0.08] hover:text-white"
+                    : "bg-slate-100 dark:bg-white/[0.05] text-slate-500 dark:text-slate-400 hover:bg-white/[0.08] hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 {copied ? (
@@ -330,7 +330,7 @@ export default function CoverLetterPage() {
               </button>
             </div>
             <div className="px-5 py-5">
-              <p className="whitespace-pre-line text-sm leading-relaxed text-slate-300">
+              <p className="whitespace-pre-line text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                 {result.coverLetter}
               </p>
             </div>
@@ -340,7 +340,7 @@ export default function CoverLetterPage() {
           <div className="flex flex-col gap-2 sm:flex-row">
             <button
               onClick={handleReset}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] py-2.5 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:text-slate-900 dark:hover:text-white"
             >
               Generate Another
             </button>

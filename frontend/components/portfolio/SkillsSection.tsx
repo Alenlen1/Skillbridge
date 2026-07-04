@@ -76,16 +76,16 @@ export default function SkillsSection() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
       </div>
     );
   }
 
   return (
-    <div className="mt-10 border-t border-white/[0.06] pt-10">
+    <div className="mt-10 border-t border-slate-200 dark:border-white/[0.06] pt-10">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">Skills</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Skills</h2>
           <p className="mt-0.5 text-sm text-slate-500">
             Add your technical skills and tools
           </p>
@@ -106,10 +106,10 @@ export default function SkillsSection() {
       )}
 
       {adding && (
-        <div className="mb-6 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
+        <div className="mb-6 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Skill name
               </label>
               <input
@@ -119,17 +119,17 @@ export default function SkillsSection() {
                 onKeyDown={(e) => e.key === "Enter" && handleAdd()}
                 placeholder="e.g. React"
                 autoFocus
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Category
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-[#0f0f1a] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f0f1a] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>
@@ -139,13 +139,13 @@ export default function SkillsSection() {
               </select>
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Level
               </label>
               <select
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-[#0f0f1a] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f0f1a] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               >
                 {LEVELS.map((l) => (
                   <option key={l} value={l}>
@@ -169,7 +169,7 @@ export default function SkillsSection() {
                 setName("");
                 setError("");
               }}
-              className="rounded-lg border border-white/10 px-4 py-2 text-sm text-slate-400 transition hover:text-white"
+              className="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               Cancel
             </button>
@@ -178,8 +178,8 @@ export default function SkillsSection() {
       )}
 
       {skills.length === 0 && !adding ? (
-        <div className="rounded-xl border border-dashed border-white/10 py-10 text-center">
-          <p className="text-sm text-slate-600">
+        <div className="rounded-xl border border-dashed border-slate-200 dark:border-white/10 py-10 text-center">
+          <p className="text-sm text-slate-400 dark:text-slate-600">
             No skills yet — add your first one
           </p>
         </div>
@@ -188,11 +188,11 @@ export default function SkillsSection() {
           {skills.map((skill) => (
             <div
               key={skill.id}
-              className="group flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5"
+              className="group flex items-center gap-2 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.04] px-3 py-1.5"
             >
-              <span className="text-sm text-slate-300">{skill.name}</span>
+              <span className="text-sm text-slate-700 dark:text-slate-300">{skill.name}</span>
               {skill.level && (
-                <span className="text-xs text-slate-600">{skill.level}</span>
+                <span className="text-xs text-slate-400 dark:text-slate-600">{skill.level}</span>
               )}
               <button
                 onClick={() => handleDelete(skill.id)}

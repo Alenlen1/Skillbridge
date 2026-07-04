@@ -88,16 +88,16 @@ export default function ProjectsSection() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
       </div>
     );
   }
 
   return (
-    <div className="mt-10 border-t border-white/[0.06] pt-10">
+    <div className="mt-10 border-t border-slate-200 dark:border-white/[0.06] pt-10">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">Projects</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Projects</h2>
           <p className="mt-0.5 text-sm text-slate-500">
             Showcase your best work
           </p>
@@ -118,10 +118,10 @@ export default function ProjectsSection() {
       )}
 
       {adding && (
-        <div className="mb-6 rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
+        <div className="mb-6 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
           <div className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Project title <span className="text-red-400">*</span>
               </label>
               <input
@@ -130,12 +130,12 @@ export default function ProjectsSection() {
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 placeholder="e.g. SkillBridge"
                 autoFocus
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Description
               </label>
               <textarea
@@ -145,14 +145,14 @@ export default function ProjectsSection() {
                 }
                 placeholder="What does this project do?"
                 rows={3}
-                className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full resize-none rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Tech stack{" "}
-                <span className="text-slate-600">(comma separated)</span>
+                <span className="text-slate-400 dark:text-slate-600">(comma separated)</span>
               </label>
               <input
                 type="text"
@@ -161,13 +161,13 @@ export default function ProjectsSection() {
                   setForm({ ...form, techStack: e.target.value })
                 }
                 placeholder="e.g. React, TypeScript, PostgreSQL"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-400">
+                <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                   GitHub URL
                 </label>
                 <input
@@ -177,11 +177,11 @@ export default function ProjectsSection() {
                     setForm({ ...form, githubUrl: e.target.value })
                   }
                   placeholder="https://github.com/..."
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-400">
+                <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                   Live URL
                 </label>
                 <input
@@ -191,7 +191,7 @@ export default function ProjectsSection() {
                     setForm({ ...form, liveUrl: e.target.value })
                   }
                   placeholder="https://..."
-                  className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
               </div>
             </div>
@@ -204,9 +204,9 @@ export default function ProjectsSection() {
                 onChange={(e) =>
                   setForm({ ...form, featured: e.target.checked })
                 }
-                className="rounded border-white/10 bg-white/[0.05]"
+                className="rounded border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05]"
               />
-              <label htmlFor="featured" className="text-sm text-slate-400">
+              <label htmlFor="featured" className="text-sm text-slate-500 dark:text-slate-400">
                 Featured project
               </label>
             </div>
@@ -226,7 +226,7 @@ export default function ProjectsSection() {
                 setForm(EMPTY_FORM);
                 setError("");
               }}
-              className="rounded-lg border border-white/10 px-4 py-2 text-sm text-slate-400 transition hover:text-white"
+              className="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               Cancel
             </button>
@@ -235,8 +235,8 @@ export default function ProjectsSection() {
       )}
 
       {projects.length === 0 && !adding ? (
-        <div className="rounded-xl border border-dashed border-white/10 py-10 text-center">
-          <p className="text-sm text-slate-600">
+        <div className="rounded-xl border border-dashed border-slate-200 dark:border-white/10 py-10 text-center">
+          <p className="text-sm text-slate-400 dark:text-slate-600">
             No projects yet — add your first one
           </p>
         </div>
@@ -245,12 +245,12 @@ export default function ProjectsSection() {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5"
+              className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-5"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-medium text-white">{project.title}</h3>
+                    <h3 className="font-medium text-slate-900 dark:text-white">{project.title}</h3>
                     {project.featured && (
                       <span className="rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-xs text-indigo-400">
                         Featured
@@ -258,7 +258,7 @@ export default function ProjectsSection() {
                     )}
                   </div>
                   {project.description && (
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                       {project.description}
                     </p>
                   )}
@@ -280,7 +280,7 @@ export default function ProjectsSection() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-slate-500 transition hover:text-white"
+                        className="flex items-center gap-1.5 text-xs text-slate-500 transition hover:text-slate-900 dark:hover:text-white"
                       >
                         <IconBrandGithub size={13} stroke={1.5} />
                         GitHub

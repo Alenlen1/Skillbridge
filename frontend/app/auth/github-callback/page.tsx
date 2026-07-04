@@ -37,9 +37,9 @@ function GitHubCallbackContent() {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0f]">
-      <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
-      <p className="mt-4 text-sm text-slate-400">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-[#0a0a0f]">
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
+      <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
         Signing you in with GitHub...
       </p>
     </div>
@@ -50,9 +50,9 @@ export default function GitHubCallbackPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0f]">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
-          <p className="mt-4 text-sm text-slate-400">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-[#0a0a0f]">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
+          <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
             Signing you in with GitHub...
           </p>
         </div>

@@ -147,7 +147,7 @@ function ResultSection({
     <div className={`rounded-xl border p-5 ${c.border} ${c.bg}`}>
       <div className={`mb-4 flex items-center gap-2 ${c.icon}`}>
         {icon}
-        <h3 className="text-sm font-semibold text-white">{title}</h3>
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{title}</h3>
       </div>
       <ul className="space-y-2.5">
         {items.map((item, i) => (
@@ -155,7 +155,7 @@ function ResultSection({
             <span
               className={`mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full ${c.dot}`}
             />
-            <span className="text-xs leading-relaxed text-slate-300">
+            <span className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
               {item}
             </span>
           </li>
@@ -196,7 +196,7 @@ function FileDropzone({
           <FaFileAlt size={18} />
         </div>
         <div className="flex-1 overflow-hidden">
-          <p className="truncate text-sm font-medium text-white">{file.name}</p>
+          <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{file.name}</p>
           <p className="text-xs text-slate-500">{formatSize(file.size)}</p>
         </div>
         <button
@@ -221,18 +221,18 @@ function FileDropzone({
       className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-10 transition-colors ${
         dragging
           ? "border-indigo-500/60 bg-indigo-500/[0.08]"
-          : "border-white/[0.08] hover:border-indigo-500/40 hover:bg-indigo-500/[0.04]"
+          : "border-slate-200 dark:border-white/[0.08] hover:border-indigo-500/40 hover:bg-indigo-500/[0.04]"
       }`}
     >
-      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.04] text-slate-500">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 dark:bg-white/[0.04] text-slate-500">
         <FaUpload size={18} />
       </div>
       <div className="text-center">
-        <p className="text-sm font-medium text-slate-300">
+        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
           Drop your resume here or{" "}
           <span className="text-indigo-400">browse</span>
         </p>
-        <p className="mt-1 text-xs text-slate-600">PDF or DOCX — max 5MB</p>
+        <p className="mt-1 text-xs text-slate-400 dark:text-slate-600">PDF or DOCX — max 5MB</p>
       </div>
       <input
         ref={inputRef}
@@ -303,7 +303,7 @@ export default function ResumeReviewPage() {
       <div className="mb-7">
         <Link
           href="/ai-assistant"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
         >
           <FaChevronLeft size={10} />
           AI Assistant
@@ -314,7 +314,7 @@ export default function ResumeReviewPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">Resume Review</h1>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Resume Review</h1>
             <p className="text-xs text-slate-500">
               Upload your resume and select its template for an accurate AI
               review
@@ -327,7 +327,7 @@ export default function ResumeReviewPage() {
         <div className="space-y-5">
           {/* Template selector */}
           <div>
-            <label className="mb-3 block text-xs font-medium text-slate-400">
+            <label className="mb-3 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Resume Template
             </label>
             <div className="grid gap-2 sm:grid-cols-3">
@@ -338,21 +338,21 @@ export default function ResumeReviewPage() {
                   className={`flex items-start gap-3 rounded-xl border p-4 text-left transition-colors ${
                     selectedTemplate === t.id
                       ? "border-indigo-500/50 bg-indigo-500/10"
-                      : "border-white/[0.07] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04]"
+                      : "border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] hover:border-white/[0.12] hover:bg-slate-100 dark:bg-white/[0.04]"
                   }`}
                 >
                   <span
-                    className={`mt-0.5 ${selectedTemplate === t.id ? "text-indigo-400" : "text-slate-600"}`}
+                    className={`mt-0.5 ${selectedTemplate === t.id ? "text-indigo-400" : "text-slate-400 dark:text-slate-600"}`}
                   >
                     {t.icon}
                   </span>
                   <div>
                     <p
-                      className={`text-sm font-medium ${selectedTemplate === t.id ? "text-white" : "text-slate-400"}`}
+                      className={`text-sm font-medium ${selectedTemplate === t.id ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
                     >
                       {t.name}
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-600">
+                    <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-600">
                       {t.description}
                     </p>
                   </div>
@@ -368,7 +368,7 @@ export default function ResumeReviewPage() {
 
           {/* File upload */}
           <div>
-            <label className="mb-3 block text-xs font-medium text-slate-400">
+            <label className="mb-3 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Resume File
             </label>
             <FileDropzone
@@ -397,7 +397,7 @@ export default function ResumeReviewPage() {
           >
             {loading ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                 Analyzing your resume...
               </>
             ) : (
@@ -412,13 +412,13 @@ export default function ResumeReviewPage() {
 
       {result && (
         <div className="space-y-5">
-          <div className="flex flex-col items-center gap-5 rounded-xl border border-white/[0.08] bg-white/[0.03] p-6 sm:flex-row sm:items-start">
+          <div className="flex flex-col items-center gap-5 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-6 sm:flex-row sm:items-start">
             <ScoreMeter score={result.score} />
             <div className="flex-1 text-center sm:text-left">
-              <h2 className="mb-1 text-base font-semibold text-white">
+              <h2 className="mb-1 text-base font-semibold text-slate-900 dark:text-white">
                 Overall Resume Score
               </h2>
-              <p className="mb-3 text-xs text-slate-400">
+              <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">
                 Reviewed as a{" "}
                 <span className="font-medium text-indigo-400">
                   {result.template}
@@ -427,13 +427,13 @@ export default function ResumeReviewPage() {
                 alignment, and recruiter readability.
               </p>
               <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.strengths.length} strengths found
                 </span>
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.weaknesses.length} areas to improve
                 </span>
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.suggestions.length} suggestions
                 </span>
               </div>
@@ -462,7 +462,7 @@ export default function ResumeReviewPage() {
           <div className="flex flex-col gap-2 sm:flex-row">
             <button
               onClick={handleReset}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] py-2.5 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:text-slate-900 dark:hover:text-white"
             >
               Review Another Resume
             </button>

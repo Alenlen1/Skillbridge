@@ -257,7 +257,7 @@ export default function InterviewPracticePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24">
-        <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-indigo-400" />
+        <span className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-indigo-400" />
       </div>
     );
   }
@@ -265,10 +265,7 @@ export default function InterviewPracticePage() {
   if (error && !session) {
     return (
       <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
-        <FaTimesCircle
-          className="mt-0.5 flex-shrink-0 text-red-400"
-          size={14}
-        />
+        <FaTimesCircle className="mt-0.5 flex-shrink-0 text-red-400" size={14} />
         <p className="text-xs text-red-300">{error}</p>
       </div>
     );
@@ -286,7 +283,7 @@ export default function InterviewPracticePage() {
         <div className="mb-7">
           <Link
             href="/ai-assistant/interview-prep"
-            className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+            className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
           >
             <FaChevronLeft size={10} />
             Interview Prep
@@ -296,7 +293,7 @@ export default function InterviewPracticePage() {
               <FaCheckCircle size={16} />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-white">
+              <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
                 Session Complete
               </h1>
               <p className="text-xs text-slate-500">{session.targetRole}</p>
@@ -305,7 +302,7 @@ export default function InterviewPracticePage() {
         </div>
 
         <div className="space-y-5">
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5 text-center">
+          <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5 text-center">
             <p className="mb-1 text-xs uppercase tracking-wide text-slate-500">
               Overall Score
             </p>
@@ -313,7 +310,7 @@ export default function InterviewPracticePage() {
               {session.overallScore}
               <span className="text-lg text-slate-500">/100</span>
             </p>
-            <p className="mt-3 text-xs leading-relaxed text-slate-400">
+            <p className="mt-3 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
               {session.overallFeedback}
             </p>
           </div>
@@ -327,7 +324,7 @@ export default function InterviewPracticePage() {
                 {session.strengths.map((s, i) => (
                   <li key={i} className="flex items-start gap-2.5">
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-400" />
-                    <span className="text-xs leading-relaxed text-slate-300">
+                    <span className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                       {s}
                     </span>
                   </li>
@@ -345,7 +342,7 @@ export default function InterviewPracticePage() {
                 {session.improvements.map((s, i) => (
                   <li key={i} className="flex items-start gap-2.5">
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-yellow-400" />
-                    <span className="text-xs leading-relaxed text-slate-300">
+                    <span className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                       {s}
                     </span>
                   </li>
@@ -355,16 +352,16 @@ export default function InterviewPracticePage() {
           )}
 
           <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-white">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
               Question Breakdown
             </h3>
             {session.questions.map((q, i) => (
               <div
                 key={q.id}
-                className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4"
+                className="rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] p-4"
               >
                 <div className="mb-2 flex items-start justify-between gap-3">
-                  <p className="text-xs font-medium text-white">
+                  <p className="text-xs font-medium text-slate-900 dark:text-white">
                     {i + 1}. {q.question}
                   </p>
                   {q.score !== null && (
@@ -374,7 +371,7 @@ export default function InterviewPracticePage() {
                   )}
                 </div>
                 {q.feedback && (
-                  <p className="text-xs leading-relaxed text-slate-400">
+                  <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                     {q.feedback}
                   </p>
                 )}
@@ -385,7 +382,7 @@ export default function InterviewPracticePage() {
           <div className="flex flex-col gap-2 sm:flex-row">
             <Link
               href="/ai-assistant/interview-prep"
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] py-2.5 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:text-slate-900 dark:hover:text-white"
             >
               Back to Interview Prep
             </Link>
@@ -408,21 +405,21 @@ export default function InterviewPracticePage() {
       <div className="mb-7">
         <Link
           href="/ai-assistant/interview-prep"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
         >
           <FaChevronLeft size={10} />
           Interview Prep
         </Link>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-white">
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
               Mock Interview — {session.targetRole}
             </h1>
             <p className="text-xs text-slate-500">
               Question {currentIndex + 1} of {session.questions.length}
             </p>
           </div>
-          <div className="flex h-1.5 w-24 overflow-hidden rounded-full bg-white/[0.06]">
+          <div className="flex h-1.5 w-24 overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.06]">
             <div
               className="h-full bg-indigo-500 transition-all"
               style={{
@@ -436,7 +433,7 @@ export default function InterviewPracticePage() {
       {currentQuestion && (
         <div className="space-y-5">
           {/* Question card */}
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
             <div className="mb-3 flex items-center justify-between">
               <span className="flex items-center gap-1 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-400">
                 {TYPE_ICON[currentQuestion.type]}
@@ -448,7 +445,7 @@ export default function InterviewPracticePage() {
                   <select
                     value={selectedVoiceURI}
                     onChange={(e) => setSelectedVoiceURI(e.target.value)}
-                    className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-[10px] text-slate-400 outline-none transition-colors focus:border-indigo-500/50"
+                    className="rounded-lg border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-2 py-1 text-[10px] text-slate-500 dark:text-slate-400 outline-none transition-colors focus:border-indigo-500/50"
                   >
                     {availableVoices
                       .filter((v) => v.lang.startsWith("en"))
@@ -468,7 +465,7 @@ export default function InterviewPracticePage() {
                 </button>
               </div>
             </div>
-            <p className="text-base font-medium leading-relaxed text-white">
+            <p className="text-base font-medium leading-relaxed text-slate-900 dark:text-white">
               {currentQuestion.question}
             </p>
           </div>
@@ -476,11 +473,11 @@ export default function InterviewPracticePage() {
           {/* Already answered -> show feedback */}
           {currentQuestion.userAnswer ? (
             <div className="space-y-4">
-              <div className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4">
+              <div className="rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] p-4">
                 <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                   Your Answer
                 </p>
-                <p className="text-xs leading-relaxed text-slate-300">
+                <p className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                   {currentQuestion.userAnswer}
                 </p>
               </div>
@@ -496,7 +493,7 @@ export default function InterviewPracticePage() {
                     </span>
                   )}
                 </div>
-                <p className="mb-3 text-xs leading-relaxed text-slate-300">
+                <p className="mb-3 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                   {currentQuestion.feedback}
                 </p>
                 {currentQuestion.strengths.length > 0 && (
@@ -506,7 +503,7 @@ export default function InterviewPracticePage() {
                     </p>
                     <ul className="space-y-1">
                       {currentQuestion.strengths.map((s, i) => (
-                        <li key={i} className="text-xs text-slate-400">
+                        <li key={i} className="text-xs text-slate-500 dark:text-slate-400">
                           • {s}
                         </li>
                       ))}
@@ -520,7 +517,7 @@ export default function InterviewPracticePage() {
                     </p>
                     <ul className="space-y-1">
                       {currentQuestion.improvements.map((s, i) => (
-                        <li key={i} className="text-xs text-slate-400">
+                        <li key={i} className="text-xs text-slate-500 dark:text-slate-400">
                           • {s}
                         </li>
                       ))}
@@ -538,7 +535,7 @@ export default function InterviewPracticePage() {
                   >
                     {completing ? (
                       <>
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                         Finishing up...
                       </>
                     ) : (
@@ -568,7 +565,7 @@ export default function InterviewPracticePage() {
                     className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-medium transition-colors ${
                       inputMode === "voice"
                         ? "bg-indigo-500/15 text-indigo-400"
-                        : "text-slate-500 hover:text-slate-300"
+                        : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                     }`}
                   >
                     <FaMicrophone size={11} />
@@ -579,7 +576,7 @@ export default function InterviewPracticePage() {
                     className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-medium transition-colors ${
                       inputMode === "type"
                         ? "bg-indigo-500/15 text-indigo-400"
-                        : "text-slate-500 hover:text-slate-300"
+                        : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                     }`}
                   >
                     <FaKeyboard size={11} />
@@ -589,7 +586,7 @@ export default function InterviewPracticePage() {
               )}
 
               {inputMode === "voice" && speechSupported ? (
-                <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5 text-center">
+                <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5 text-center">
                   <button
                     onClick={toggleRecording}
                     className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-colors ${
@@ -599,9 +596,9 @@ export default function InterviewPracticePage() {
                     }`}
                   >
                     {isRecording ? (
-                      <FaMicrophoneSlash className="text-white" size={20} />
+                      <FaMicrophoneSlash className="text-slate-900 dark:text-white" size={20} />
                     ) : (
-                      <FaMicrophone className="text-white" size={20} />
+                      <FaMicrophone className="text-slate-900 dark:text-white" size={20} />
                     )}
                   </button>
                   <p className="mb-3 text-xs text-slate-500">
@@ -616,7 +613,7 @@ export default function InterviewPracticePage() {
                       placeholder="Your transcribed answer will appear here — you can edit it anytime"
                       rows={5}
                       disabled={isRecording}
-                      className="w-full resize-none rounded-lg border border-white/[0.06] bg-white/[0.03] p-3 text-left text-xs leading-relaxed text-slate-300 outline-none transition-colors focus:border-indigo-500/50 disabled:opacity-70"
+                      className="w-full resize-none rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.03] p-3 text-left text-xs leading-relaxed text-slate-700 dark:text-slate-300 outline-none transition-colors focus:border-indigo-500/50 disabled:opacity-70"
                     />
                   )}
                 </div>
@@ -626,7 +623,7 @@ export default function InterviewPracticePage() {
                   onChange={(e) => setAnswerText(e.target.value)}
                   placeholder="Type your answer here..."
                   rows={6}
-                  className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-white/[0.05]"
+                  className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
                 />
               )}
 
@@ -647,7 +644,7 @@ export default function InterviewPracticePage() {
               >
                 {submitting ? (
                   <>
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                     Getting feedback...
                   </>
                 ) : (

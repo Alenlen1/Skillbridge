@@ -95,7 +95,7 @@ export default function TrackerLandingPreview() {
 
   return (
     <motion.div {...fade} className="p-6">
-      <h3 className="mb-4 text-sm font-semibold text-white">Career tracker</h3>
+      <h3 className="mb-4 text-sm font-semibold text-slate-900 dark:text-white">Career tracker</h3>
 
       {/* Status pills row */}
       <div className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -106,7 +106,7 @@ export default function TrackerLandingPreview() {
             >
               {s.label}
             </span>
-            <span className="text-sm text-slate-600">{s.count}</span>
+            <span className="text-sm text-slate-400 dark:text-slate-600">{s.count}</span>
           </div>
         ))}
       </div>
@@ -118,10 +118,10 @@ export default function TrackerLandingPreview() {
           return (
             <div
               key={app.company}
-              className="flex items-center justify-between rounded-lg border border-white/[0.06] bg-white/[0.02] px-4 py-3 transition-colors hover:border-indigo-500/20 hover:bg-white/[0.04]"
+              className="flex items-center justify-between rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] px-4 py-3 transition-colors hover:border-indigo-500/20 hover:bg-slate-100 dark:bg-white/[0.04]"
             >
               <div>
-                <p className="text-sm font-medium text-white">{app.company}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-white">{app.company}</p>
                 <p className="text-xs text-slate-500">{app.role}</p>
               </div>
               <span

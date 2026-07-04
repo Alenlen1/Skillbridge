@@ -77,8 +77,8 @@ export default function PortfolioPage() {
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-white">Portfolio</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Portfolio</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Your public profile is live at{" "}
           <a
             href={`${process.env.NEXT_PUBLIC_APP_URL}/${user?.username}`}
@@ -93,39 +93,39 @@ export default function PortfolioPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-slate-300">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             About
           </label>
           <textarea
             {...register("about")}
             rows={4}
             placeholder="Tell recruiters about yourself, your goals, and what you're working on..."
-            className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            className="w-full resize-none rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           />
           {errors.about?.message && (
             <p className="mt-1 text-xs text-red-400">{errors.about.message}</p>
           )}
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-slate-300">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Headline
           </label>
           <input
             {...register("headline")}
             type="text"
             placeholder="e.g. Sophomore IT Student : Full-Stack Developer"
-            className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-slate-300">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Location
           </label>
           <input
             {...register("location")}
             type="text"
             placeholder="Manila, Philippines"
-            className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           />
           {errors.location?.message && (
             <p className="mt-1 text-xs text-red-400">
@@ -135,14 +135,14 @@ export default function PortfolioPage() {
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-slate-300">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Website
           </label>
           <input
             {...register("website")}
             type="text"
             placeholder="https://yourwebsite.com"
-            className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           />
           {errors.website?.message && (
             <p className="mt-1 text-xs text-red-400">
@@ -151,14 +151,14 @@ export default function PortfolioPage() {
           )}
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-slate-300">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Phone number
           </label>
           <input
             {...register("phone")}
             type="text"
             placeholder="+63 912 345 6789"
-            className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           />
           {errors.phone?.message && (
             <p className="mt-1 text-xs text-red-400">{errors.phone.message}</p>

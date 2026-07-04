@@ -43,7 +43,7 @@ export default function AnalyticsLandingPreview() {
 
   return (
     <motion.div {...fade} className="p-6">
-      <h3 className="mb-1 text-base font-bold text-white">Analytics</h3>
+      <h3 className="mb-1 text-base font-bold text-slate-900 dark:text-white">Analytics</h3>
       <p className="mb-5 text-xs text-slate-500">
         Track your portfolio performance and application progress
       </p>
@@ -52,29 +52,29 @@ export default function AnalyticsLandingPreview() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 transition-colors hover:border-indigo-500/20 hover:bg-white/[0.04]"
+            className="rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-4 transition-colors hover:border-indigo-500/20 hover:bg-slate-100 dark:bg-white/[0.04]"
           >
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/10 text-indigo-400">
               {stat.icon}
             </div>
-            <p className="text-xl font-bold text-white">{stat.value}</p>
+            <p className="text-xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
             <p className="mt-1 text-xs text-slate-500">{stat.label}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4">
-          <p className="mb-3 text-sm font-semibold text-white">
+        <div className="rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-4">
+          <p className="mb-3 text-sm font-semibold text-slate-900 dark:text-white">
             Application breakdown
           </p>
-          <p className="text-xs text-slate-600">No applications yet</p>
+          <p className="text-xs text-slate-400 dark:text-slate-600">No applications yet</p>
         </div>
-        <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4">
-          <p className="mb-3 text-sm font-semibold text-white">
+        <div className="rounded-lg border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-4">
+          <p className="mb-3 text-sm font-semibold text-slate-900 dark:text-white">
             Recent activity
           </p>
-          <p className="text-xs text-slate-600">No activity yet</p>
+          <p className="text-xs text-slate-400 dark:text-slate-600">No activity yet</p>
         </div>
       </div>
     </motion.div>

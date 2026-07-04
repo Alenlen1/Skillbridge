@@ -32,7 +32,7 @@ const formatDate = (iso: string) =>
   });
 
 const scoreColor = (score: number | null) => {
-  if (score === null) return "text-slate-400";
+  if (score === null) return "text-slate-500 dark:text-slate-400";
   if (score >= 80) return "text-emerald-400";
   if (score >= 60) return "text-yellow-400";
   return "text-red-400";
@@ -112,7 +112,7 @@ export default function InterviewHistoryPage() {
       <div className="mb-7">
         <Link
           href="/ai-assistant/interview-prep"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
         >
           <FaChevronLeft size={10} />
           Interview Prep
@@ -122,7 +122,7 @@ export default function InterviewHistoryPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
               Interview History
             </h1>
             <p className="text-xs text-slate-500">
@@ -134,26 +134,23 @@ export default function InterviewHistoryPage() {
 
       {loading && (
         <div className="flex items-center justify-center py-24">
-          <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-indigo-400" />
+          <span className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-indigo-400" />
         </div>
       )}
 
       {!loading && error && (
         <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
-          <FaTimesCircle
-            className="mt-0.5 flex-shrink-0 text-red-400"
-            size={14}
-          />
+          <FaTimesCircle className="mt-0.5 flex-shrink-0 text-red-400" size={14} />
           <p className="text-xs text-red-300">{error}</p>
         </div>
       )}
 
       {!loading && !error && sessions.length === 0 && (
-        <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-10 text-center">
+        <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-10 text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500/10 text-indigo-400">
             <IconSparkles size={20} stroke={1.5} />
           </div>
-          <p className="mb-1 text-sm font-medium text-white">
+          <p className="mb-1 text-sm font-medium text-slate-900 dark:text-white">
             No interview sessions yet
           </p>
           <p className="mb-5 text-xs text-slate-500">
@@ -174,18 +171,20 @@ export default function InterviewHistoryPage() {
         <div className="space-y-5">
           {/* Summary stats */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4 text-center">
-              <p className="text-2xl font-bold text-white">{sessions.length}</p>
+            <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-4 text-center">
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">{sessions.length}</p>
               <p className="text-[11px] text-slate-500">Total Sessions</p>
             </div>
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4 text-center">
-              <p className="text-2xl font-bold text-white">
+            <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-4 text-center">
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">
                 {completedSessions.length}
               </p>
               <p className="text-[11px] text-slate-500">Completed</p>
             </div>
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4 text-center">
-              <p className={`text-2xl font-bold ${scoreColor(averageScore)}`}>
+            <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-4 text-center">
+              <p
+                className={`text-2xl font-bold ${scoreColor(averageScore)}`}
+              >
                 {averageScore !== null ? averageScore : "—"}
               </p>
               <p className="text-[11px] text-slate-500">Avg Score</p>
@@ -198,11 +197,11 @@ export default function InterviewHistoryPage() {
               <Link
                 key={session.id}
                 href={`/ai-assistant/interview-prep/practice/${session.id}`}
-                className="flex items-center justify-between gap-4 rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 transition-colors hover:border-white/[0.14] hover:bg-white/[0.04]"
+                className="flex items-center justify-between gap-4 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] p-4 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:bg-slate-100 dark:bg-white/[0.04]"
               >
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center gap-2">
-                    <p className="truncate text-sm font-medium text-white">
+                    <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
                       {session.targetRole}
                     </p>
                     {session.status === "in_progress" && (
@@ -213,7 +212,7 @@ export default function InterviewHistoryPage() {
                     )}
                     {session.status === "in_progress" &&
                       isStale(session.createdAt) && (
-                        <span className="rounded-full border border-slate-500/20 bg-slate-500/10 px-2 py-0.5 text-[10px] font-medium text-slate-400">
+                        <span className="rounded-full border border-slate-500/20 bg-slate-500/10 px-2 py-0.5 text-[10px] font-medium text-slate-500 dark:text-slate-400">
                           Inactive
                         </span>
                       )}
@@ -225,8 +224,8 @@ export default function InterviewHistoryPage() {
                     )}
                   </div>
                   <p className="text-[11px] text-slate-500">
-                    {formatDate(session.createdAt)} · {session._count.questions}{" "}
-                    questions
+                    {formatDate(session.createdAt)} ·{" "}
+                    {session._count.questions} questions
                   </p>
                 </div>
                 {session.overallScore !== null && (
@@ -236,17 +235,17 @@ export default function InterviewHistoryPage() {
                     >
                       {session.overallScore}
                     </p>
-                    <p className="text-[10px] text-slate-600">/ 100</p>
+                    <p className="text-[10px] text-slate-400 dark:text-slate-600">/ 100</p>
                   </div>
                 )}
                 <button
                   onClick={(e) => handleDeleteClick(e, session)}
                   disabled={deletingId === session.id}
-                  className="flex-shrink-0 rounded-lg p-2 text-slate-600 transition-colors hover:bg-red-500/10 hover:text-red-400 disabled:opacity-50"
+                  className="flex-shrink-0 rounded-lg p-2 text-slate-400 dark:text-slate-600 transition-colors hover:bg-red-500/10 hover:text-red-400 disabled:opacity-50"
                   aria-label="Delete session"
                 >
                   {deletingId === session.id ? (
-                    <span className="block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/20 border-t-red-400" />
+                    <span className="block h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-red-400" />
                   ) : (
                     <FaTrash size={12} />
                   )}
@@ -265,17 +264,17 @@ export default function InterviewHistoryPage() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-2xl border border-white/[0.08] bg-[#0d0d14] p-6 shadow-2xl"
+            className="w-full max-w-sm rounded-2xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0d0d14] p-6 shadow-2xl"
           >
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 text-red-400">
               <FaTrash size={18} />
             </div>
-            <h3 className="mb-2 text-center text-base font-semibold text-white">
+            <h3 className="mb-2 text-center text-base font-semibold text-slate-900 dark:text-white">
               Delete interview session?
             </h3>
-            <p className="mb-6 text-center text-xs leading-relaxed text-slate-400">
+            <p className="mb-6 text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
               You&apos;re about to delete your{" "}
-              <span className="font-medium text-slate-300">
+              <span className="font-medium text-slate-700 dark:text-slate-300">
                 {pendingDelete.targetRole}
               </span>{" "}
               session and all its answers and feedback. This can&apos;t be
@@ -284,7 +283,7 @@ export default function InterviewHistoryPage() {
             <div className="flex gap-2.5">
               <button
                 onClick={() => setPendingDelete(null)}
-                className="flex-1 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-300 transition-colors hover:border-white/[0.14] hover:text-white"
+                className="flex-1 rounded-xl border border-slate-200 dark:border-white/[0.08] py-2.5 text-sm text-slate-700 dark:text-slate-300 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:text-slate-900 dark:hover:text-white"
               >
                 Cancel
               </button>

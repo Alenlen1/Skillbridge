@@ -43,20 +43,20 @@ export default function BrowserMockup({
         />
 
         {/* Browser */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0f0f1a] p-1 shadow-2xl shadow-black/40">
+        <div className="rounded-2xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0f0f1a] p-1 shadow-2xl shadow-black/40">
           {/* Browser Header */}
           <div className="mb-3 flex items-center gap-2 px-3 pt-2">
             <div className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
             <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/60" />
             <div className="h-2.5 w-2.5 rounded-full bg-green-500/60" />
-            <div className="ml-3 flex-1 overflow-hidden rounded-md bg-white/[0.05] px-3 py-1">
+            <div className="ml-3 flex-1 overflow-hidden rounded-md bg-slate-100 dark:bg-white/[0.05] px-3 py-1">
               <span className="truncate text-xs text-slate-500">{url}</span>
             </div>
           </div>
 
           {/* Preview — no AnimatePresence, no transition */}
           <motion.div
-            className="touch-pan-y cursor-grab overflow-hidden rounded-xl bg-[#0d0d18] active:cursor-grabbing"
+            className="touch-pan-y cursor-grab overflow-hidden rounded-xl bg-white dark:bg-[#0d0d18] active:cursor-grabbing"
             drag="x"
             dragConstraints={{ left: -120, right: 120 }}
             dragSnapToOrigin

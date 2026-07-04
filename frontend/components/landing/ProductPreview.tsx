@@ -115,12 +115,12 @@ export default function ProductPreview() {
           <div className="h-20 w-full max-w-md rounded-full bg-indigo-500/10 blur-[60px]" />
         </div>
 
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#0f0f1a]/80 px-4 py-2 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f0f1a]/80 px-4 py-2 backdrop-blur-md">
           <span className="flex items-center gap-1.5 text-sm font-medium text-indigo-300">
             {currentTab.icon}
             {currentTab.label}
           </span>
-          <span className="text-xs text-slate-600">
+          <span className="text-xs text-slate-400 dark:text-slate-600">
             {activeIndex + 1}/{tabs.length}
           </span>
         </div>

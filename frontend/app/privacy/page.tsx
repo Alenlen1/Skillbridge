@@ -3,8 +3,8 @@ import Image from "next/image";
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0f] font-sans text-white antialiased">
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/80 backdrop-blur-md">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0f] font-sans text-slate-900 dark:text-white antialiased">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200 dark:border-white/[0.06] bg-white dark:bg-[#0a0a0f]/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <Link href="/" className="flex items-center gap-2">
             <Image
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
               className="h-9 w-auto"
               priority
             />
-            <span className="text-sm font-semibold text-white">
+            <span className="text-sm font-semibold text-slate-900 dark:text-white">
               SkillBridge
             </span>
           </Link>
@@ -24,16 +24,16 @@ export default function PrivacyPage() {
 
       <main className="px-6 pb-24 pt-32">
         <div className="mx-auto max-w-2xl">
-          <h1 className="mb-2 text-3xl font-semibold tracking-tight text-white">
+          <h1 className="mb-2 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">
             Privacy Policy
           </h1>
           <p className="mb-10 text-sm text-slate-500">
             Last updated: June 2026
           </p>
 
-          <div className="space-y-8 text-sm leading-relaxed text-slate-400">
+          <div className="space-y-8 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 1. Information we collect
               </h2>
               <p>
@@ -47,7 +47,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 2. How We Use Your Information
               </h2>
 
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 3. AI Assistant and third-party services
               </h2>
               <p>
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 4. Information sharing
               </h2>
               <p>
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 5. Data security
               </h2>
               <p>
@@ -112,7 +112,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 6. Cookies and local storage
               </h2>
               <p>
@@ -124,7 +124,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 7. Your rights
               </h2>
               <p>
@@ -138,7 +138,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 8. Open source license
               </h2>
               <p>
@@ -158,7 +158,7 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-base font-semibold text-white">
+              <h2 className="mb-3 text-base font-semibold text-slate-900 dark:text-white">
                 9. Contact
               </h2>
               <p>
@@ -180,7 +180,7 @@ export default function PrivacyPage() {
               height={32}
               className="h-8 w-auto opacity-70"
             />
-            <span className="font-medium text-white">SkillBridge</span>
+            <span className="font-medium text-slate-900 dark:text-white">SkillBridge</span>
             <span>·</span>
             <span>Built by</span>
 

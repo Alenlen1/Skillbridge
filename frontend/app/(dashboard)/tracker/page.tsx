@@ -101,7 +101,7 @@ export default function TrackerPage() {
   if (loading) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
       </div>
     );
   }
@@ -110,10 +110,10 @@ export default function TrackerPage() {
     <div>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-white">
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
             Career Tracker
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Track your applications from applied to offer
           </p>
         </div>
@@ -133,13 +133,13 @@ export default function TrackerPage() {
       )}
 
       {adding && (
-        <div className="mb-8 rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
-          <h2 className="mb-4 text-sm font-semibold text-white">
+        <div className="mb-8 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
+          <h2 className="mb-4 text-sm font-semibold text-slate-900 dark:text-white">
             New Application
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Company <span className="text-red-400">*</span>
               </label>
               <input
@@ -148,11 +148,11 @@ export default function TrackerPage() {
                 onChange={(e) => setForm({ ...form, company: e.target.value })}
                 placeholder="e.g. Google"
                 autoFocus
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Role <span className="text-red-400">*</span>
               </label>
               <input
@@ -160,17 +160,17 @@ export default function TrackerPage() {
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
                 placeholder="e.g. Software Engineer Intern"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Status
               </label>
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="w-full rounded-lg border border-white/10 bg-[#0f0f1a] px-3 py-2 text-sm text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f0f1a] px-3 py-2 text-sm text-slate-900 dark:text-white outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               >
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>
@@ -180,7 +180,7 @@ export default function TrackerPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-400">
+              <label className="mb-1.5 block text-xs font-medium text-slate-500 dark:text-slate-400">
                 Notes
               </label>
               <input
@@ -188,7 +188,7 @@ export default function TrackerPage() {
                 value={form.notes}
                 onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 placeholder="Optional notes..."
-                className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
           </div>
@@ -205,7 +205,7 @@ export default function TrackerPage() {
                 setAdding(false);
                 setForm(EMPTY_FORM);
               }}
-              className="rounded-lg border border-white/10 px-4 py-2 text-sm text-slate-400 transition hover:text-white"
+              className="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               Cancel
             </button>
@@ -214,9 +214,9 @@ export default function TrackerPage() {
       )}
 
       {applications.length === 0 && !adding ? (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-white/10">
+        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-white/10">
           <IconBriefcase size={32} stroke={1} className="mb-3 text-slate-700" />
-          <p className="text-sm text-slate-600">No applications yet</p>
+          <p className="text-sm text-slate-400 dark:text-slate-600">No applications yet</p>
           <button
             onClick={() => setAdding(true)}
             className="mt-4 text-sm text-indigo-400 hover:text-indigo-300"
@@ -234,7 +234,7 @@ export default function TrackerPage() {
                 >
                   {status}
                 </span>
-                <span className="text-xs text-slate-600">
+                <span className="text-xs text-slate-400 dark:text-slate-600">
                   {grouped[status].length}
                 </span>
               </div>
@@ -243,18 +243,18 @@ export default function TrackerPage() {
                 {grouped[status].map((app) => (
                   <div
                     key={app.id}
-                    className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4"
+                    className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-4"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-slate-900 dark:text-white">
                           {app.company}
                         </p>
-                        <p className="mt-0.5 text-xs text-slate-400">
+                        <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                           {app.role}
                         </p>
                         {app.notes && (
-                          <p className="mt-2 text-xs text-slate-600 line-clamp-2">
+                          <p className="mt-2 text-xs text-slate-400 dark:text-slate-600 line-clamp-2">
                             {app.notes}
                           </p>
                         )}
@@ -275,7 +275,7 @@ export default function TrackerPage() {
                       onChange={(e) =>
                         handleStatusChange(app.id, e.target.value)
                       }
-                      className="mt-3 w-full rounded-lg border border-white/10 bg-[#0f0f1a] px-2 py-1.5 text-xs text-white outline-none transition focus:border-indigo-500"
+                      className="mt-3 w-full rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f0f1a] px-2 py-1.5 text-xs text-slate-900 dark:text-white outline-none transition focus:border-indigo-500"
                     >
                       {STATUSES.map((s) => (
                         <option key={s} value={s}>

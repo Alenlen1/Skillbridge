@@ -114,7 +114,7 @@ function ResultSection({
     <div className={`rounded-xl border p-5 ${c.border} ${c.bg}`}>
       <div className={`mb-4 flex items-center gap-2 ${c.icon}`}>
         {icon}
-        <h3 className="text-sm font-semibold text-white">{title}</h3>
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{title}</h3>
       </div>
       <ul className="space-y-2.5">
         {items.map((item, i) => (
@@ -122,7 +122,7 @@ function ResultSection({
             <span
               className={`mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full ${c.dot}`}
             />
-            <span className="text-xs leading-relaxed text-slate-300">
+            <span className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
               {item}
             </span>
           </li>
@@ -174,7 +174,7 @@ export default function PortfolioReviewPage() {
       <div className="mb-7">
         <Link
           href="/ai-assistant"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300"
+          className="mb-4 inline-flex items-center gap-1.5 text-xs text-slate-500 transition-colors hover:text-slate-700 dark:hover:text-slate-300"
         >
           <FaChevronLeft size={10} />
           AI Assistant
@@ -185,7 +185,7 @@ export default function PortfolioReviewPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
               Portfolio Review
             </h1>
             <p className="text-xs text-slate-500">
@@ -199,10 +199,10 @@ export default function PortfolioReviewPage() {
       {!result && (
         <div className="space-y-5">
           {/* Info card */}
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
             <div className="mb-4 flex items-center gap-2 text-indigo-400">
               <FaBriefcase size={14} />
-              <h2 className="text-sm font-semibold text-white">
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
                 What gets reviewed
               </h2>
             </div>
@@ -220,11 +220,11 @@ export default function PortfolioReviewPage() {
                     className="mt-0.5 flex-shrink-0 text-indigo-400"
                     size={11}
                   />
-                  <span className="text-xs text-slate-400">{item}</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">{item}</span>
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-xs text-slate-600">
+            <p className="mt-4 text-xs text-slate-400 dark:text-slate-600">
               Your portfolio data is pulled automatically — no manual input
               required.
             </p>
@@ -249,7 +249,7 @@ export default function PortfolioReviewPage() {
           >
             {loading ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 dark:border-white/20 border-t-white" />
                 Analyzing your portfolio...
               </>
             ) : (
@@ -265,24 +265,24 @@ export default function PortfolioReviewPage() {
       {result && (
         <div className="space-y-5">
           {/* Score card */}
-          <div className="flex flex-col items-center gap-5 rounded-xl border border-white/[0.08] bg-white/[0.03] p-6 sm:flex-row sm:items-start">
+          <div className="flex flex-col items-center gap-5 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-6 sm:flex-row sm:items-start">
             <ScoreMeter score={result.score} />
             <div className="flex-1 text-center sm:text-left">
-              <h2 className="mb-1 text-base font-semibold text-white">
+              <h2 className="mb-1 text-base font-semibold text-slate-900 dark:text-white">
                 Overall Portfolio Score
               </h2>
-              <p className="mb-3 text-xs text-slate-400">
+              <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">
                 Scored based on profile completeness, project quality, skill
                 presentation, and overall recruiter impression.
               </p>
               <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.strengths.length} strengths found
                 </span>
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.weaknesses.length} areas to improve
                 </span>
-                <span className="rounded-full border border-white/[0.08] px-3 py-1 text-xs text-slate-400">
+                <span className="rounded-full border border-slate-200 dark:border-white/[0.08] px-3 py-1 text-xs text-slate-500 dark:text-slate-400">
                   {result.suggestions.length} suggestions
                 </span>
               </div>
@@ -312,7 +312,7 @@ export default function PortfolioReviewPage() {
           <div className="flex flex-col gap-2 sm:flex-row">
             <button
               onClick={handleReset}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] py-2.5 text-sm text-slate-400 transition-colors hover:border-white/[0.14] hover:text-white"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] py-2.5 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:border-slate-300 dark:border-white/[0.14] hover:text-slate-900 dark:hover:text-white"
             >
               Review Again
             </button>

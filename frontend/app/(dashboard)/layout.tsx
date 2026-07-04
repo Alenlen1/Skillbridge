@@ -85,8 +85,8 @@ export default function DashboardLayout({
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0f]">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-[#0a0a0f]">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
       </div>
     );
   }
@@ -94,7 +94,7 @@ export default function DashboardLayout({
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="flex h-14 items-center justify-between border-b border-white/[0.06] px-5">
+      <div className="flex h-14 items-center justify-between border-b border-slate-200 dark:border-white/[0.06] px-5">
         <Link href="/portfolio" className="flex items-center gap-2">
           <Image
             src="/logo.png"
@@ -104,12 +104,12 @@ export default function DashboardLayout({
             className="h-9 w-auto"
             priority
           />
-          <span className="text-sm font-semibold text-white">SkillBridge</span>
+          <span className="text-sm font-semibold text-slate-900 dark:text-white">SkillBridge</span>
         </Link>
         {/* Close button, mobile only */}
         <button
           onClick={() => setMobileNavOpen(false)}
-          className="text-slate-500 hover:text-white md:hidden"
+          className="text-slate-500 hover:text-slate-900 dark:hover:text-white md:hidden"
         >
           <IconX size={20} stroke={1.5} />
         </button>
@@ -125,14 +125,14 @@ export default function DashboardLayout({
               href={item.href}
               className={`relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                 isActive
-                  ? "bg-indigo-500/10 text-white"
-                  : "text-slate-400 hover:bg-white/[0.05] hover:text-white"
+                  ? "bg-indigo-500/10 text-slate-900 dark:text-white"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/[0.05] hover:text-slate-900 dark:hover:text-white"
               }`}
             >
               {isActive && (
                 <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-indigo-500" />
               )}
-              <span className={isActive ? "text-indigo-400" : ""}>
+              <span className={isActive ? "text-indigo-500 dark:text-indigo-400" : ""}>
                 {item.icon}
               </span>
               {item.label}
@@ -142,21 +142,21 @@ export default function DashboardLayout({
       </nav>
 
       {/* User */}
-      <div className="border-t border-white/[0.06] p-3">
+      <div className="border-t border-slate-200 dark:border-white/[0.06] p-3">
         <div className="flex items-center gap-3 rounded-lg px-3 py-2">
           <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-xs font-medium text-white">
             {user?.name?.charAt(0) || user?.username?.charAt(0) || "U"}
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="truncate text-xs font-medium text-white">
+            <p className="truncate text-xs font-medium text-slate-900 dark:text-white">
               {user?.name || user?.username}
             </p>
-            <p className="truncate text-xs text-slate-600">{user?.email}</p>
+            <p className="truncate text-xs text-slate-500 dark:text-slate-600">{user?.email}</p>
           </div>
         </div>
         <button
           onClick={logout}
-          className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-white"
+          className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.05] hover:text-slate-900 dark:hover:text-white"
         >
           <IconLogout size={18} stroke={1.5} />
           Log out
@@ -166,18 +166,18 @@ export default function DashboardLayout({
   );
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] md:flex">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0f] md:flex">
       {/* Mobile top bar */}
-      <div className="flex h-14 items-center justify-between border-b border-white/[0.06] px-4 md:hidden">
+      <div className="flex h-14 items-center justify-between border-b border-slate-200 dark:border-white/[0.06] px-4 md:hidden">
         <Link href="/portfolio" className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500">
             <IconSparkles size={14} stroke={2} className="text-white" />
           </div>
-          <span className="text-sm font-semibold text-white">SkillBridge</span>
+          <span className="text-sm font-semibold text-slate-900 dark:text-white">SkillBridge</span>
         </Link>
         <button
           onClick={() => setMobileNavOpen(true)}
-          className="text-slate-300 hover:text-white"
+          className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
         >
           <IconMenu2 size={22} stroke={1.5} />
         </button>
@@ -193,7 +193,7 @@ export default function DashboardLayout({
 
       {/* Mobile drawer */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/[0.06] bg-[#0a0a0f] transition-transform duration-200 md:hidden ${
+        className={`fixed left-0 top-0 z-50 flex h-full w-72 max-w-[80vw] flex-col border-r border-slate-200 dark:border-white/[0.06] bg-white dark:bg-[#0a0a0f] transition-transform duration-200 md:hidden ${
           mobileNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -201,7 +201,7 @@ export default function DashboardLayout({
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="fixed left-0 top-0 hidden h-full w-60 flex-col border-r border-white/[0.06] bg-[#0a0a0f] md:flex">
+      <aside className="fixed left-0 top-0 hidden h-full w-60 flex-col border-r border-slate-200 dark:border-white/[0.06] bg-white dark:bg-[#0a0a0f] md:flex">
         {sidebarContent}
       </aside>
 

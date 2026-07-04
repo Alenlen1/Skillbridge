@@ -91,7 +91,7 @@ export default function ResumePage() {
   if (loading) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
       </div>
     );
   }
@@ -132,16 +132,16 @@ export default function ResumePage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-white">Resume</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Resume</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Choose a template and download your resume as a PDF
         </p>
       </div>
 
       {isEmpty ? (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-white/10">
+        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-white/10">
           <IconFileText size={32} stroke={1} className="mb-3 text-slate-700" />
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-400 dark:text-slate-600">
             Your portfolio is empty — add skills, projects, or experience first
           </p>
           <a
@@ -155,7 +155,7 @@ export default function ResumePage() {
         <div className="space-y-8">
           {/* Template picker */}
           <div>
-            <h2 className="mb-4 text-sm font-semibold text-white">
+            <h2 className="mb-4 text-sm font-semibold text-slate-900 dark:text-white">
               Choose a template
             </h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -166,7 +166,7 @@ export default function ResumePage() {
                   className={`relative flex items-start gap-3 rounded-xl border p-4 text-left transition-all duration-200 ${
                     selectedTemplate === t.id
                       ? "border-indigo-500 bg-indigo-500/10"
-                      : "border-white/[0.06] bg-white/[0.02] hover:border-white/20"
+                      : "border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] hover:border-slate-300 dark:border-white/20"
                   }`}
                 >
                   <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-500/10">
@@ -175,7 +175,7 @@ export default function ResumePage() {
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-semibold text-white">
+                      <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
                         {t.name}
                       </h3>
                       {selectedTemplate === t.id && (
@@ -185,7 +185,7 @@ export default function ResumePage() {
                         />
                       )}
                     </div>
-                    <p className="mt-1 text-xs text-slate-400">
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                       {t.description}
                     </p>
                   </div>
@@ -195,17 +195,17 @@ export default function ResumePage() {
           </div>
 
           {/* Download button */}
-          <div className="flex flex-col items-start justify-between gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-6 lg:flex-row lg:items-center">
+          <div className="flex flex-col items-start justify-between gap-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.02] p-6 lg:flex-row lg:items-center">
             <div>
               <div className="mb-2 flex items-center gap-2">
                 <HiOutlineEye className="text-xl text-indigo-400" />
 
-                <h3 className="text-lg font-semibold text-white">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                   {TEMPLATES.find((t) => t.id === selectedTemplate)?.name}
                 </h3>
               </div>
 
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 {TEMPLATES.find((t) => t.id === selectedTemplate)?.description}
               </p>
             </div>
@@ -222,13 +222,13 @@ export default function ResumePage() {
             <div className="flex items-center gap-2">
               <HiOutlineEye className="text-xl text-indigo-400" />
 
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                 Resume Preview
               </h2>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 to-black p-10">
+          <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-gradient-to-br from-zinc-900 to-black p-10">
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedTemplate}
@@ -259,7 +259,7 @@ shadow-[0_45px_120px_rgba(0,0,0,.45)]
               </motion.div>
             </AnimatePresence>
           </div>
-          <p className="text-center text-xs text-slate-600">
+          <p className="text-center text-xs text-slate-400 dark:text-slate-600">
             Preview matches the layout of your downloaded PDF.
           </p>
         </div>

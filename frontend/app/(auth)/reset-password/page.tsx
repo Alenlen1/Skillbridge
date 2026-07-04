@@ -89,7 +89,7 @@ function ResetPasswordForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-slate-300">
+        <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
           New password
         </label>
         <input
@@ -97,7 +97,7 @@ function ResetPasswordForm() {
           type="password"
           placeholder="Min. 8 characters"
           autoFocus
-          className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
         />
         {errors.password && (
           <p className="mt-1 text-xs text-red-400">{errors.password.message}</p>
@@ -105,14 +105,14 @@ function ResetPasswordForm() {
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-slate-300">
+        <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
           Confirm new password
         </label>
         <input
           {...register("confirmPassword")}
           type="password"
           placeholder="Re-enter your password"
-          className="w-full rounded-lg border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05] px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
         />
         {errors.confirmPassword && (
           <p className="mt-1 text-xs text-red-400">
@@ -140,7 +140,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0f] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-white dark:bg-[#0a0a0f] px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Image
@@ -151,10 +151,10 @@ export default function ResetPasswordPage() {
             className="mb-3 inline-block h-9 w-auto"
             priority
           />
-          <h1 className="text-xl font-semibold text-white">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
             Reset your password
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Choose a new password for your account
           </p>
         </div>
@@ -163,7 +163,7 @@ export default function ResetPasswordPage() {
         <Suspense
           fallback={
             <div className="flex justify-center py-8">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
             </div>
           }
         >

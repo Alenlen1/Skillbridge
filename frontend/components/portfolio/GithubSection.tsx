@@ -103,19 +103,19 @@ export default function GithubSection() {
 
   if (checking) {
     return (
-      <div className="mt-10 border-t border-white/[0.06] pt-10">
+      <div className="mt-10 border-t border-slate-200 dark:border-white/[0.06] pt-10">
         <div className="flex items-center justify-center py-8">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 dark:border-white/10 border-t-indigo-500" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mt-10 border-t border-white/[0.06] pt-10">
+    <div className="mt-10 border-t border-slate-200 dark:border-white/[0.06] pt-10">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
             <IconBrandGithub size={20} stroke={1.5} />
             GitHub
           </h2>
@@ -165,8 +165,8 @@ export default function GithubSection() {
           </div>
 
           {repos.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-white/10 py-10 text-center">
-              <p className="text-sm text-slate-600">
+            <div className="rounded-xl border border-dashed border-slate-200 dark:border-white/10 py-10 text-center">
+              <p className="text-sm text-slate-400 dark:text-slate-600">
                 No repositories found, or none loaded yet
               </p>
               <button
@@ -183,11 +183,11 @@ export default function GithubSection() {
                 return (
                   <div
                     key={repo.id}
-                    className="flex items-center justify-between gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4"
+                    className="flex items-center justify-between gap-4 rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-4"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="truncate text-sm font-medium text-white">
+                        <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
                           {repo.name}
                         </p>
                         {repo.language && (
@@ -201,7 +201,7 @@ export default function GithubSection() {
                           {repo.description}
                         </p>
                       )}
-                      <div className="mt-1 flex items-center gap-1 text-xs text-slate-600">
+                      <div className="mt-1 flex items-center gap-1 text-xs text-slate-400 dark:text-slate-600">
                         <IconStar size={11} stroke={1.5} />
                         {repo.stars}
                       </div>
@@ -209,7 +209,7 @@ export default function GithubSection() {
                     <button
                       onClick={() => handleImport(repo)}
                       disabled={imported}
-                      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-indigo-500/40 hover:text-white disabled:cursor-not-allowed disabled:border-green-500/20 disabled:text-green-400"
+                      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 transition hover:border-indigo-500/40 hover:text-slate-900 dark:hover:text-white disabled:cursor-not-allowed disabled:border-green-500/20 disabled:text-green-400"
                     >
                       {imported ? (
                         <>

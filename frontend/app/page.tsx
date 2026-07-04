@@ -154,9 +154,9 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] font-sans text-white antialiased">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0f] font-sans text-slate-900 dark:text-white antialiased">
       {/* Nav */}
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/80 backdrop-blur-md">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200 dark:border-white/[0.06] bg-white dark:bg-[#0a0a0f]/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <Link href="/" className="flex items-center gap-2">
             <Image
@@ -167,26 +167,26 @@ export default function LandingPage() {
               className="h-9 w-auto"
               priority
             />
-            <span className="text-sm font-semibold text-white">
+            <span className="text-sm font-semibold text-slate-900 dark:text-white">
               SkillBridge
             </span>
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
             <Link
               href="#features"
-              className="text-sm text-slate-400 transition hover:text-white"
+              className="text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               Features
             </Link>
             <Link
               href="#how-it-works"
-              className="text-sm text-slate-400 transition hover:text-white"
+              className="text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               How it works
             </Link>
             <Link
               href="#faq"
-              className="text-sm text-slate-400 transition hover:text-white"
+              className="text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               FAQ
             </Link>
@@ -194,7 +194,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="text-sm text-slate-400 transition hover:text-white"
+              className="text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
               Log in
             </Link>
@@ -218,14 +218,14 @@ export default function LandingPage() {
             <div className="h-[600px] w-[600px] rounded-full bg-indigo-500/[0.08] blur-[120px]" />
           </div>
 
-          <div className="mb-8 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
+          <div className="mb-8 flex items-center gap-2 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.04] px-4 py-1.5">
             <IconStar size={13} stroke={1.5} className="text-indigo-400" />
-            <span className="text-xs font-medium text-slate-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Built for students, graduates, and career starters
             </span>
           </div>
 
-          <h1 className="mb-6 max-w-3xl text-5xl font-semibold leading-[1.1] tracking-tight text-white md:text-6xl">
+          <h1 className="mb-6 max-w-3xl text-5xl font-semibold leading-[1.1] tracking-tight text-slate-900 dark:text-white md:text-6xl">
             Build your skills.
             <br />
             <span className="text-indigo-400">Showcase your value.</span>
@@ -233,7 +233,7 @@ export default function LandingPage() {
             Launch your career.
           </h1>
 
-          <p className="mb-10 max-w-xl text-lg leading-relaxed text-slate-400">
+          <p className="mb-10 max-w-xl text-lg leading-relaxed text-slate-500 dark:text-slate-400">
             Turn your skills, projects, and achievements into opportunities with
             a professional portfolio built for students and future
             professionals.
@@ -253,13 +253,13 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/login"
-              className="rounded-lg border border-white/10 px-6 py-3 text-sm font-medium text-slate-300 transition hover:border-white/20 hover:text-white"
+              className="rounded-lg border border-slate-200 dark:border-white/10 px-6 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 transition hover:border-slate-300 dark:border-white/20 hover:text-slate-900 dark:hover:text-white"
             >
               Log in →
             </Link>
           </div>
 
-          <p className="mt-6 text-xs text-slate-600">
+          <p className="mt-6 text-xs text-slate-400 dark:text-slate-600">
             Free to use · No credit card required
           </p>
 
@@ -273,26 +273,26 @@ export default function LandingPage() {
               <p className="mb-3 text-sm font-medium uppercase tracking-widest text-indigo-400">
                 Features
               </p>
-              <h2 className="mb-4 text-4xl font-semibold tracking-tight text-white">
+              <h2 className="mb-4 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
                 Everything you need to stand out
               </h2>
-              <p className="mx-auto max-w-lg text-slate-400">
+              <p className="mx-auto max-w-lg text-slate-500 dark:text-slate-400">
                 Build your portfolio, showcase your achievements, and track your
                 journey from student to professional—all in one place.
               </p>
             </div>
-            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.04] bg-white/[0.04] sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.04] bg-slate-100 dark:bg-white/[0.04] sm:grid-cols-2 lg:grid-cols-3">
               {features.map((feature) => (
                 <div
                   key={feature.title}
-                  className="group bg-[#0a0a0f] p-6 transition-colors hover:bg-[#0f0f1a]"
+                  className="group bg-white dark:bg-[#0a0a0f] p-6 transition-colors hover:bg-white dark:bg-[#0f0f1a]"
                 >
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/10 text-indigo-400">
                       {feature.icon}
                     </div>
                   </div>
-                  <h3 className="mb-2 text-sm font-semibold text-white">
+                  <h3 className="mb-2 text-sm font-semibold text-slate-900 dark:text-white">
                     {feature.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-slate-500">
@@ -320,12 +320,12 @@ export default function LandingPage() {
                   </span>
                 </div>
 
-                <h2 className="text-4xl font-semibold leading-tight text-white">
+                <h2 className="text-4xl font-semibold leading-tight text-slate-900 dark:text-white">
                   Your personal
                   <span className="text-indigo-400"> AI Career Assistant</span>
                 </h2>
 
-                <p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-400">
+                <p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-500 dark:text-slate-400">
                   Receive intelligent feedback on your resume and portfolio,
                   identify missing skills, generate personalized cover letters,
                   and build a roadmap toward your dream career.
@@ -349,7 +349,7 @@ export default function LandingPage() {
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10">
                           <Icon size={14} className="text-indigo-400" />
                         </div>
-                        <span className="text-slate-300">{item.title}</span>
+                        <span className="text-slate-700 dark:text-slate-300">{item.title}</span>
                       </div>
                     );
                   })}
@@ -382,10 +382,10 @@ export default function LandingPage() {
                     <p className="text-[11px] uppercase tracking-[0.3em] text-indigo-400">
                       AI Resume Review
                     </p>
-                    <h3 className="mt-2 text-3xl font-bold text-white">
+                    <h3 className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
                       Overall Resume Score
                     </h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
                       Reviewed as a
                       <span className="mx-1 font-semibold text-indigo-300">
                         Developer Resume
@@ -416,7 +416,7 @@ export default function LandingPage() {
                       <p className="font-medium text-green-400">
                         Strong technical stack
                       </p>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                         Modern technologies and ATS-friendly formatting
                         detected.
                       </p>
@@ -429,7 +429,7 @@ export default function LandingPage() {
                       <p className="font-medium text-red-400">
                         Needs improvement
                       </p>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                         Add measurable achievements to strengthen your projects.
                       </p>
                     </div>
@@ -441,7 +441,7 @@ export default function LandingPage() {
                       <p className="font-medium text-indigo-300">
                         AI Suggestion
                       </p>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                         Rewrite bullet points using stronger action verbs.
                       </p>
                     </div>
@@ -462,7 +462,7 @@ export default function LandingPage() {
               <p className="mb-3 text-sm font-medium uppercase tracking-widest text-indigo-400">
                 How it works
               </p>
-              <h2 className="text-4xl font-semibold tracking-tight text-white">
+              <h2 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
                 Turn your skills into opportunities
               </h2>
             </div>
@@ -490,7 +490,7 @@ export default function LandingPage() {
                       {step.number}
                     </span>
                   </div>
-                  <h3 className="mb-2 text-base font-semibold text-white">
+                  <h3 className="mb-2 text-base font-semibold text-slate-900 dark:text-white">
                     {step.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-slate-500">
@@ -505,10 +505,10 @@ export default function LandingPage() {
         {/* FAQ */}
         <section id="faq" className="mx-auto mt-32 max-w-4xl px-6">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white sm:text-4xl">
               Frequently Asked Questions
             </h2>
-            <p className="mt-4 text-slate-400">
+            <p className="mt-4 text-slate-500 dark:text-slate-400">
               Everything you need to know about SkillBridge.
             </p>
           </div>
@@ -521,10 +521,10 @@ export default function LandingPage() {
                 className={`cursor-pointer rounded-2xl border px-6 py-4 transition-all duration-300 hover:shadow-[0_0_20px_rgba(99,102,241,0.08)] ${
                   openFaq === index
                     ? "border-indigo-500/30 bg-indigo-600/[0.03]"
-                    : "border-white/[0.06] bg-white/[0.02] hover:border-indigo-500/40 hover:bg-white/[0.03]"
+                    : "border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] hover:border-indigo-500/40 hover:bg-slate-50 dark:bg-white/[0.03]"
                 }`}
               >
-                <div className="flex items-center justify-between font-medium text-white">
+                <div className="flex items-center justify-between font-medium text-slate-900 dark:text-white">
                   <span className={openFaq === index ? "text-indigo-300" : ""}>
                     {faq.question}
                   </span>
@@ -536,7 +536,7 @@ export default function LandingPage() {
                 </div>
 
                 {openFaq === index && (
-                  <p className="mt-4 text-sm leading-relaxed text-slate-400">
+                  <p className="mt-4 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
                     {faq.answer}
                   </p>
                 )}
@@ -548,16 +548,16 @@ export default function LandingPage() {
         {/* Everything Included */}
         <section className="mx-auto mt-32 max-w-6xl px-6">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white sm:text-4xl">
               Everything Included
             </h2>
-            <p className="mt-4 text-slate-400">
+            <p className="mt-4 text-slate-500 dark:text-slate-400">
               Everything you need to build your professional presence and start
               your career.
             </p>
           </div>
 
-          <div className="mx-auto max-w-3xl rounded-3xl border border-white/[0.06] bg-white/[0.02] p-8">
+          <div className="mx-auto max-w-3xl rounded-3xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-8">
             <div className="grid gap-4 sm:grid-cols-2">
               {[
                 "Portfolio Builder",
@@ -577,21 +577,21 @@ export default function LandingPage() {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-3 rounded-xl border border-white/[0.04] bg-white/[0.02] px-4 py-3"
+                  className="flex items-center gap-3 rounded-xl border border-white/[0.04] bg-slate-50 dark:bg-white/[0.02] px-4 py-3"
                 >
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/15 text-indigo-400">
                     ✓
                   </div>
-                  <span className="text-sm text-slate-300">{feature}</span>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
                 </div>
               ))}
             </div>
 
             <div className="mt-8 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-5 text-center">
-              <p className="text-lg font-semibold text-white">
+              <p className="text-lg font-semibold text-slate-900 dark:text-white">
                 Free for all students and job seekers
               </p>
-              <p className="mt-2 text-sm text-slate-400">
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
                 No subscriptions. No credit card required.
               </p>
             </div>
@@ -601,10 +601,10 @@ export default function LandingPage() {
         {/* CTA */}
         <section className="scroll-mt-20 border-t border-white/[0.04] px-6 py-32 text-center">
           <div className="mx-auto max-w-2xl">
-            <h2 className="mb-4 text-4xl font-semibold tracking-tight text-white">
+            <h2 className="mb-4 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
               Ready to launch your career?
             </h2>
-            <p className="mb-10 text-lg text-slate-400">
+            <p className="mb-10 text-lg text-slate-500 dark:text-slate-400">
               Build your portfolio, showcase your achievements, and take the
               next step toward your future.
             </p>
@@ -630,7 +630,7 @@ export default function LandingPage() {
               height={32}
               className="h-8 w-auto opacity-70"
             />
-            <span className="font-medium text-white">SkillBridge</span>
+            <span className="font-medium text-slate-900 dark:text-white">SkillBridge</span>
             <span>·</span>
             <span>Built by</span>
             <a
