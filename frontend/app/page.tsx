@@ -366,7 +366,7 @@ export default function LandingPage() {
                 </Link>
               </div>
 
-              <div className="rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/[0.06] via-[#0a0a0f] to-black p-6">
+              <div className="rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/[0.04] via-slate-50 to-white dark:from-indigo-500/[0.06] dark:via-[#0a0a0f] dark:to-black p-6">
                 <div className="flex items-start gap-5">
                   <div className="flex flex-col items-center">
                     <div className="flex h-24 w-24 items-center justify-center rounded-full border-[6px] border-indigo-500">
@@ -384,10 +384,10 @@ export default function LandingPage() {
                     <p className="text-[11px] uppercase tracking-[0.3em] text-indigo-400">
                       AI Resume Review
                     </p>
-                    <h3 className="mt-2 text-3xl font-bold text-white">
+                    <h3 className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
                       Overall Resume Score
                     </h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                    <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
                       Reviewed as a
                       <span className="mx-1 font-semibold text-indigo-300">
                         Developer Resume
@@ -409,7 +409,7 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="my-6 h-px bg-white/10" />
+                <div className="my-6 h-px bg-slate-200 dark:bg-white/10" />
 
                 <div className="space-y-3">
                   <div className="flex items-start gap-3 rounded-xl border border-green-500/20 bg-green-500/[0.02] p-4">
@@ -418,7 +418,7 @@ export default function LandingPage() {
                       <p className="font-medium text-green-400">
                         Strong technical stack
                       </p>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                         Modern technologies and ATS-friendly formatting
                         detected.
                       </p>
@@ -431,7 +431,7 @@ export default function LandingPage() {
                       <p className="font-medium text-red-400">
                         Needs improvement
                       </p>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                         Add measurable achievements to strengthen your projects.
                       </p>
                     </div>
@@ -443,7 +443,7 @@ export default function LandingPage() {
                       <p className="font-medium text-indigo-300">
                         AI Suggestion
                       </p>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                         Rewrite bullet points using stronger action verbs.
                       </p>
                     </div>
