@@ -39,7 +39,6 @@ export default function ATSPreview({ data }: Props) {
     data.website?.replace(/^https?:\/\//, ""),
     linkedin?.url.replace(/^https?:\/\/(www\.)?/, ""),
     github?.url.replace(/^https?:\/\/(www\.)?/, ""),
-    `skillbridge.app/${data.username}`,
   ].filter(Boolean);
 
   return (

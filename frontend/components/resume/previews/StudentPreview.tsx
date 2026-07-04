@@ -21,8 +21,6 @@ export default function StudentPreview({ data }: Props) {
         {data.phone && <span>{data.phone}</span>}
 
         {data.location && <span>{data.location}</span>}
-
-        <span>skillbridge.app/{data.username}</span>
       </div>
 
       <div className="mt-8 space-y-8">

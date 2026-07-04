@@ -1,8 +1,6 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { ResumeData } from "./ResumeTypes";
 
-
-
 const INDIGO = "#6366f1";
 const INDIGO_PALE = "#eef2ff";
 
@@ -160,7 +158,6 @@ export default function ResumeStudent({ data }: { data: ResumeData }) {
     data.website?.replace(/^https?:\/\//, ""),
     linkedin?.url.replace(/^https?:\/\/(www\.)?/, ""),
     github?.url.replace(/^https?:\/\/(www\.)?/, ""),
-    `skillbridge.app/${data.username}`,
   ].filter(Boolean) as string[];
 
   return (

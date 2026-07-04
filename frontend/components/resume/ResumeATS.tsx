@@ -119,7 +119,6 @@ export default function ResumeATS({ data }: { data: ResumeData }) {
     data.website?.replace(/^https?:\/\//, ""),
     linkedin?.url.replace(/^https?:\/\/(www\.)?/, ""),
     github?.url.replace(/^https?:\/\/(www\.)?/, ""),
-    `skillbridge.app/${data.username}`,
   ].filter(Boolean) as string[];
 
   return (

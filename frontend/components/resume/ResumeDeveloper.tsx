@@ -229,8 +229,6 @@ export default function ResumeDeveloper({ data }: { data: ResumeData }) {
                 </Text>
               </>
             )}
-            <Text style={s.sbContactLabel}>Portfolio</Text>
-            <Text style={s.sbContactItem}>skillbridge.app/{data.username}</Text>
           </View>
 
           {/* Skills as chips */}
