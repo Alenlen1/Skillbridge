@@ -349,7 +349,9 @@ export default function LandingPage() {
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10">
                           <Icon size={14} className="text-indigo-400" />
                         </div>
-                        <span className="text-slate-700 dark:text-slate-300">{item.title}</span>
+                        <span className="text-slate-700 dark:text-slate-300">
+                          {item.title}
+                        </span>
                       </div>
                     );
                   })}
@@ -382,10 +384,10 @@ export default function LandingPage() {
                     <p className="text-[11px] uppercase tracking-[0.3em] text-indigo-400">
                       AI Resume Review
                     </p>
-                    <h3 className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
+                    <h3 className="mt-2 text-3xl font-bold text-white">
                       Overall Resume Score
                     </h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                    <p className="mt-2 text-sm leading-6 text-slate-400">
                       Reviewed as a
                       <span className="mx-1 font-semibold text-indigo-300">
                         Developer Resume
@@ -416,7 +418,7 @@ export default function LandingPage() {
                       <p className="font-medium text-green-400">
                         Strong technical stack
                       </p>
-                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      <p className="mt-1 text-sm text-slate-400">
                         Modern technologies and ATS-friendly formatting
                         detected.
                       </p>
@@ -429,7 +431,7 @@ export default function LandingPage() {
                       <p className="font-medium text-red-400">
                         Needs improvement
                       </p>
-                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      <p className="mt-1 text-sm text-slate-400">
                         Add measurable achievements to strengthen your projects.
                       </p>
                     </div>
@@ -441,7 +443,7 @@ export default function LandingPage() {
                       <p className="font-medium text-indigo-300">
                         AI Suggestion
                       </p>
-                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      <p className="mt-1 text-sm text-slate-400">
                         Rewrite bullet points using stronger action verbs.
                       </p>
                     </div>
@@ -582,7 +584,9 @@ export default function LandingPage() {
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/15 text-indigo-400">
                     ✓
                   </div>
-                  <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">
+                    {feature}
+                  </span>
                 </div>
               ))}
             </div>
@@ -630,7 +634,9 @@ export default function LandingPage() {
               height={32}
               className="h-8 w-auto opacity-70"
             />
-            <span className="font-medium text-slate-900 dark:text-white">SkillBridge</span>
+            <span className="font-medium text-slate-900 dark:text-white">
+              SkillBridge
+            </span>
             <span>·</span>
             <span>Built by</span>
             <a

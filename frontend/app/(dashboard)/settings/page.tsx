@@ -218,7 +218,9 @@ export default function SettingsPage() {
   return (
     <div className="max-w-2xl space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Settings</h1>
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
+          Settings
+        </h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Manage your account and portfolio preferences
         </p>
@@ -226,7 +228,9 @@ export default function SettingsPage() {
 
       {/* Appearance section */}
       <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Appearance</h2>
+        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+          Appearance
+        </h2>
         <p className="mb-5 text-sm text-slate-500">
           Choose how SkillBridge looks on your device
         </p>
@@ -234,45 +238,91 @@ export default function SettingsPage() {
         <div className="flex gap-3">
           <button
             onClick={() => setTheme("light")}
-            className={`flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-colors ${
+            className={`group relative flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-all duration-200 ${
               theme === "light"
-                ? "border-indigo-500 bg-indigo-500/10"
-                : "border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] hover:border-slate-300 dark:border-white/20"
+                ? "border-indigo-500 bg-indigo-500/10 scale-[1.02] shadow-sm"
+                : "border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] hover:border-slate-300 dark:hover:border-white/20 hover:scale-[1.01]"
             }`}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow-400/15 text-yellow-400">
-              <IconSun size={18} stroke={1.75} />
+            {theme === "light" && (
+              <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
+                <IconCheck size={12} stroke={3} />
+              </span>
+            )}
+
+            {/* Mini browser preview */}
+            <div className="w-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-transform duration-200 group-hover:-translate-y-0.5">
+              <div className="flex items-center gap-1 border-b border-slate-100 bg-slate-50 px-2 py-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+              </div>
+              <div className="space-y-1.5 p-2.5">
+                <div className="h-1.5 w-3/5 rounded-full bg-slate-300" />
+                <div className="h-1.5 w-4/5 rounded-full bg-slate-200" />
+                <div className="h-4 w-1/2 rounded-md bg-indigo-500/80" />
+              </div>
             </div>
-            <span
-              className={`text-sm font-medium ${theme === "light" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
-            >
-              Light
-            </span>
+
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-yellow-400/15 text-yellow-500">
+                <IconSun size={13} stroke={1.75} />
+              </span>
+              <span
+                className={`text-sm font-medium transition-colors ${theme === "light" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
+              >
+                Light
+              </span>
+            </div>
           </button>
 
           <button
             onClick={() => setTheme("dark")}
-            className={`flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-colors ${
+            className={`group relative flex flex-1 flex-col items-center gap-3 rounded-xl border p-4 transition-all duration-200 ${
               theme === "dark"
-                ? "border-indigo-500 bg-indigo-500/10"
-                : "border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] hover:border-slate-300 dark:border-white/20"
+                ? "border-indigo-500 bg-indigo-500/10 scale-[1.02] shadow-sm"
+                : "border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] hover:border-slate-300 dark:hover:border-white/20 hover:scale-[1.01]"
             }`}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-500/15 text-indigo-400">
-              <IconMoon size={18} stroke={1.75} />
+            {theme === "dark" && (
+              <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
+                <IconCheck size={12} stroke={3} />
+              </span>
+            )}
+
+            {/* Mini browser preview */}
+            <div className="w-full overflow-hidden rounded-lg border border-slate-700 bg-slate-900 shadow-sm transition-transform duration-200 group-hover:-translate-y-0.5">
+              <div className="flex items-center gap-1 border-b border-slate-700 bg-slate-800 px-2 py-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-600" />
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-600" />
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-600" />
+              </div>
+              <div className="space-y-1.5 p-2.5">
+                <div className="h-1.5 w-3/5 rounded-full bg-slate-600" />
+                <div className="h-1.5 w-4/5 rounded-full bg-slate-700" />
+                <div className="h-4 w-1/2 rounded-md bg-indigo-500/80" />
+              </div>
             </div>
-            <span
-              className={`text-sm font-medium ${theme === "dark" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
-            >
-              Dark
-            </span>
+
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/15 text-indigo-400">
+                <IconMoon size={13} stroke={1.75} />
+              </span>
+              <span
+                className={`text-sm font-medium transition-colors ${theme === "dark" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
+              >
+                Dark
+              </span>
+            </div>
           </button>
         </div>
       </section>
 
       {/* Profile section */}
       <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Profile</h2>
+        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+          Profile
+        </h2>
         <p className="mb-5 text-sm text-slate-500">Update your display name</p>
 
         <div className="space-y-4">
@@ -314,7 +364,9 @@ export default function SettingsPage() {
 
       {/* Username section */}
       <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
-        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Username</h2>
+        <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+          Username
+        </h2>
         <p className="mb-5 text-sm text-slate-500">
           This changes your public portfolio URL — share the new link after
           saving
@@ -427,7 +479,9 @@ export default function SettingsPage() {
       {/* Password section — hidden for GitHub/OAuth users */}
       {isOAuthUser ? (
         <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
-          <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Password</h2>
+          <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+            Password
+          </h2>
           <p className="text-sm text-slate-500">
             You signed in with GitHub — your login is managed by GitHub, not a
             password.
@@ -435,7 +489,9 @@ export default function SettingsPage() {
         </section>
       ) : (
         <section className="rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02] p-6">
-          <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">Password</h2>
+          <h2 className="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+            Password
+          </h2>
           <p className="mb-5 text-sm text-slate-500">
             Change your account password. You&apos;ll need to log in again
             afterward.
