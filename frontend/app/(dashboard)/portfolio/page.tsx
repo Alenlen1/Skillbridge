@@ -23,33 +23,75 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+const DRAFT_KEY = "skillbridge-portfolio-draft";
+
 export default function PortfolioPage() {
   const { user } = useAuthStore();
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [showDraftBanner, setShowDraftBanner] = useState(false);
+  const [draftData, setDraftData] = useState<FormData | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  // Auto-save the form to localStorage as the user types (debounced)
+  useEffect(() => {
+    const subscription = watch((values) => {
+      const timer = setTimeout(() => {
+        localStorage.setItem(
+          DRAFT_KEY,
+          JSON.stringify({ values, savedAt: Date.now() }),
+        );
+      }, 800);
+      return () => clearTimeout(timer);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   useEffect(() => {
     const loadPortfolio = async () => {
       try {
         const res = await api.get("/portfolio/me");
 
         const portfolio = res.data.data;
-
-        reset({
+        const serverValues: FormData = {
           about: portfolio.about ?? "",
           headline: portfolio.headline ?? "",
           location: portfolio.location ?? "",
           website: portfolio.website ?? "",
           phone: portfolio.phone ?? "",
-        });
+        };
+
+        // Check for a locally saved draft that's different from what's on the server
+        const rawDraft = localStorage.getItem(DRAFT_KEY);
+        if (rawDraft) {
+          try {
+            const parsed = JSON.parse(rawDraft) as {
+              values: FormData;
+              savedAt: number;
+            };
+            const isDifferent =
+              JSON.stringify(parsed.values) !== JSON.stringify(serverValues);
+            if (isDifferent) {
+              setDraftData(parsed.values);
+              setShowDraftBanner(true);
+            } else {
+              localStorage.removeItem(DRAFT_KEY);
+            }
+          } catch {
+            localStorage.removeItem(DRAFT_KEY);
+          }
+        }
+
+        reset(serverValues);
       } catch (err) {
         console.error(err);
       }
@@ -58,10 +100,24 @@ export default function PortfolioPage() {
     loadPortfolio();
   }, [reset]);
 
+  const handleRestoreDraft = () => {
+    if (draftData) {
+      reset(draftData);
+    }
+    setShowDraftBanner(false);
+  };
+
+  const handleDiscardDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setShowDraftBanner(false);
+    setDraftData(null);
+  };
+
   const onSubmit = async (values: FormData) => {
     try {
       setError("");
       await api.put("/portfolio/me", values);
+      localStorage.removeItem(DRAFT_KEY);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err: unknown) {
@@ -77,7 +133,9 @@ export default function PortfolioPage() {
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Portfolio</h1>
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
+          Portfolio
+        </h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Your public profile is live at{" "}
           <a
@@ -90,6 +148,31 @@ export default function PortfolioPage() {
           </a>
         </p>
       </div>
+
+      {showDraftBanner && (
+        <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm">
+          <p className="text-amber-400">
+            We found unsaved changes from your last session &mdash; restore
+            them?
+          </p>
+          <div className="flex flex-shrink-0 gap-2">
+            <button
+              type="button"
+              onClick={handleRestoreDraft}
+              className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-amber-400"
+            >
+              Restore
+            </button>
+            <button
+              type="button"
+              onClick={handleDiscardDraft}
+              className="rounded-md border border-amber-500/30 px-3 py-1.5 text-xs font-medium text-amber-400 transition hover:bg-amber-500/10"
+            >
+              Discard
+            </button>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
@@ -187,7 +270,7 @@ export default function PortfolioPage() {
       <SkillsSection />
       <ProjectsSection />
       <EducationSection />
-      <ExperienceSection/>
+      <ExperienceSection />
       <GithubSection />
       <SocialLinksSection />
     </div>
