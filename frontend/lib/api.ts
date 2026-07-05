@@ -1,7 +1,13 @@
 import axios from "axios";
 
+// Use the same-origin proxy path (/api/backend) so the refresh-token cookie
+// is set as a first-party cookie. Browsers like Firefox and Samsung Internet
+// block third-party/cross-site cookies, which broke login on those browsers
+// when calling the backend's separate domain directly.
+const API_BASE = "/api/backend";
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1",
+  baseURL: API_BASE,
   withCredentials: true,
 });
 
@@ -23,7 +29,7 @@ api.interceptors.response.use(
       original._retry = true;
       try {
         const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1"}/auth/refresh`,
+          `${API_BASE}/auth/refresh`,
           {},
           { withCredentials: true },
         );

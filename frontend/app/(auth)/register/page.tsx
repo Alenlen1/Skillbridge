@@ -61,9 +61,7 @@ export default function RegisterPage() {
   };
 
   const handleGitHubLogin = () => {
-    const apiUrl =
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
-    window.location.href = `${apiUrl}/github/connect`;
+    window.location.href = "/api/backend/github/connect";
   };
 
   return (

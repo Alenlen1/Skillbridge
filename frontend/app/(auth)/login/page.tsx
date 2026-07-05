@@ -53,9 +53,7 @@ function LoginForm() {
   };
 
   const handleGitHubLogin = () => {
-    const apiUrl =
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
-    window.location.href = `${apiUrl}/github/connect`;
+    window.location.href = "/api/backend/github/connect";
   };
 
   return (
@@ -75,7 +73,9 @@ function LoginForm() {
             priority
           />
         </Link>
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Welcome back</h1>
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
+          Welcome back
+        </h1>
 
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
           Sign in to continue building your portfolio and tracking your career
@@ -108,7 +108,9 @@ function LoginForm() {
         {/* Divider */}
         <div className="mb-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-slate-100 dark:bg-white/[0.06]" />
-          <span className="text-xs text-slate-400 dark:text-slate-600">or log in with email</span>
+          <span className="text-xs text-slate-400 dark:text-slate-600">
+            or log in with email
+          </span>
           <div className="h-px flex-1 bg-slate-100 dark:bg-white/[0.06]" />
         </div>
 
