@@ -70,8 +70,13 @@ export default function PortfolioPage() {
           phone: portfolio.phone ?? "",
         };
 
-        // Check for a locally saved draft that's different from what's on the server
+        const alreadyChecked = sessionStorage.getItem(
+          "skillbridge-portfolio-draft-checked",
+        );
+
         const rawDraft = localStorage.getItem(DRAFT_KEY);
+        let draftValues: FormData | null = null;
+
         if (rawDraft) {
           try {
             const parsed = JSON.parse(rawDraft) as {
@@ -81,8 +86,7 @@ export default function PortfolioPage() {
             const isDifferent =
               JSON.stringify(parsed.values) !== JSON.stringify(serverValues);
             if (isDifferent) {
-              setDraftData(parsed.values);
-              setShowDraftBanner(true);
+              draftValues = parsed.values;
             } else {
               localStorage.removeItem(DRAFT_KEY);
             }
@@ -91,7 +95,22 @@ export default function PortfolioPage() {
           }
         }
 
-        reset(serverValues);
+        if (draftValues) {
+          if (alreadyChecked) {
+            // Same tab session (e.g. clicked to Resume and back) —
+            // silently keep showing their unsaved edits, no need to ask.
+            reset(draftValues);
+          } else {
+            // Fresh session (refresh, crash, or reopened tab) — ask first.
+            setDraftData(draftValues);
+            setShowDraftBanner(true);
+            reset(serverValues);
+          }
+        } else {
+          reset(serverValues);
+        }
+
+        sessionStorage.setItem("skillbridge-portfolio-draft-checked", "1");
       } catch (err) {
         console.error(err);
       }
@@ -152,8 +171,7 @@ export default function PortfolioPage() {
       {showDraftBanner && (
         <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm">
           <p className="text-amber-400">
-            We found unsaved changes from your last session &mdash; restore
-            them?
+            We found unsaved changes from your last session — restore them?
           </p>
           <div className="flex flex-shrink-0 gap-2">
             <button
