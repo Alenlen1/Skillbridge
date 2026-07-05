@@ -23,16 +23,74 @@ const EMPTY_FORM = {
   current: false,
 };
 
+const DRAFT_KEY = "skillbridge-education-draft";
+let hasCheckedThisPageLoad = false;
+
 export default function EducationSection() {
   const [education, setEducation] = useState<Education[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState("");
+  const [showDraftBanner, setShowDraftBanner] = useState(false);
 
   useEffect(() => {
     fetchEducation();
+
+    const alreadyChecked = hasCheckedThisPageLoad;
+    const rawDraft = localStorage.getItem(DRAFT_KEY);
+    if (rawDraft) {
+      try {
+        const parsed = JSON.parse(rawDraft) as typeof EMPTY_FORM;
+        if (parsed.school?.trim()) {
+          if (alreadyChecked) {
+            // Same page load, just navigated within the app — silently restore
+            setForm(parsed);
+            setAdding(true);
+          } else {
+            // Real refresh/crash/reopen — ask first
+            setShowDraftBanner(true);
+          }
+        } else {
+          localStorage.removeItem(DRAFT_KEY);
+        }
+      } catch {
+        localStorage.removeItem(DRAFT_KEY);
+      }
+    }
+    hasCheckedThisPageLoad = true;
   }, []);
+
+  // Auto-save the "add education" form to localStorage while it's open
+  useEffect(() => {
+    if (!adding) return;
+    const timer = setTimeout(() => {
+      if (form.school.trim()) {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(form));
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [form, adding]);
+
+  const handleRestoreDraft = () => {
+    const rawDraft = localStorage.getItem(DRAFT_KEY);
+    if (rawDraft) {
+      try {
+        setForm(JSON.parse(rawDraft));
+        setAdding(true);
+      } catch {
+        localStorage.removeItem(DRAFT_KEY);
+      }
+    }
+    setShowDraftBanner(false);
+  };
+
+  const handleDiscardDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setShowDraftBanner(false);
+    setAdding(false);
+    setForm(EMPTY_FORM);
+  };
 
   const fetchEducation = async () => {
     try {
@@ -60,6 +118,7 @@ export default function EducationSection() {
       setEducation((prev) => [...prev, data.data]);
       setForm(EMPTY_FORM);
       setAdding(false);
+      localStorage.removeItem(DRAFT_KEY);
     } catch {
       setError("Failed to add education");
     }
@@ -86,7 +145,9 @@ export default function EducationSection() {
     <div className="mt-10 border-t border-slate-200 dark:border-white/[0.06] pt-10">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Education</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+            Education
+          </h2>
           <p className="mt-0.5 text-sm text-slate-500">
             Add your academic background
           </p>
@@ -103,6 +164,30 @@ export default function EducationSection() {
       {error && (
         <div className="mb-4 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
+        </div>
+      )}
+
+      {showDraftBanner && (
+        <div className="mb-4 flex items-center justify-between gap-4 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm">
+          <p className="text-amber-400">
+            You have an unsaved education draft &mdash; restore it?
+          </p>
+          <div className="flex flex-shrink-0 gap-2">
+            <button
+              type="button"
+              onClick={handleRestoreDraft}
+              className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-amber-400"
+            >
+              Restore
+            </button>
+            <button
+              type="button"
+              onClick={handleDiscardDraft}
+              className="rounded-md border border-amber-500/30 px-3 py-1.5 text-xs font-medium text-amber-400 transition hover:bg-amber-500/10"
+            >
+              Discard
+            </button>
+          </div>
         </div>
       )}
 
@@ -196,7 +281,10 @@ export default function EducationSection() {
                 }
                 className="rounded border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.05]"
               />
-              <label htmlFor="current-edu" className="text-sm text-slate-500 dark:text-slate-400">
+              <label
+                htmlFor="current-edu"
+                className="text-sm text-slate-500 dark:text-slate-400"
+              >
                 I currently study here
               </label>
             </div>
@@ -215,6 +303,7 @@ export default function EducationSection() {
                 setAdding(false);
                 setForm(EMPTY_FORM);
                 setError("");
+                localStorage.removeItem(DRAFT_KEY);
               }}
               className="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
             >
@@ -239,7 +328,9 @@ export default function EducationSection() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="font-medium text-slate-900 dark:text-white">{edu.school}</h3>
+                  <h3 className="font-medium text-slate-900 dark:text-white">
+                    {edu.school}
+                  </h3>
                   {edu.degree && (
                     <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                       {edu.degree} {edu.field && `· ${edu.field}`}

@@ -36,6 +36,9 @@ const EMPTY_FORM = {
   description: "",
 };
 
+const DRAFT_KEY = "skillbridge-experience-draft";
+let hasCheckedThisPageLoad = false;
+
 export default function ExperienceSection() {
   const [experience, setExperience] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,10 +49,64 @@ export default function ExperienceSection() {
   const [form, setForm] = useState(EMPTY_FORM);
 
   const [error, setError] = useState("");
+  const [showDraftBanner, setShowDraftBanner] = useState(false);
 
   useEffect(() => {
     fetchExperience();
+
+    const alreadyChecked = hasCheckedThisPageLoad;
+    const rawDraft = localStorage.getItem(DRAFT_KEY);
+    if (rawDraft) {
+      try {
+        const parsed = JSON.parse(rawDraft) as typeof EMPTY_FORM;
+        if (parsed.company?.trim() || parsed.role?.trim()) {
+          if (alreadyChecked) {
+            setForm(parsed);
+            setAdding(true);
+          } else {
+            setShowDraftBanner(true);
+          }
+        } else {
+          localStorage.removeItem(DRAFT_KEY);
+        }
+      } catch {
+        localStorage.removeItem(DRAFT_KEY);
+      }
+    }
+    hasCheckedThisPageLoad = true;
   }, []);
+
+  // Auto-save only when adding a brand-new entry, not while editing an
+  // existing one (so an in-progress edit never gets mixed up with a draft)
+  useEffect(() => {
+    if (!adding || editingId) return;
+    const timer = setTimeout(() => {
+      if (form.company.trim() || form.role.trim()) {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(form));
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [form, adding, editingId]);
+
+  const handleRestoreDraft = () => {
+    const rawDraft = localStorage.getItem(DRAFT_KEY);
+    if (rawDraft) {
+      try {
+        setForm(JSON.parse(rawDraft));
+        setAdding(true);
+      } catch {
+        localStorage.removeItem(DRAFT_KEY);
+      }
+    }
+    setShowDraftBanner(false);
+  };
+
+  const handleDiscardDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setShowDraftBanner(false);
+    setAdding(false);
+    setForm(EMPTY_FORM);
+  };
 
   const fetchExperience = async () => {
     try {
@@ -72,10 +129,11 @@ export default function ExperienceSection() {
     setForm(EMPTY_FORM);
     setEditingId(null);
     setAdding(false);
+    localStorage.removeItem(DRAFT_KEY);
   };
 
   const handleAdd = async () => {
-    setError("")
+    setError("");
     if (!form.company.trim()) {
       setError("Company is required");
       return;
@@ -176,6 +234,30 @@ export default function ExperienceSection() {
       {error && (
         <div className="mb-4 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
+        </div>
+      )}
+
+      {showDraftBanner && (
+        <div className="mb-4 flex items-center justify-between gap-4 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm">
+          <p className="text-amber-400">
+            You have an unsaved experience draft &mdash; restore it?
+          </p>
+          <div className="flex flex-shrink-0 gap-2">
+            <button
+              type="button"
+              onClick={handleRestoreDraft}
+              className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-amber-400"
+            >
+              Restore
+            </button>
+            <button
+              type="button"
+              onClick={handleDiscardDraft}
+              className="rounded-md border border-amber-500/30 px-3 py-1.5 text-xs font-medium text-amber-400 transition hover:bg-amber-500/10"
+            >
+              Discard
+            </button>
+          </div>
         </div>
       )}
 

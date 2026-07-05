@@ -24,6 +24,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const DRAFT_KEY = "skillbridge-portfolio-draft";
+// Resets to false on a real page refresh (whole JS bundle re-executes),
+// stays true across SPA navigation within the same page load.
+let hasCheckedThisPageLoad = false;
 
 export default function PortfolioPage() {
   const { user } = useAuthStore();
@@ -31,6 +34,13 @@ export default function PortfolioPage() {
   const [error, setError] = useState("");
   const [showDraftBanner, setShowDraftBanner] = useState(false);
   const [draftData, setDraftData] = useState<FormData | null>(null);
+  const [serverData, setServerData] = useState<FormData>({
+    about: "",
+    headline: "",
+    location: "",
+    website: "",
+    phone: "",
+  });
 
   const {
     register,
@@ -70,9 +80,9 @@ export default function PortfolioPage() {
           phone: portfolio.phone ?? "",
         };
 
-        const alreadyChecked = sessionStorage.getItem(
-          "skillbridge-portfolio-draft-checked",
-        );
+        const alreadyChecked = hasCheckedThisPageLoad;
+
+        setServerData(serverValues);
 
         const rawDraft = localStorage.getItem(DRAFT_KEY);
         let draftValues: FormData | null = null;
@@ -97,11 +107,11 @@ export default function PortfolioPage() {
 
         if (draftValues) {
           if (alreadyChecked) {
-            // Same tab session (e.g. clicked to Resume and back) —
+            // Same page load, just navigated within the app —
             // silently keep showing their unsaved edits, no need to ask.
             reset(draftValues);
           } else {
-            // Fresh session (refresh, crash, or reopened tab) — ask first.
+            // Real refresh, crash, or reopened tab — ask first.
             setDraftData(draftValues);
             setShowDraftBanner(true);
             reset(serverValues);
@@ -110,7 +120,7 @@ export default function PortfolioPage() {
           reset(serverValues);
         }
 
-        sessionStorage.setItem("skillbridge-portfolio-draft-checked", "1");
+        hasCheckedThisPageLoad = true;
       } catch (err) {
         console.error(err);
       }
@@ -130,6 +140,7 @@ export default function PortfolioPage() {
     localStorage.removeItem(DRAFT_KEY);
     setShowDraftBanner(false);
     setDraftData(null);
+    reset(serverData);
   };
 
   const onSubmit = async (values: FormData) => {
