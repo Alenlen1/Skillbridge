@@ -41,7 +41,16 @@ export const updateMyPortfolio = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { about, headline, location, website, phone, theme, accentColor, isPublic } = req.body;
+    const {
+      about,
+      headline,
+      location,
+      website,
+      phone,
+      theme,
+      accentColor,
+      isPublic,
+    } = req.body;
 
     const portfolio = await prisma.portfolio.update({
       where: { userId: req.user!.id },
@@ -96,7 +105,7 @@ export const getPublicPortfolio = async (
           },
         },
       },
-     });  
+    });
 
     if (!user || !user.portfolio || !user.emailVerified) {
       res.status(404).json({
@@ -106,23 +115,23 @@ export const getPublicPortfolio = async (
       return;
     }
 
-   const isOwnerViewing = req.user?.username === username;
+    const isOwnerViewing = req.user?.username === username;
 
-   if (!user.portfolio.isPublic && !isOwnerViewing) {
-     res.status(404).json({
-       success: false,
-       error: {
-         code: "NOT_FOUND",
-         message: "Portfolio not found",
-       },
-     });
-     return;
-   }
+    if (!user.portfolio.isPublic && !isOwnerViewing) {
+      res.status(404).json({
+        success: false,
+        error: {
+          code: "NOT_FOUND",
+          message: "Portfolio not found",
+        },
+      });
+      return;
+    }
 
-   res.json({
-     success: true,
-     data: user,
-   });
+    res.json({
+      success: true,
+      data: user,
+    });
   } catch (error) {
     console.error("Get public portfolio error:", error);
     res.status(500).json({
@@ -183,7 +192,7 @@ export const incrementPortfolioView = async (
 // POST /api/v1/portfolio/me/skills
 export const addSkill = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { name, level, category } = req.body;
@@ -230,7 +239,7 @@ export const addSkill = async (
 // DELETE /api/v1/portfolio/me/skills/:id
 export const deleteSkill = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const id = req.params["id"] as string;
@@ -263,15 +272,19 @@ export const deleteSkill = async (
 // POST /api/v1/portfolio/me/projects
 export const addProject = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { title, description, techStack, liveUrl, githubUrl, featured } = req.body;
+    const { title, description, techStack, liveUrl, githubUrl, featured } =
+      req.body;
 
     if (!title) {
       res.status(400).json({
         success: false,
-        error: { code: "VALIDATION_ERROR", message: "Project title is required" },
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Project title is required",
+        },
       });
       return;
     }
@@ -313,7 +326,7 @@ export const addProject = async (
 // DELETE /api/v1/portfolio/me/projects/:id
 export const deleteProject = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const id = req.params["id"] as string;
@@ -348,7 +361,7 @@ export const deleteProject = async (
 // POST /api/v1/portfolio/me/education
 export const addEducation = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { school, degree, field, startYear, endYear, current } = req.body;
@@ -397,7 +410,7 @@ export const addEducation = async (
 // POST /api/v1/portfolio/me/experience
 export const addExperience = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const {
@@ -472,7 +485,7 @@ export const addExperience = async (
 // PUT /api/v1/portfolio/me/experience/:id
 export const updateExperience = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const id = req.params["id"] as string;
@@ -547,7 +560,7 @@ export const updateExperience = async (
 // DELETE /api/v1/portfolio/me/education/:id
 export const deleteEducation = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const id = req.params["id"] as string;
@@ -582,7 +595,7 @@ export const deleteEducation = async (
 // DELETE /api/v1/portfolio/me/experience/:id
 export const deleteExperience = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const id = req.params["id"] as string;
@@ -606,10 +619,7 @@ export const deleteExperience = async (
 
     await prisma.experience.deleteMany({
       where: {
-        AND: [
-          { id },
-          { portfolioId: portfolio.id },
-        ],
+        AND: [{ id }, { portfolioId: portfolio.id }],
       },
     });
 
@@ -635,7 +645,7 @@ export const deleteExperience = async (
 // POST /api/v1/portfolio/me/social-links
 export const addSocialLink = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { platform, url } = req.body;
@@ -643,7 +653,10 @@ export const addSocialLink = async (
     if (!platform || !url) {
       res.status(400).json({
         success: false,
-        error: { code: "VALIDATION_ERROR", message: "Platform and URL are required" },
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Platform and URL are required",
+        },
       });
       return;
     }
@@ -677,7 +690,7 @@ export const addSocialLink = async (
 // DELETE /api/v1/portfolio/me/social-links/:id
 export const deleteSocialLink = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const id = req.params["id"] as string;
@@ -701,6 +714,162 @@ export const deleteSocialLink = async (
     res.json({ success: true, data: { message: "Social link deleted" } });
   } catch (error) {
     console.error("Delete social link error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// GET /api/v1/portfolio/explore
+// Public, unauthenticated directory of all public portfolios.
+// Supports ?search=react&page=1&limit=20&sort=recent|skills|name
+export const browsePortfolios = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const search = (req.query.search as string)?.trim() || "";
+    const skillsParam = (req.query.skills as string)?.trim() || "";
+    const selectedSkills = skillsParam
+      ? skillsParam
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
+    const sort = (req.query.sort as string) || "recent";
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(
+      50,
+      Math.max(1, parseInt(req.query.limit as string) || 20),
+    );
+    const skip = (page - 1) * limit;
+
+    const where = {
+      isPublic: true,
+      user: { emailVerified: true },
+      // Every selected skill must be present (AND) — a portfolio has to
+      // match ALL chosen chips, not just one of them
+      AND: [
+        ...selectedSkills.map((skill) => ({
+          skills: {
+            some: {
+              name: { equals: skill, mode: "insensitive" as const },
+            },
+          },
+        })),
+        ...(search
+          ? [
+              {
+                OR: [
+                  {
+                    user: {
+                      emailVerified: true,
+                      name: {
+                        contains: search,
+                        mode: "insensitive" as const,
+                      },
+                    },
+                  },
+                  {
+                    headline: {
+                      contains: search,
+                      mode: "insensitive" as const,
+                    },
+                  },
+                  {
+                    skills: {
+                      some: {
+                        name: {
+                          contains: search,
+                          mode: "insensitive" as const,
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            ]
+          : []),
+      ],
+    };
+
+    const orderBy =
+      sort === "name"
+        ? { user: { name: "asc" as const } }
+        : sort === "skills"
+          ? { skills: { _count: "desc" as const } }
+          : { updatedAt: "desc" as const };
+
+    const [portfolios, total] = await Promise.all([
+      prisma.portfolio.findMany({
+        where,
+        select: {
+          headline: true,
+          location: true,
+          updatedAt: true,
+          user: {
+            select: { name: true, username: true, avatar: true },
+          },
+          skills: {
+            select: { name: true },
+            take: 6,
+          },
+        },
+        orderBy,
+        skip,
+        take: limit,
+      }),
+      prisma.portfolio.count({ where }),
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        portfolios,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Browse portfolios error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// GET /api/v1/portfolio/explore/top-skills
+// Returns the most common skill names among public portfolios, for filter chips
+export const getTopSkills = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const skills = await prisma.skill.groupBy({
+      by: ["name"],
+      where: {
+        portfolio: {
+          isPublic: true,
+          user: { emailVerified: true },
+        },
+      },
+      _count: { name: true },
+      orderBy: { _count: { name: "desc" } },
+      take: 10,
+    });
+
+    res.json({
+      success: true,
+      data: { skills: skills.map((s) => s.name) },
+    });
+  } catch (error) {
+    console.error("Get top skills error:", error);
     res.status(500).json({
       success: false,
       error: { code: "SERVER_ERROR", message: "Something went wrong" },

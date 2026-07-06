@@ -3,6 +3,8 @@ import {
   getMyPortfolio,
   updateMyPortfolio,
   getPublicPortfolio,
+  browsePortfolios,
+  getTopSkills,
   addSkill,
   deleteSkill,
   addProject,
@@ -26,6 +28,9 @@ router.post("/me/skills", authenticate, addSkill);
 router.delete("/me/skills/:id", authenticate, deleteSkill);
 router.post("/me/projects", authenticate, addProject);
 router.delete("/me/projects/:id", authenticate, deleteProject);
+// Must come before /:username or Express will treat "explore" as a username
+router.get("/explore/top-skills", getTopSkills);
+router.get("/explore", browsePortfolios);
 router.get("/:username", optionalAuthenticate, getPublicPortfolio);
 router.post("/me/education", authenticate, addEducation);
 router.delete("/me/education/:id", authenticate, deleteEducation);

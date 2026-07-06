@@ -190,6 +190,12 @@ export default function LandingPage() {
             >
               FAQ
             </Link>
+            <Link
+              href="/explore"
+              className="text-sm text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
+            >
+              Browse Talent
+            </Link>
           </nav>
           <div className="flex items-center gap-3">
             <Link
@@ -285,7 +291,7 @@ export default function LandingPage() {
               {features.map((feature) => (
                 <div
                   key={feature.title}
-                  className="group bg-white dark:bg-[#0a0a0f] p-6 transition-colors hover:bg-white dark:bg-[#0f0f1a]"
+                  className="group bg-white dark:bg-[#0a0a0f] p-6 transition-colors hover:bg-white dark:hover:bg-[#0f0f1a]"
                 >
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/10 text-indigo-400">
