@@ -200,7 +200,7 @@ export default function ExplorePage() {
           </h1>
           <p className="mt-2 text-slate-500 dark:text-slate-400">
             Explore public portfolios from students and job seekers on
-            SkillBridge. No account required.
+            SkillBridge.
           </p>
         </div>
 
