@@ -51,7 +51,9 @@ function FileDropzone({
           <FaFileAlt size={18} />
         </div>
         <div className="flex-1 overflow-hidden">
-          <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{file.name}</p>
+          <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
+            {file.name}
+          </p>
           <p className="text-xs text-slate-500">{formatSize(file.size)}</p>
         </div>
         <button
@@ -211,7 +213,7 @@ export default function CoverLetterPage() {
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               placeholder="e.g. Google, Shopify, Acme Corp"
-              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
@@ -228,14 +230,17 @@ export default function CoverLetterPage() {
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job description here..."
               rows={8}
-              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
           {/* Resume upload */}
           <div>
             <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
-              Resume <span className="text-slate-400 dark:text-slate-600">(optional)</span>
+              Resume{" "}
+              <span className="text-slate-400 dark:text-slate-600">
+                (optional)
+              </span>
             </label>
             <FileDropzone
               file={file}
@@ -307,7 +312,9 @@ export default function CoverLetterPage() {
           {/* Cover letter */}
           <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03]">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/[0.06] px-5 py-4">
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Cover Letter</h3>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                Cover Letter
+              </h3>
               <button
                 onClick={handleCopy}
                 className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${

@@ -265,7 +265,10 @@ export default function InterviewPracticePage() {
   if (error && !session) {
     return (
       <div className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
-        <FaTimesCircle className="mt-0.5 flex-shrink-0 text-red-400" size={14} />
+        <FaTimesCircle
+          className="mt-0.5 flex-shrink-0 text-red-400"
+          size={14}
+        />
         <p className="text-xs text-red-300">{error}</p>
       </div>
     );
@@ -503,7 +506,10 @@ export default function InterviewPracticePage() {
                     </p>
                     <ul className="space-y-1">
                       {currentQuestion.strengths.map((s, i) => (
-                        <li key={i} className="text-xs text-slate-500 dark:text-slate-400">
+                        <li
+                          key={i}
+                          className="text-xs text-slate-500 dark:text-slate-400"
+                        >
                           • {s}
                         </li>
                       ))}
@@ -517,7 +523,10 @@ export default function InterviewPracticePage() {
                     </p>
                     <ul className="space-y-1">
                       {currentQuestion.improvements.map((s, i) => (
-                        <li key={i} className="text-xs text-slate-500 dark:text-slate-400">
+                        <li
+                          key={i}
+                          className="text-xs text-slate-500 dark:text-slate-400"
+                        >
                           • {s}
                         </li>
                       ))}
@@ -596,9 +605,15 @@ export default function InterviewPracticePage() {
                     }`}
                   >
                     {isRecording ? (
-                      <FaMicrophoneSlash className="text-slate-900 dark:text-white" size={20} />
+                      <FaMicrophoneSlash
+                        className="text-slate-900 dark:text-white"
+                        size={20}
+                      />
                     ) : (
-                      <FaMicrophone className="text-slate-900 dark:text-white" size={20} />
+                      <FaMicrophone
+                        className="text-slate-900 dark:text-white"
+                        size={20}
+                      />
                     )}
                   </button>
                   <p className="mb-3 text-xs text-slate-500">
@@ -623,7 +638,7 @@ export default function InterviewPracticePage() {
                   onChange={(e) => setAnswerText(e.target.value)}
                   placeholder="Type your answer here..."
                   rows={6}
-                  className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+                  className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
                 />
               )}
 

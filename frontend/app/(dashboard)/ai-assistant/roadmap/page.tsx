@@ -150,7 +150,9 @@ export default function RoadmapPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Career Roadmap</h1>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
+              Career Roadmap
+            </h1>
             <p className="text-xs text-slate-500">
               Get a personalized step-by-step path from where you are to where
               you want to be
@@ -171,7 +173,7 @@ export default function RoadmapPage() {
               value={currentRole}
               onChange={(e) => setCurrentRole(e.target.value)}
               placeholder="e.g. Junior Frontend Developer, CS Student, Bootcamp Graduate"
-              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
@@ -185,7 +187,7 @@ export default function RoadmapPage() {
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
               placeholder="e.g. Senior Full Stack Engineer, DevOps Engineer, Tech Lead"
-              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
@@ -353,7 +355,9 @@ export default function RoadmapPage() {
           <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.05] p-5">
             <div className="mb-2 flex items-center gap-2 text-emerald-400">
               <FaFlag size={13} />
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">End Goal</h3>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                End Goal
+              </h3>
             </div>
             <p className="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
               {result.finalGoal}

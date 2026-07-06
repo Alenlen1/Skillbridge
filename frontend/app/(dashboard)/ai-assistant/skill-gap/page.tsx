@@ -102,7 +102,8 @@ const PRIORITY_STYLES = {
     dot: "bg-yellow-400",
   },
   low: {
-    badge: "bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20",
+    badge:
+      "bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20",
     dot: "bg-slate-500",
   },
 };
@@ -195,7 +196,7 @@ export default function SkillGapPage() {
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
               placeholder="e.g. Frontend Developer, Full Stack Engineer, DevOps Engineer"
-              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
@@ -203,7 +204,9 @@ export default function SkillGapPage() {
           <div>
             <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Job Description{" "}
-              <span className="text-slate-400 dark:text-slate-600">(optional but recommended)</span>
+              <span className="text-slate-400 dark:text-slate-600">
+                (optional but recommended)
+              </span>
             </label>
             <p className="mb-3 text-xs text-slate-400 dark:text-slate-600">
               Paste a real job posting to get a more accurate skill gap based on
@@ -214,7 +217,7 @@ export default function SkillGapPage() {
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job description here..."
               rows={8}
-              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
@@ -374,7 +377,9 @@ export default function SkillGapPage() {
             <div className="rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] p-5">
               <div className="mb-4 flex items-center gap-2 text-slate-500 dark:text-slate-400">
                 <FaLightbulb size={14} />
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Next Steps</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                  Next Steps
+                </h3>
               </div>
               <ul className="space-y-2.5">
                 {result.suggestions.map((s, i) => (

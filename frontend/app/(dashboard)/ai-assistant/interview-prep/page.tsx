@@ -166,7 +166,9 @@ export default function InterviewPrepPage() {
             <IconSparkles size={18} stroke={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Interview Prep</h1>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
+              Interview Prep
+            </h1>
             <p className="text-xs text-slate-500">
               Get role-specific interview questions with expert tips tailored to
               your skills
@@ -187,7 +189,7 @@ export default function InterviewPrepPage() {
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
               placeholder="e.g. Frontend Developer, Full Stack Engineer, DevOps Engineer"
-              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
@@ -195,7 +197,9 @@ export default function InterviewPrepPage() {
           <div>
             <label className="mb-2 block text-xs font-medium text-slate-500 dark:text-slate-400">
               Job Description{" "}
-              <span className="text-slate-400 dark:text-slate-600">(optional but recommended)</span>
+              <span className="text-slate-400 dark:text-slate-600">
+                (optional but recommended)
+              </span>
             </label>
             <p className="mb-3 text-xs text-slate-400 dark:text-slate-600">
               Paste a real job posting to get questions tailored to that
@@ -206,7 +210,7 @@ export default function InterviewPrepPage() {
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job description here..."
               rows={7}
-              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-200 placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:bg-white/[0.05]"
+              className="w-full resize-none rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-4 py-3 text-sm text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-colors focus:border-indigo-500/50 focus:bg-slate-100 dark:focus:bg-white/[0.05]"
             />
           </div>
 
