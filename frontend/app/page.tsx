@@ -13,6 +13,8 @@ import {
   IconArrowRight,
   IconStar,
   IconRobot,
+  IconMenu2,
+  IconX,
 } from "@tabler/icons-react";
 import {
   FaFileAlt,
@@ -152,6 +154,7 @@ const faqs = [
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0a0f] font-sans text-slate-900 dark:text-white antialiased">
@@ -210,8 +213,53 @@ export default function LandingPage() {
             >
               Create portfolio
             </Link>
+            <button
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label="Toggle menu"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-600 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-white/5 md:hidden"
+            >
+              {mobileMenuOpen ? (
+                <IconX size={20} stroke={1.75} />
+              ) : (
+                <IconMenu2 size={20} stroke={1.75} />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile dropdown menu */}
+        {mobileMenuOpen && (
+          <nav className="flex flex-col gap-1 border-t border-slate-200 dark:border-white/[0.06] bg-white dark:bg-[#0a0a0f] px-6 py-4 md:hidden">
+            <Link
+              href="#features"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-white/5"
+            >
+              Features
+            </Link>
+            <Link
+              href="#how-it-works"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-white/5"
+            >
+              How it works
+            </Link>
+            <Link
+              href="#faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-white/5"
+            >
+              FAQ
+            </Link>
+            <Link
+              href="/explore"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-white/5"
+            >
+              Browse Talent
+            </Link>
+          </nav>
+        )}
       </header>
 
       <main>
