@@ -12,6 +12,7 @@ import EducationSection from "@/components/portfolio/EducationSection";
 import ExperienceSection from "@/components/portfolio/ExperienceSection";
 import GithubSection from "@/components/portfolio/GithubSection";
 import SocialLinksSection from "@/components/portfolio/SocialLinksSection";
+import EndorsementsSection from "@/components/portfolio/EndorsementsSection";
 
 const schema = z.object({
   about: z.string().max(500, "Max 500 characters").optional(),
@@ -302,6 +303,7 @@ export default function PortfolioPage() {
       <ExperienceSection />
       <GithubSection />
       <SocialLinksSection />
+      <EndorsementsSection />
     </div>
   );
 }

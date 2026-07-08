@@ -17,6 +17,10 @@ import {
   addExperience,
   updateExperience,
   deleteExperience,
+  submitEndorsement,
+  getMyEndorsements,
+  updateEndorsementStatus,
+  deleteEndorsement,
 } from "../controllers/portfolio.controller";
 import { authenticate } from "../middleware/auth.middleware";
 import { optionalAuthenticate } from "../middleware/auth.middleware";
@@ -28,10 +32,14 @@ router.post("/me/skills", authenticate, addSkill);
 router.delete("/me/skills/:id", authenticate, deleteSkill);
 router.post("/me/projects", authenticate, addProject);
 router.delete("/me/projects/:id", authenticate, deleteProject);
+router.get("/me/endorsements", authenticate, getMyEndorsements);
+router.patch("/me/endorsements/:id", authenticate, updateEndorsementStatus);
+router.delete("/me/endorsements/:id", authenticate, deleteEndorsement);
 // Must come before /:username or Express will treat "explore" as a username
 router.get("/explore/top-skills", getTopSkills);
 router.get("/explore", browsePortfolios);
 router.get("/:username", optionalAuthenticate, getPublicPortfolio);
+router.post("/:username/endorsements", submitEndorsement);
 router.post("/me/education", authenticate, addEducation);
 router.delete("/me/education/:id", authenticate, deleteEducation);
 router.post("/me/social-links", authenticate, addSocialLink);

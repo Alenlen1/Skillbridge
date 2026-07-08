@@ -1,10 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import PortfolioViewTracker from "@/components/portfolio/PortfolioViewTracker";
+
+interface Endorsement {
+  id: string;
+  endorserName: string;
+  endorserRole: string;
+  message: string;
+  createdAt: string;
+}
 
 interface Portfolio {
   about: string | null;
@@ -46,6 +54,7 @@ interface Portfolio {
     description: string | null;
   }[];
   socialLinks: { id: string; platform: string; url: string }[];
+  endorsements: Endorsement[];
 }
 
 interface Certificate {
@@ -92,6 +101,16 @@ export default function PublicPortfolioPage() {
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showEndorseForm, setShowEndorseForm] = useState(false);
+  const [endorseForm, setEndorseForm] = useState({
+    endorserName: "",
+    endorserRole: "",
+    endorserEmail: "",
+    message: "",
+  });
+  const [endorseSubmitting, setEndorseSubmitting] = useState(false);
+  const [endorseSubmitted, setEndorseSubmitted] = useState(false);
+  const [endorseError, setEndorseError] = useState("");
 
   useEffect(() => {
     getUser(username).then((data) => {
@@ -99,6 +118,48 @@ export default function PublicPortfolioPage() {
       setLoading(false);
     });
   }, [username]);
+
+  const handleEndorseSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setEndorseError("");
+
+    if (
+      !endorseForm.endorserName.trim() ||
+      !endorseForm.endorserEmail.trim() ||
+      !endorseForm.message.trim()
+    ) {
+      setEndorseError("Name, email, and message are required");
+      return;
+    }
+
+    try {
+      setEndorseSubmitting(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1"}/portfolio/${username}/endorsements`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(endorseForm),
+        },
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        setEndorseError(data.error?.message || "Something went wrong");
+        return;
+      }
+      setEndorseSubmitted(true);
+      setEndorseForm({
+        endorserName: "",
+        endorserRole: "",
+        endorserEmail: "",
+        message: "",
+      });
+    } catch {
+      setEndorseError("Something went wrong. Please try again.");
+    } finally {
+      setEndorseSubmitting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -500,6 +561,135 @@ export default function PublicPortfolioPage() {
                 </div>
               </section>
             )}
+
+            {/* Endorsements */}
+            <section>
+              <div className="mb-8 flex items-center gap-4">
+                <h2 className="text-lg font-semibold text-white">
+                  Endorsements
+                </h2>
+                <div className="h-px flex-1 bg-white/[0.06]" />
+              </div>
+
+              {portfolio.endorsements.length > 0 && (
+                <div className="mb-4 space-y-3">
+                  {portfolio.endorsements.map((e) => (
+                    <div
+                      key={e.id}
+                      className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5"
+                    >
+                      <p className="text-sm leading-relaxed text-slate-300">
+                        &ldquo;{e.message}&rdquo;
+                      </p>
+                      <p className="mt-3 text-xs text-slate-500">
+                        {e.endorserName}
+                        {e.endorserRole ? ` · ${e.endorserRole}` : ""}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {!showEndorseForm && !endorseSubmitted && (
+                <button
+                  onClick={() => setShowEndorseForm(true)}
+                  className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-indigo-500/40 hover:text-indigo-300"
+                >
+                  Leave an endorsement
+                </button>
+              )}
+
+              {endorseSubmitted && (
+                <div className="rounded-xl border border-green-500/20 bg-green-500/[0.05] p-4 text-sm text-green-400">
+                  Thanks! Your endorsement was submitted and is pending{" "}
+                  {user.name || user.username}&apos;s approval.
+                </div>
+              )}
+
+              {showEndorseForm && !endorseSubmitted && (
+                <form
+                  onSubmit={handleEndorseSubmit}
+                  className="space-y-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5"
+                >
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      value={endorseForm.endorserName}
+                      onChange={(e) =>
+                        setEndorseForm((f) => ({
+                          ...f,
+                          endorserName: e.target.value,
+                        }))
+                      }
+                      className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none focus:border-indigo-500/50"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Your role, e.g. Professor at MIT"
+                      value={endorseForm.endorserRole}
+                      onChange={(e) =>
+                        setEndorseForm((f) => ({
+                          ...f,
+                          endorserRole: e.target.value,
+                        }))
+                      }
+                      className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none focus:border-indigo-500/50"
+                    />
+                  </div>
+                  <input
+                    type="email"
+                    placeholder="Your email (not shown publicly)"
+                    value={endorseForm.endorserEmail}
+                    onChange={(e) =>
+                      setEndorseForm((f) => ({
+                        ...f,
+                        endorserEmail: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none focus:border-indigo-500/50"
+                  />
+                  <textarea
+                    placeholder={`Write a short endorsement for ${user.name || user.username}...`}
+                    rows={3}
+                    maxLength={500}
+                    value={endorseForm.message}
+                    onChange={(e) =>
+                      setEndorseForm((f) => ({
+                        ...f,
+                        message: e.target.value,
+                      }))
+                    }
+                    className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-slate-600 outline-none focus:border-indigo-500/50"
+                  />
+
+                  {endorseError && (
+                    <p className="text-xs text-red-400">{endorseError}</p>
+                  )}
+
+                  <div className="flex gap-2">
+                    <button
+                      type="submit"
+                      disabled={endorseSubmitting}
+                      className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {endorseSubmitting ? "Submitting..." : "Submit"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowEndorseForm(false)}
+                      className="rounded-lg border border-white/10 px-4 py-2 text-sm text-slate-400 transition hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-slate-600">
+                    Submitted endorsements are reviewed by{" "}
+                    {user.name || user.username} before appearing publicly.
+                  </p>
+                </form>
+              )}
+            </section>
           </div>
 
           {/* Footer */}

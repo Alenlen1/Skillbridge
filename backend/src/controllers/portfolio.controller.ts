@@ -102,6 +102,18 @@ export const getPublicPortfolio = async (
             experience: true,
             projects: { orderBy: { order: "asc" } },
             socialLinks: true,
+            endorsements: {
+              where: { status: "APPROVED" },
+              orderBy: { createdAt: "desc" },
+              select: {
+                id: true,
+                endorserName: true,
+                endorserRole: true,
+                message: true,
+                createdAt: true,
+                // endorserEmail intentionally omitted — never shown publicly
+              },
+            },
           },
         },
       },
@@ -721,9 +733,202 @@ export const deleteSocialLink = async (
   }
 };
 
-// GET /api/v1/portfolio/explore
-// Public, unauthenticated directory of all public portfolios.
-// Supports ?search=react&page=1&limit=20&sort=recent|skills|name
+// POST /api/v1/portfolio/:username/endorsements
+// Public, unauthenticated — anyone visiting a portfolio can submit one
+export const submitEndorsement = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const username = req.params["username"] as string;
+    const { endorserName, endorserRole, endorserEmail, message } = req.body;
+
+    if (!endorserName?.trim() || !endorserEmail?.trim() || !message?.trim()) {
+      res.status(400).json({
+        success: false,
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Name, email, and message are required",
+        },
+      });
+      return;
+    }
+
+    if (message.trim().length > 500) {
+      res.status(400).json({
+        success: false,
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Message must be 500 characters or less",
+        },
+      });
+      return;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { username },
+      include: { portfolio: true },
+    });
+
+    if (!user || !user.portfolio || !user.portfolio.isPublic) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    const endorsement = await prisma.endorsement.create({
+      data: {
+        portfolioId: user.portfolio.id,
+        endorserName: endorserName.trim(),
+        endorserRole: (endorserRole || "").trim(),
+        endorserEmail: endorserEmail.trim(),
+        message: message.trim(),
+        status: "PENDING",
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      data: {
+        message: "Endorsement submitted — pending the owner's approval",
+        id: endorsement.id,
+      },
+    });
+  } catch (error) {
+    console.error("Submit endorsement error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// GET /api/v1/portfolio/me/endorsements
+// Owner-only — lists all endorsements (pending, approved, rejected)
+export const getMyEndorsements = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    const endorsements = await prisma.endorsement.findMany({
+      where: { portfolioId: portfolio.id },
+      orderBy: { createdAt: "desc" },
+    });
+
+    res.json({ success: true, data: { endorsements } });
+  } catch (error) {
+    console.error("Get endorsements error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// PATCH /api/v1/portfolio/me/endorsements/:id
+// Owner-only — approve or reject a pending endorsement
+export const updateEndorsementStatus = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+    const { status } = req.body;
+
+    if (!["APPROVED", "REJECTED"].includes(status)) {
+      res.status(400).json({
+        success: false,
+        error: { code: "VALIDATION_ERROR", message: "Invalid status" },
+      });
+      return;
+    }
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    const result = await prisma.endorsement.updateMany({
+      where: { id, portfolioId: portfolio.id },
+      data: { status },
+    });
+
+    if (result.count === 0) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Endorsement not found" },
+      });
+      return;
+    }
+
+    res.json({
+      success: true,
+      data: { message: `Endorsement ${status.toLowerCase()}` },
+    });
+  } catch (error) {
+    console.error("Update endorsement status error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
+
+// DELETE /api/v1/portfolio/me/endorsements/:id
+// Owner-only — permanently remove an endorsement
+export const deleteEndorsement = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const id = req.params["id"] as string;
+
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { userId: req.user!.id },
+    });
+
+    if (!portfolio) {
+      res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "Portfolio not found" },
+      });
+      return;
+    }
+
+    await prisma.endorsement.deleteMany({
+      where: { id, portfolioId: portfolio.id },
+    });
+
+    res.json({ success: true, data: { message: "Endorsement deleted" } });
+  } catch (error) {
+    console.error("Delete endorsement error:", error);
+    res.status(500).json({
+      success: false,
+      error: { code: "SERVER_ERROR", message: "Something went wrong" },
+    });
+  }
+};
 export const browsePortfolios = async (
   req: AuthRequest,
   res: Response,

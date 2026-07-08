@@ -70,7 +70,26 @@ model Portfolio {
   experience  Experience[]
   projects    Project[]
   socialLinks SocialLink[]
+  endorsements Endorsement[]
   updatedAt   DateTime     @updatedAt
+}
+
+model Endorsement {
+  id            String            @id @default(cuid())
+  portfolioId   String
+  portfolio     Portfolio         @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  endorserName  String
+  endorserRole  String
+  endorserEmail String
+  message       String
+  status        EndorsementStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+}
+
+enum EndorsementStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model Skill {
