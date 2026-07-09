@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+
+// Always treat this page as fresh — never serve a cached render. This
+// matters because the endorsements shown here can change (get approved)
+// without the URL itself changing, so we don't want a stale cached visit.
+export const dynamic = "force-dynamic";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -117,6 +122,35 @@ export default function PublicPortfolioPage() {
       setUser(data);
       setLoading(false);
     });
+  }, [username]);
+
+  // Live updates via Server-Sent Events — the connection stays open and
+  // the server pushes a message the instant something changes (like an
+  // endorsement being approved), so this refetches immediately instead
+  // of waiting for the visitor to reload the page.
+  useEffect(() => {
+    const apiUrl =
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+    const eventSource = new EventSource(`${apiUrl}/portfolio/${username}/live`);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const parsed = JSON.parse(event.data);
+        if (parsed.type === "update") {
+          getUser(username).then((data) => {
+            if (data) setUser(data);
+          });
+        }
+      } catch {
+        // ignore malformed events (e.g. heartbeat comments)
+      }
+    };
+
+    eventSource.onerror = () => {
+      // EventSource auto-reconnects on its own; nothing to do here
+    };
+
+    return () => eventSource.close();
   }, [username]);
 
   const handleEndorseSubmit = async (e: FormEvent) => {

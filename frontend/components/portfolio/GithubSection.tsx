@@ -9,6 +9,7 @@ import {
   IconCheck,
 } from "@tabler/icons-react";
 import api from "@/lib/api";
+import { usePortfolioRefreshStore } from "@/lib/portfolio-refresh";
 
 interface Repo {
   id: number;
@@ -29,9 +30,12 @@ export default function GithubSection() {
   const [checking, setChecking] = useState(true);
   const [repos, setRepos] = useState<Repo[]>([]);
   const [loadingRepos, setLoadingRepos] = useState(false);
-  const [importedIds, setImportedIds] = useState<Set<number>>(new Set());
+  const [importedUrls, setImportedUrls] = useState<Set<string>>(new Set());
   const [error, setError] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
+
+  const bumpPortfolioRefresh = usePortfolioRefreshStore((s) => s.bump);
+  const portfolioVersion = usePortfolioRefreshStore((s) => s.version);
 
   // Detect redirect back from GitHub OAuth (?github=connected or ?github=error)
   useEffect(() => {
@@ -52,6 +56,30 @@ export default function GithubSection() {
   useEffect(() => {
     checkConnection();
   }, []);
+
+  // Figure out which repos are already imported by checking existing
+  // projects' githubUrl field. This is the single source of truth.
+  //
+  // Reruns whenever portfolioVersion changes (import, delete, or edit
+  // happening in any section — e.g. deleting a project in ProjectsSection),
+  // not just on first mount. That's what makes this update live without
+  // needing a manual page refresh.
+  useEffect(() => {
+    loadImportedGithubUrls();
+  }, [portfolioVersion]);
+
+  const loadImportedGithubUrls = async () => {
+    try {
+      const { data } = await api.get("/portfolio/me");
+      const urls: string[] = (data.data.projects || [])
+        .map((p: { githubUrl: string | null }) => p.githubUrl)
+        .filter(Boolean);
+      setImportedUrls(new Set(urls));
+    } catch {
+      // Non-critical — worst case, imported repos just won't show as
+      // already-imported until the next successful load
+    }
+  };
 
   const checkConnection = async () => {
     try {
@@ -89,15 +117,19 @@ export default function GithubSection() {
 
   const handleImport = async (repo: Repo) => {
     try {
+      setError("");
       await api.post("/github/import", {
         name: repo.name,
         description: repo.description,
         url: repo.url,
         language: repo.language,
       });
-      setImportedIds((prev) => new Set(prev).add(repo.id));
+      setImportedUrls((prev) => new Set(prev).add(repo.url));
+      bumpPortfolioRefresh();
     } catch {
       setError(`Failed to import ${repo.name}`);
+      // Auto-dismiss so a stale error doesn't sit on screen forever
+      setTimeout(() => setError(""), 5000);
     }
   };
 
@@ -179,7 +211,7 @@ export default function GithubSection() {
           ) : (
             <div className="space-y-2">
               {repos.map((repo) => {
-                const imported = importedIds.has(repo.id);
+                const imported = importedUrls.has(repo.url);
                 return (
                   <div
                     key={repo.id}

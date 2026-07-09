@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { IconCheck, IconX, IconTrash, IconQuote } from "@tabler/icons-react";
 import api from "@/lib/api";
+import { useAuthStore } from "@/lib/auth";
 
 interface Endorsement {
   id: string;
@@ -15,6 +16,7 @@ interface Endorsement {
 }
 
 export default function EndorsementsSection() {
+  const { user } = useAuthStore();
   const [endorsements, setEndorsements] = useState<Endorsement[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -22,6 +24,32 @@ export default function EndorsementsSection() {
   useEffect(() => {
     fetchEndorsements();
   }, []);
+
+  // Live updates — a visitor submitting a new endorsement on the public
+  // page (or an approval happening elsewhere) pushes here instantly,
+  // instead of needing a manual refresh to see it.
+  useEffect(() => {
+    if (!user?.username) return;
+
+    const apiUrl =
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+    const eventSource = new EventSource(
+      `${apiUrl}/portfolio/${user.username}/live`,
+    );
+
+    eventSource.onmessage = (event) => {
+      try {
+        const parsed = JSON.parse(event.data);
+        if (parsed.type === "update") {
+          fetchEndorsements();
+        }
+      } catch {
+        // ignore malformed events (e.g. heartbeat comments)
+      }
+    };
+
+    return () => eventSource.close();
+  }, [user?.username]);
 
   const fetchEndorsements = async () => {
     try {

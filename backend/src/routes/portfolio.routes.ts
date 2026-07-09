@@ -21,6 +21,7 @@ import {
   getMyEndorsements,
   updateEndorsementStatus,
   deleteEndorsement,
+  portfolioLiveUpdates,
 } from "../controllers/portfolio.controller";
 import { authenticate } from "../middleware/auth.middleware";
 import { optionalAuthenticate } from "../middleware/auth.middleware";
@@ -39,6 +40,7 @@ router.delete("/me/endorsements/:id", authenticate, deleteEndorsement);
 router.get("/explore/top-skills", getTopSkills);
 router.get("/explore", browsePortfolios);
 router.get("/:username", optionalAuthenticate, getPublicPortfolio);
+router.get("/:username/live", portfolioLiveUpdates);
 router.post("/:username/endorsements", submitEndorsement);
 router.post("/me/education", authenticate, addEducation);
 router.delete("/me/education/:id", authenticate, deleteEducation);

@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { prisma } from "../lib/prisma";
 import { AuthRequest } from "../middleware/auth.middleware";
+import { addConnection, removeConnection, broadcastUpdate } from "../lib/sse";
 export const getMyPortfolio = async (
   req: AuthRequest,
   res: Response,
@@ -789,6 +790,11 @@ export const submitEndorsement = async (
       },
     });
 
+    // Let anyone watching this username live (including the owner's own
+    // dashboard, which subscribes to their own username) know something
+    // changed, so it shows up without needing a refresh.
+    broadcastUpdate(username);
+
     res.status(201).json({
       success: true,
       data: {
@@ -881,6 +887,12 @@ export const updateEndorsementStatus = async (
       });
       return;
     }
+
+    const owner = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: { username: true },
+    });
+    if (owner) broadcastUpdate(owner.username);
 
     res.json({
       success: true,
@@ -1047,6 +1059,34 @@ export const browsePortfolios = async (
       error: { code: "SERVER_ERROR", message: "Something went wrong" },
     });
   }
+};
+
+// GET /api/v1/portfolio/:username/live
+// Server-Sent Events stream — keeps a connection open and pushes a
+// message the instant something changes (e.g. an endorsement is approved),
+// so visitors see updates without needing to refresh.
+export const portfolioLiveUpdates = (req: AuthRequest, res: Response): void => {
+  const username = req.params["username"] as string;
+
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
+  res.write(`data: ${JSON.stringify({ type: "connected" })}\n\n`);
+
+  addConnection(username, res);
+
+  // Keep the connection alive through proxies/load balancers that might
+  // otherwise time out an idle connection
+  const heartbeat = setInterval(() => {
+    res.write(": heartbeat\n\n");
+  }, 25000);
+
+  req.on("close", () => {
+    clearInterval(heartbeat);
+    removeConnection(username, res);
+  });
 };
 
 // GET /api/v1/portfolio/explore/top-skills

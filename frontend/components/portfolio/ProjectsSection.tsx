@@ -8,6 +8,7 @@ import {
   IconExternalLink,
 } from "@tabler/icons-react";
 import api from "@/lib/api";
+import { usePortfolioRefreshStore } from "@/lib/portfolio-refresh";
 
 interface Project {
   id: string;
@@ -29,9 +30,6 @@ const EMPTY_FORM = {
 };
 
 const DRAFT_KEY = "skillbridge-project-draft";
-// Module-level flag: resets to false on every real page refresh (since the
-// whole JS bundle re-executes), but stays true across SPA navigation within
-// the same page load — that's exactly the distinction we need.
 let hasCheckedThisPageLoad = false;
 
 export default function ProjectsSection() {
@@ -41,11 +39,17 @@ export default function ProjectsSection() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState("");
   const [showDraftBanner, setShowDraftBanner] = useState(false);
+  const refreshVersion = usePortfolioRefreshStore((s) => s.version);
+  const bumpPortfolioRefresh = usePortfolioRefreshStore((s) => s.bump);
+
+  useEffect(() => {
+    if (refreshVersion === 0) return;
+    fetchProjects();
+  }, [refreshVersion]);
 
   useEffect(() => {
     fetchProjects();
 
-    // Check for a leftover unsaved draft from a previous session
     const alreadyChecked = hasCheckedThisPageLoad;
     const rawDraft = localStorage.getItem(DRAFT_KEY);
     if (rawDraft) {
@@ -53,11 +57,9 @@ export default function ProjectsSection() {
         const parsed = JSON.parse(rawDraft) as typeof EMPTY_FORM;
         if (parsed.title?.trim()) {
           if (alreadyChecked) {
-            // Same page load, just navigated within the app — silently restore
             setForm(parsed);
             setAdding(true);
           } else {
-            // Real refresh/crash/reopen — ask first
             setShowDraftBanner(true);
           }
         } else {
@@ -70,7 +72,6 @@ export default function ProjectsSection() {
     hasCheckedThisPageLoad = true;
   }, []);
 
-  // Auto-save the "add project" form to localStorage while it's open
   useEffect(() => {
     if (!adding) return;
     const timer = setTimeout(() => {
@@ -134,6 +135,7 @@ export default function ProjectsSection() {
       setForm(EMPTY_FORM);
       setAdding(false);
       localStorage.removeItem(DRAFT_KEY);
+      bumpPortfolioRefresh();
     } catch {
       setError("Failed to add project");
     }
@@ -143,6 +145,7 @@ export default function ProjectsSection() {
     try {
       await api.delete(`/portfolio/me/projects/${id}`);
       setProjects((prev) => prev.filter((p) => p.id !== id));
+      bumpPortfolioRefresh();
     } catch {
       setError("Failed to delete project");
     }
