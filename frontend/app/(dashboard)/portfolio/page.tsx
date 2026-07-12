@@ -13,6 +13,7 @@ import ExperienceSection from "@/components/portfolio/ExperienceSection";
 import GithubSection from "@/components/portfolio/GithubSection";
 import SocialLinksSection from "@/components/portfolio/SocialLinksSection";
 import EndorsementsSection from "@/components/portfolio/EndorsementsSection";
+import EndorsementNudge from "@/components/portfolio/EndorsementNudge";
 
 const schema = z.object({
   about: z.string().max(500, "Max 500 characters").optional(),
@@ -179,6 +180,8 @@ export default function PortfolioPage() {
           </a>
         </p>
       </div>
+
+      <EndorsementNudge />
 
       {showDraftBanner && (
         <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm">

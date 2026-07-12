@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { IconCheck, IconX, IconTrash, IconQuote } from "@tabler/icons-react";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
+import { usePortfolioRefreshStore } from "@/lib/portfolio-refresh";
 
 interface Endorsement {
   id: string;
@@ -17,6 +18,7 @@ interface Endorsement {
 
 export default function EndorsementsSection() {
   const { user } = useAuthStore();
+  const bumpPortfolioRefresh = usePortfolioRefreshStore((s) => s.bump);
   const [endorsements, setEndorsements] = useState<Endorsement[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -72,6 +74,10 @@ export default function EndorsementsSection() {
       setEndorsements((prev) =>
         prev.map((e) => (e.id === id ? { ...e, status } : e)),
       );
+      // This only updates local state — nothing broadcasts an SSE event for
+      // approve/reject, so nudge this on to let other sections (e.g. the
+      // endorsement nudge) know they should refetch.
+      bumpPortfolioRefresh();
     } catch (err) {
       console.error(err);
     } finally {
@@ -84,6 +90,8 @@ export default function EndorsementsSection() {
       setBusyId(id);
       await api.delete(`/portfolio/me/endorsements/${id}`);
       setEndorsements((prev) => prev.filter((e) => e.id !== id));
+      // Same as above — deletion doesn't broadcast an SSE event either.
+      bumpPortfolioRefresh();
     } catch (err) {
       console.error(err);
     } finally {
@@ -96,14 +104,14 @@ export default function EndorsementsSection() {
 
   if (loading) {
     return (
-      <section className="mt-10">
+      <section id="endorsements" className="mt-10 scroll-mt-6">
         <div className="h-24 animate-pulse rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.02]" />
       </section>
     );
   }
 
   return (
-    <section className="mt-10">
+    <section id="endorsements" className="mt-10 scroll-mt-6">
       <div className="mb-1 flex items-center justify-between">
         <h2 className="text-base font-semibold text-slate-900 dark:text-white">
           Endorsements

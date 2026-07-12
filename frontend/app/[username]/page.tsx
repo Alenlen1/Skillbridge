@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+import { IconX } from "@tabler/icons-react";
 
 // Always treat this page as fresh — never serve a cached render. This
 // matters because the endorsements shown here can change (get approved)
@@ -366,6 +367,19 @@ export default function PublicPortfolioPage() {
                     </p>
                   )}
                 </div>
+
+                {/* Endorse CTA — kept up here too so someone who was
+                    personally sent this link (not just browsing) can jump
+                    straight to the form without scrolling past everything
+                    below. */}
+                {!endorseSubmitted && (
+                  <button
+                    onClick={() => setShowEndorseForm(true)}
+                    className="flex-shrink-0 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 transition hover:border-indigo-500/50 hover:bg-indigo-500/20"
+                  >
+                    Leave an endorsement
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -596,17 +610,20 @@ export default function PublicPortfolioPage() {
               </section>
             )}
 
-            {/* Endorsements */}
-            <section>
-              <div className="mb-8 flex items-center gap-4">
-                <h2 className="text-lg font-semibold text-white">
-                  Endorsements
-                </h2>
-                <div className="h-px flex-1 bg-white/[0.06]" />
-              </div>
+            {/* Endorsements — only shown once there's something to display,
+                same as Skills/Projects/etc. above. Leaving an endorsement is
+                handled by the hero CTA now, so there's no button here
+                duplicating it when this is empty. */}
+            {portfolio.endorsements.length > 0 && (
+              <section id="endorsements" className="scroll-mt-20">
+                <div className="mb-8 flex items-center gap-4">
+                  <h2 className="text-lg font-semibold text-white">
+                    Endorsements
+                  </h2>
+                  <div className="h-px flex-1 bg-white/[0.06]" />
+                </div>
 
-              {portfolio.endorsements.length > 0 && (
-                <div className="mb-4 space-y-3">
+                <div className="space-y-3">
                   {portfolio.endorsements.map((e) => (
                     <div
                       key={e.id}
@@ -622,29 +639,75 @@ export default function PublicPortfolioPage() {
                     </div>
                   ))}
                 </div>
-              )}
+              </section>
+            )}
+          </div>
 
-              {!showEndorseForm && !endorseSubmitted && (
+          {/* Footer */}
+          <div className="border-t border-white/[0.06] px-6 py-8 text-center">
+            <p className="text-xs text-slate-600">
+              Built with{" "}
+              <Link
+                href="/"
+                className="text-indigo-400 transition hover:text-indigo-300"
+              >
+                SkillBridge
+              </Link>
+              {" · "}
+              <Link
+                href="/register"
+                className="text-indigo-400 transition hover:text-indigo-300"
+              >
+                Create your own portfolio for free
+              </Link>
+            </p>
+          </div>
+        </main>
+
+        {/* Endorsement modal — triggered from the hero CTA or the bottom
+            Endorsements section. Living here (instead of inline in the
+            section) means it works no matter where the visitor was on the
+            page when they clicked, so someone who came straight from a
+            "please leave me an endorsement" link never has to scroll. */}
+        {showEndorseForm && (
+          <div
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 px-4 py-8 backdrop-blur-sm"
+            onClick={() => setShowEndorseForm(false)}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-md rounded-2xl border border-white/[0.08] bg-[#0d0d14] p-6 shadow-2xl"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-base font-semibold text-white">
+                  {endorseSubmitted
+                    ? "Thanks!"
+                    : `Endorse ${user.name || user.username}`}
+                </h3>
                 <button
-                  onClick={() => setShowEndorseForm(true)}
-                  className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-indigo-500/40 hover:text-indigo-300"
+                  onClick={() => setShowEndorseForm(false)}
+                  aria-label="Close"
+                  className="rounded-md p-1 text-slate-500 transition hover:bg-white/[0.06] hover:text-white"
                 >
-                  Leave an endorsement
+                  <IconX size={18} stroke={1.75} />
                 </button>
-              )}
+              </div>
 
-              {endorseSubmitted && (
-                <div className="rounded-xl border border-green-500/20 bg-green-500/[0.05] p-4 text-sm text-green-400">
-                  Thanks! Your endorsement was submitted and is pending{" "}
-                  {user.name || user.username}&apos;s approval.
+              {endorseSubmitted ? (
+                <div>
+                  <p className="text-sm leading-relaxed text-slate-300">
+                    Your endorsement was submitted and is pending{" "}
+                    {user.name || user.username}&apos;s approval.
+                  </p>
+                  <button
+                    onClick={() => setShowEndorseForm(false)}
+                    className="mt-5 w-full rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
+                  >
+                    Close
+                  </button>
                 </div>
-              )}
-
-              {showEndorseForm && !endorseSubmitted && (
-                <form
-                  onSubmit={handleEndorseSubmit}
-                  className="space-y-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5"
-                >
+              ) : (
+                <form onSubmit={handleEndorseSubmit} className="space-y-3">
                   <div className="grid gap-3 sm:grid-cols-2">
                     <input
                       type="text"
@@ -717,35 +780,34 @@ export default function PublicPortfolioPage() {
                       Cancel
                     </button>
                   </div>
+
                   <p className="text-[11px] text-slate-600">
                     Submitted endorsements are reviewed by{" "}
                     {user.name || user.username} before appearing publicly.
                   </p>
+
+                  {portfolio.endorsements.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowEndorseForm(false);
+                        document
+                          .getElementById("endorsements")
+                          ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                      }}
+                      className="text-xs text-indigo-400 underline-offset-2 hover:underline"
+                    >
+                      See what others have said &rarr;
+                    </button>
+                  )}
                 </form>
               )}
-            </section>
+            </div>
           </div>
-
-          {/* Footer */}
-          <div className="border-t border-white/[0.06] px-6 py-8 text-center">
-            <p className="text-xs text-slate-600">
-              Built with{" "}
-              <Link
-                href="/"
-                className="text-indigo-400 transition hover:text-indigo-300"
-              >
-                SkillBridge
-              </Link>
-              {" · "}
-              <Link
-                href="/register"
-                className="text-indigo-400 transition hover:text-indigo-300"
-              >
-                Create your own portfolio for free
-              </Link>
-            </p>
-          </div>
-        </main>
+        )}
       </div>
     </>
   );
