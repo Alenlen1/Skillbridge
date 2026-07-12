@@ -13,6 +13,7 @@ import settingsRoutes from "./routes/settings.routes";
 import aiRoutes from "./routes/ai.routes";
 import interviewRoutes from "./routes/interview.routes";
 import cronRoutes from "./routes/cron.routes";
+import jobsRoutes from "./routes/jobs.routes";
 dotenv.config();
 
 const app = express();
@@ -41,6 +42,7 @@ app.use("/api/v1/settings", settingsRoutes);
 app.use("/api/v1/ai", aiRoutes);
 app.use("/api/v1/interview", interviewRoutes);
 app.use("/api/v1/cron", cronRoutes);
+app.use("/api/v1/jobs", jobsRoutes);
 // Health check
 app.get("/health", (req, res) => {
   res.json({ success: true, message: "SkillBridge API is running" });
